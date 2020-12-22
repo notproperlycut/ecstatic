@@ -7,6 +7,8 @@ defmodule Ecstatic.Application do
 
   def start(_type, _args) do
     children = [
+      # Start the Commanded Application
+      Ecstatic.App,
       # Start the Ecto repository
       #Ecstatic.Repo,
       # Start the Telemetry supervisor

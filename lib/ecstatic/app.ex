@@ -5,4 +5,6 @@ defmodule Ecstatic.App do
 			adapter: Commanded.EventStore.Adapters.EventStore,
 			event_store: Ecstatic.EventStore
 		]
+
+	router Ecstatic.Router
 end

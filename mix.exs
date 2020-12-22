@@ -33,21 +33,24 @@ defmodule Ecstatic.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.7"},
-      {:phoenix_ecto, "~> 4.1"},
-      {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_dashboard, "~> 0.4"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.0"},
-      {:cors_plug, "~> 2.0"},
       {:absinthe, "~> 1.5.0"},
       {:absinthe_plug, "~> 1.5.0"},
       {:commanded, "~> 1.2"},
-      {:commanded_eventstore_adapter, "~> 1.2"}
+      {:commanded_eventstore_adapter, "~> 1.2"},
+      {:cors_plug, "~> 2.0"},
+      {:ecto_sql, "~> 3.4"},
+      {:elixir_uuid, "~> 1.2"},
+      {:exconstructor, "~> 1.1"},
+      {:gettext, "~> 0.11"},
+      {:jason, "~> 1.2"},
+      {:phoenix, "~> 1.5.7"},
+      {:phoenix_ecto, "~> 4.1"},
+      {:phoenix_live_dashboard, "~> 0.4"},
+      {:plug_cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"},
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"},
+      {:vex, "~> 0.8"},
     ]
   end
 

@@ -17,12 +17,13 @@ config :ecstatic, Ecstatic.Repo,
 # with webpack to recompile .js and .css sources.
 config :ecstatic, EcstaticWeb.Endpoint,
   http: [port: 4000],
-  #http: [ip: {100, 101, 127, 69}, port: 4000],
-  #url: [host: "100.101.127.69"],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: []
+
+config :ecstatic, EcstaticWeb.Context,
+  admin_password: "admin_password"
 
 # ## SSL Support
 #

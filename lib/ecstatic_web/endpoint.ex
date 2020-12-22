@@ -11,6 +11,8 @@ defmodule EcstaticWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Jason
 
+  plug EcstaticWeb.Context
+
   plug Absinthe.Plug,
     schema: EcstaticWeb.Schema
 end

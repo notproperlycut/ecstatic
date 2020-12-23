@@ -4,7 +4,9 @@ defmodule Ecstatic.Engines do
   """
 
   alias Ecstatic.Engines.Commands.{CreateEngine, DestroyEngine}
+  alias Ecstatic.Engines.Projections.Engine
   alias Ecstatic.App
+  alias Ecstatic.Repo
 
   @doc """
   Create a new engine.
@@ -28,5 +30,23 @@ defmodule Ecstatic.Engines do
     with :ok <- App.dispatch(destroy_engine, consistency: :strong) do
       {:ok, attrs.engine_id}
     end
+  end
+
+  @doc """
+  Get a single engine by their ID
+  """
+  def engine_by_engine_id(engine_id) do
+    case Repo.get(Engine, engine_id) do
+      nil -> {:error, :engine_not_found}
+      engine -> {:ok, engine}
+    end
+  end
+
+  @doc """
+  Get a single engine by their ID
+  """
+  def list_engines() do
+    engines = Repo.all(Engine)
+    {:ok, engines}
   end
 end

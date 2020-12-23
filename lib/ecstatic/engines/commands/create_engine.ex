@@ -1,4 +1,5 @@
 defmodule Ecstatic.Engines.Commands.CreateEngine do
+  @derive {Inspect, except: [:api_secret]}
   defstruct [:engine_id, :api_secret]
 
   use ExConstructor

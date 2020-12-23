@@ -18,20 +18,20 @@ config :ecstatic, EcstaticWeb.Endpoint,
 
 config :ecstatic, EcstaticWeb.Context, admin_password: System.get_env("ADMIN_PASSWORD")
 
-# 
-# config :ecstatic, Ecstatic.Repo,
-#   adapter: Ecto.Adapters.Postgres,
-#   url: System.get_env("DATABASE_URL"),
-#   ssl: true,
-# TODO: pool_size below also
-#   pool_size: 2 # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
+# Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas. Therefore, one connection per DB below
+ config :ecstatic, Ecstatic.Repo,
+   adapter: Ecto.Adapters.Postgres,
+   url: System.get_env("DATABASE_URL"),
+   migration_source: "ecto_migrations",
+   ssl: true,
+   pool_size: 1 
 
 config :ecstatic, Ecstatic.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
   url: System.get_env("DATABASE_URL"),
+  migration_source: "eventstore_migrations",
   ssl: true,
-  # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
-  pool_size: 2
+  pool_size: 1
 
 # Do not print debug messages in production
 config :logger, level: :info

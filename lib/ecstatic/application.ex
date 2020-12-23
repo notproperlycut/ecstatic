@@ -10,13 +10,16 @@ defmodule Ecstatic.Application do
       # Start the Commanded Application
       Ecstatic.App,
       # Start the Ecto repository
-      # Ecstatic.Repo,
+      Ecstatic.Repo,
       # Start the Telemetry supervisor
       EcstaticWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Ecstatic.PubSub},
       # Start the Endpoint (http/https)
-      EcstaticWeb.Endpoint
+      EcstaticWeb.Endpoint,
+
+      # Start the Engine projector
+      Ecstatic.Engines.Supervisor,
       # Start a worker by calling: Ecstatic.Worker.start_link(arg)
       # {Ecstatic.Worker, arg}
     ]

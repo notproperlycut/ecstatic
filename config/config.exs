@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :ecstatic,
-  ecto_repos: [Ecstatic.Repo]
+  ecto_repos: [Ecstatic.Repo],
+  event_stores: [Ecstatic.EventStore]
 
 # Configures the endpoint
 config :ecstatic, EcstaticWeb.Endpoint,
@@ -23,10 +24,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :commanded_ecto_projections,
+  repo: Ecstatic.Repo
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :ecstatic, event_stores: [Ecstatic.EventStore]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

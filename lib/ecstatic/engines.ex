@@ -14,7 +14,7 @@ defmodule Ecstatic.Engines do
 
     create_engine = CreateEngine.new(Map.put(attrs, :engine_id, uuid))
 
-    with :ok <- App.dispatch(create_engine) do
+    with :ok <- App.dispatch(create_engine, consistency: :strong) do
       {:ok, uuid}
     end
   end
@@ -25,7 +25,7 @@ defmodule Ecstatic.Engines do
   def destroy_engine(attrs \\ %{}) do
     destroy_engine = DestroyEngine.new(attrs)
 
-    with :ok <- App.dispatch(destroy_engine) do
+    with :ok <- App.dispatch(destroy_engine, consistency: :strong) do
       {:ok, attrs.engine_id}
     end
   end

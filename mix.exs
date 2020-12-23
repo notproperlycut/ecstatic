@@ -36,6 +36,7 @@ defmodule Ecstatic.MixProject do
       {:absinthe, "~> 1.5.0"},
       {:absinthe_plug, "~> 1.5.0"},
       {:commanded, "~> 1.2"},
+      {:commanded_ecto_projections, "~> 1.2"},
       {:commanded_eventstore_adapter, "~> 1.2"},
       {:cors_plug, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},

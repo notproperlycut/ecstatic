@@ -26,7 +26,7 @@ defmodule Ecstatic.Engines do
     destroy_engine = DestroyEngine.new(attrs)
 
     with :ok <- App.dispatch(destroy_engine) do
-      {:ok}
+      {:ok, attrs.engine_id}
     end
   end
 end

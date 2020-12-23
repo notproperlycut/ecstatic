@@ -18,7 +18,7 @@ defmodule Ecstatic.Support.Middleware.Validate do
     errors = command |> Vex.errors() |> merge_errors()
 
     pipeline
-    |> respond({:error, :validation_failure, errors})
+    |> respond({:error, %{message: errors}})
     |> halt()
   end
 

@@ -1,6 +1,6 @@
 Aggregate lifespans
 Aggregate snapshots
-Authoriser middleware
+Authoriser middleware, authz into Ecstatic
 Test framework, tests
 
 Hide secrets from debug logs

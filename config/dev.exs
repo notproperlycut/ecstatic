@@ -30,8 +30,7 @@ config :ecstatic, EcstaticWeb.Endpoint,
   check_origin: false,
   watchers: []
 
-config :ecstatic, EcstaticWeb.Context,
-  admin_password: "admin_password"
+config :ecstatic, EcstaticWeb.Context, admin_password: "admin_password"
 
 # ## SSL Support
 #

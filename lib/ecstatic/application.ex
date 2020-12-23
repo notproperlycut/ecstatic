@@ -10,7 +10,7 @@ defmodule Ecstatic.Application do
       # Start the Commanded Application
       Ecstatic.App,
       # Start the Ecto repository
-      #Ecstatic.Repo,
+      # Ecstatic.Repo,
       # Start the Telemetry supervisor
       EcstaticWeb.Telemetry,
       # Start the PubSub system

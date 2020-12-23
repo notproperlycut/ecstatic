@@ -11,6 +11,7 @@ defmodule EcstaticWeb.Context do
 
   defp authorize(conn) do
     admin_password = admin_password()
+
     with {"admin", ^admin_password} <- Plug.BasicAuth.parse_basic_auth(conn) do
       Absinthe.Plug.assign_context(conn, scope: :admin)
     else
@@ -21,5 +22,4 @@ defmodule EcstaticWeb.Context do
   defp admin_password() do
     Application.fetch_env!(:ecstatic, __MODULE__) |> Keyword.fetch!(:admin_password)
   end
-
 end

@@ -6,4 +6,3 @@ defmodule Ecstatic.Engines.Commands.DestroyEngine do
 
   validates(:engine_id, uuid: true)
 end
-

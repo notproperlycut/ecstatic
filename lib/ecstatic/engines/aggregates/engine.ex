@@ -2,10 +2,12 @@ defmodule Ecstatic.Engines.Aggregates.Engine do
   defstruct [:engine_id, :state]
 
   alias Ecstatic.Engines.Aggregates.Engine
+
   alias Ecstatic.Engines.Commands.{
     CreateEngine,
     DestroyEngine
   }
+
   alias Ecstatic.Engines.Events.{
     EngineCreated,
     EngineDestroyed
@@ -36,15 +38,10 @@ defmodule Ecstatic.Engines.Aggregates.Engine do
   # State mutators
 
   def apply(%Engine{} = engine, %EngineCreated{engine_id: engine_id}) do
-    %Engine{engine |
-      engine_id: engine_id,
-      state: :created
-    }
+    %Engine{engine | engine_id: engine_id, state: :created}
   end
 
   def apply(%Engine{} = engine, %EngineDestroyed{}) do
-    %Engine{engine |
-      state: :destroyed
-    }
+    %Engine{engine | state: :destroyed}
   end
 end

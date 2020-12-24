@@ -19,7 +19,7 @@ defmodule Ecstatic.Application do
       EcstaticWeb.Endpoint,
 
       # Start the Engine projector
-      Ecstatic.Engines.Supervisor,
+      Ecstatic.Engines.Supervisor
       # Start a worker by calling: Ecstatic.Worker.start_link(arg)
       # {Ecstatic.Worker, arg}
     ]

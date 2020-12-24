@@ -19,9 +19,8 @@ defmodule Ecstatic.Engines.Projectors.Engine do
   end)
 
   project(%EngineDestroyed{engine_id: engine_id}, fn multi ->
-		# TODO: presumably faster to delete one row
+    # TODO: presumably faster to delete one row
     queryable = from(e in Engine, where: e.engine_id == ^engine_id)
     Ecto.Multi.delete_all(multi, :destroy, queryable)
   end)
-
 end

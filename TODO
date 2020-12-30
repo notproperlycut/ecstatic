@@ -1,0 +1,13 @@
+Aggregate lifespans
+Aggregate snapshots
+Authoriser middleware, authz into Ecstatic
+Test framework, tests
+
+Check SSL config (force_ssl)
+api secret in DB - encrypt. More likely, remove
+formatting
+
+id, engine_id
+dataloader
+paging
+query {engine(id: "not an id"){engineId}}

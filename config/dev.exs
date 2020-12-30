@@ -6,6 +6,17 @@ config :ecstatic, Ecstatic.Repo,
   password: "postgres",
   database: "ecstatic_dev",
   hostname: "localhost",
+  migration_source: "ecto_migrations",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+config :ecstatic, Ecstatic.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "ecstatic_dev",
+  hostname: "localhost",
+  migration_source: "eventstore_migrations",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -22,8 +33,7 @@ config :ecstatic, EcstaticWeb.Endpoint,
   check_origin: false,
   watchers: []
 
-config :ecstatic, EcstaticWeb.Context,
-  admin_password: "admin_password"
+config :ecstatic, EcstaticWeb.Context, admin_password: "admin_password"
 
 # ## SSL Support
 #

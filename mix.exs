@@ -33,19 +33,25 @@ defmodule Ecstatic.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.5.0"},
+      {:absinthe_plug, "~> 1.5.0"},
+      {:commanded, "~> 1.2"},
+      {:commanded_ecto_projections, "~> 1.2"},
+      {:commanded_eventstore_adapter, "~> 1.2"},
+      {:cors_plug, "~> 2.0"},
+      {:ecto_sql, "~> 3.4"},
+      {:elixir_uuid, "~> 1.2"},
+      {:exconstructor, "~> 1.1"},
+      {:gettext, "~> 0.11"},
+      {:jason, "~> 1.2"},
       {:phoenix, "~> 1.5.7"},
       {:phoenix_ecto, "~> 4.1"},
-      {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.4"},
+      {:plug_cowboy, "~> 2.0"},
+      {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:cors_plug, "~> 2.0"},
-      {:absinthe, "~> 1.5.0"},
-      {:absinthe_plug, "~> 1.5.0"}
+      {:vex, "~> 0.8"}
     ]
   end
 
@@ -57,7 +63,9 @@ defmodule Ecstatic.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["deps.get", "event_store.setup", "ecto.setup"],
+      "event_store.setup": ["event_store.create", "event_store.init"],
+      "event_store.reset": ["event_store.drop", "event_store.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]

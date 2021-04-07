@@ -39,9 +39,11 @@ defmodule Ecstatic.MixProject do
       {:commanded_ecto_projections, "~> 1.2"},
       {:commanded_eventstore_adapter, "~> 1.2"},
       {:cors_plug, "~> 2.0"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.4"},
       {:elixir_uuid, "~> 1.2"},
       {:exconstructor, "~> 1.1"},
+      {:ex_json_schema, "~> 0.7.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.2"},
       {:phoenix, "~> 1.5.7"},
@@ -50,8 +52,7 @@ defmodule Ecstatic.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:vex, "~> 0.8"}
+      {:telemetry_poller, "~> 0.4"}
     ]
   end
 

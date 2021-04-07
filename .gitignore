@@ -28,3 +28,5 @@ ecstatic-*.tar
 /priv/static/
 
 .envrc
+.tool-versions
+local

@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+gq -i -H "Authorization: Basic YWRtaW46YWRtaW5fcGFzc3dvcmQ=" -a 100.101.127.69 http://100.101.127.69:4000 

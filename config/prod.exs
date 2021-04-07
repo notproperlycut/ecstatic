@@ -22,14 +22,12 @@ config :ecstatic, EcstaticWeb.Context, admin_password: System.get_env("ADMIN_PAS
 config :ecstatic, Ecstatic.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
-  migration_source: "ecto_migrations",
   ssl: true,
   pool_size: 1
 
 config :ecstatic, Ecstatic.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
   url: System.get_env("DATABASE_URL"),
-  migration_source: "eventstore_migrations",
   ssl: true,
   pool_size: 1
 

@@ -1,13 +1,16 @@
-Aggregate lifespans
-Aggregate snapshots
-Authoriser middleware, authz into Ecstatic
-Test framework, tests
+ecto assoc -> dataloader -> update
 
-Check SSL config (force_ssl)
-api secret in DB - encrypt. More likely, remove
-formatting
+typed_struct -> tests
 
-id, engine_id
-dataloader
+Aggregate lifespans, snapshots
+authz into Ecstatic
+JSON schema strings
+
+force_ssl
+api secret in DB - encrypt or remove
+
+auth access to application systems, components, etc
+query {application(id: "not an id"){applicationId}}
+
 paging
-query {engine(id: "not an id"){engineId}}
+mutation payloads - status and errors

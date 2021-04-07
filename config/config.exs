@@ -11,6 +11,16 @@ config :ecstatic,
   ecto_repos: [Ecstatic.Repo],
   event_stores: [Ecstatic.EventStore]
 
+# Configure your database
+config :ecstatic, Ecstatic.Repo,
+  migration_primary_key: [name: :id, type: :binary_id],
+  migration_timestamps: [type: :utc_datetime_usec],
+  migration_source: "ecto_migrations"
+
+config :ecstatic, Ecstatic.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  migration_source: "eventstore_migrations"
+
 # Configures the endpoint
 config :ecstatic, EcstaticWeb.Endpoint,
   url: [host: "localhost"],

@@ -1,19 +1,24 @@
 defmodule Ecstatic.Router do
   use Commanded.Commands.Router
 
-  alias Ecstatic.Engines.Aggregates.Engine
-  alias Ecstatic.Engines.Commands.{CreateEngine, DestroyEngine}
+  alias Ecstatic.Applications.Aggregates.Application
 
-  alias Ecstatic.Support.Middleware.Validate
-  middleware(Validate)
+  alias Ecstatic.Applications.Commands.{
+    CreateApplication,
+    DestroyApplication,
+    AddSystem,
+    RemoveSystem
+  }
 
-  identify(Engine, by: :engine_id, prefix: "engine-")
+  identify(Application, by: :id, prefix: "application-")
 
   dispatch(
     [
-      CreateEngine,
-      DestroyEngine
+      CreateApplication,
+      DestroyApplication,
+      AddSystem,
+      RemoveSystem
     ],
-    to: Engine
+    to: Application
   )
 end

@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddFamilyTable do
 
   def change do
     create table(:ecstatic_families) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
       add :criteria, :text
       add :belongs_to_system, :text

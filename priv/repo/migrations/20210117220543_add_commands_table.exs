@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddCommandsTable do
 
   def change do
     create table(:ecstatic_commands) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
       add :schema, :map
       add :belongs_to_component_type, :text

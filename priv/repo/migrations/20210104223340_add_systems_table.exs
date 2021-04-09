@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddSystemsTable do
 
   def change do
     create table(:ecstatic_systems) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
 
       timestamps()

@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddSubscriptionTable do
 
   def change do
     create table(:ecstatic_subscriptions) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
       add :trigger, :text
       add :payload, :text

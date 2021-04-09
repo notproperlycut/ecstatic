@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddEventTable do
 
   def change do
     create table(:ecstatic_events) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
       add :schema, :map
       add :handler, :map

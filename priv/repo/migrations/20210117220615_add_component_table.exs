@@ -3,7 +3,7 @@ defmodule Ecstatic.Repo.Migrations.AddComponentTable do
 
   def change do
     create table(:ecstatic_component_types) do
-      add :application_id, references(:ecstatic_applications)
+      add :application_id, :binary_id
       add :name, :text
       add :schema, :map
       add :belongs_to_system, :text

@@ -1,7 +1,9 @@
 defmodule EcstaticWeb.Schema.Types.Application do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   alias EcstaticWeb.Resolvers
+  alias Ecstatic.Applications
   import_types(EcstaticWeb.Schema.Types.Command)
   import_types(EcstaticWeb.Schema.Types.ComponentType)
   import_types(EcstaticWeb.Schema.Types.Event)
@@ -13,33 +15,28 @@ defmodule EcstaticWeb.Schema.Types.Application do
   object :application do
     field :id, non_null(:id)
 
-    field :systems, non_null(list_of(:system)) do
-      resolve(&Resolvers.Systems.list/3)
-    end
-
-    field :system, :system do
-      arg(:name, non_null(:string))
-      resolve(&Resolvers.Systems.get/3)
+    field :systems, list_of(:system) do
+      resolve dataloader(Applications)
     end
 
     field :families, list_of(non_null(:family)) do
-      resolve(&Resolvers.Families.list_by_application/3)
+      resolve dataloader(Applications)
     end
 
     field :component_types, list_of(non_null(:component_type)) do
-      resolve(&Resolvers.ComponentTypes.list_by_application/3)
+      resolve dataloader(Applications)
     end
 
     field :commands, list_of(non_null(:command)) do
-      resolve(&Resolvers.Commands.list_by_application/3)
+      resolve dataloader(Applications)
     end
 
     field :events, list_of(non_null(:event)) do
-      resolve(&Resolvers.Events.list_by_application/3)
+      resolve dataloader(Applications)
     end
 
     field :subscriptions, list_of(non_null(:subscription_spec)) do
-      resolve(&Resolvers.Subscriptions.list_by_application/3)
+      resolve dataloader(Applications)
     end
   end
 

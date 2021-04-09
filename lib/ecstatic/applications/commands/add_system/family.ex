@@ -6,4 +6,3 @@ defmodule Ecstatic.Applications.Commands.AddSystem.Family do
 
   use ExConstructor
 end
-

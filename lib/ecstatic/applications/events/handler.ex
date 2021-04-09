@@ -7,4 +7,3 @@ defmodule Ecstatic.Applications.Events.Handler do
 
   use ExConstructor
 end
-

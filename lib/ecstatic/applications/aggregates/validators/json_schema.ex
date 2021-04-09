@@ -1,6 +1,7 @@
 defmodule Ecstatic.Applications.Aggregates.Validators.JsonSchema do
   def validate(thing, fieldname \\ :schema) do
     schema = Map.get(thing, fieldname)
+
     if valid_schema?(schema) do
       :ok
     else

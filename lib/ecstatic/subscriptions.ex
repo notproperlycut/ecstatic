@@ -9,6 +9,7 @@ defmodule Ecstatic.Subscriptions do
     Subscription,
     ComponentType
   }
+
   alias Ecstatic.Repo
 
   @doc """
@@ -25,7 +26,9 @@ defmodule Ecstatic.Subscriptions do
   List subscriptions
   """
   def list_by_application(application_id) do
-    subscriptions = from(s in Subscription, where: s.application_id == ^application_id) |> Repo.all()
+    subscriptions =
+      from(s in Subscription, where: s.application_id == ^application_id) |> Repo.all()
+
     {:ok, subscriptions}
   end
 
@@ -33,7 +36,14 @@ defmodule Ecstatic.Subscriptions do
   List subscriptions
   """
   def list_by_component_type(application_id, component_type_name) do
-    subscriptions = from(s in Subscription, where: s.application_id == ^application_id and s.belongs_to_component_type == ^component_type_name) |> Repo.all()
+    subscriptions =
+      from(s in Subscription,
+        where:
+          s.application_id == ^application_id and
+            s.belongs_to_component_type == ^component_type_name
+      )
+      |> Repo.all()
+
     {:ok, subscriptions}
   end
 
@@ -41,7 +51,14 @@ defmodule Ecstatic.Subscriptions do
   List subscriptions
   """
   def list_by_system(application_id, system_name) do
-    subscriptions = from(c in Subscription, join: ct in ComponentType, on: ct.name == c.belongs_to_component_type, where: ct.application_id == ^application_id and ct.belongs_to_system == ^system_name) |> Repo.all()
+    subscriptions =
+      from(c in Subscription,
+        join: ct in ComponentType,
+        on: ct.name == c.belongs_to_component_type,
+        where: ct.application_id == ^application_id and ct.belongs_to_system == ^system_name
+      )
+      |> Repo.all()
+
     {:ok, subscriptions}
   end
 end

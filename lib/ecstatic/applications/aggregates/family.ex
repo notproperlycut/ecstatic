@@ -45,7 +45,10 @@ defmodule Ecstatic.Applications.Aggregates.Family do
   end
 
   def validate(%{families: families} = application) do
-    [Validators.Names.validate_all_unique(families), Enum.map(families, &validate(&1, application))]
+    [
+      Validators.Names.validate_all_unique(families),
+      Enum.map(families, &validate(&1, application))
+    ]
     |> Validators.collate_errors()
   end
 
@@ -60,7 +63,9 @@ defmodule Ecstatic.Applications.Aggregates.Family do
 
   defp validate_criteria(family, application) do
     String.split(family.criteria, " ")
-    |> Enum.map(&Validators.Entities.validate_exists(&1, application, [:component_types, :families]))
+    |> Enum.map(
+      &Validators.Entities.validate_exists(&1, application, [:component_types, :families])
+    )
     |> Validators.collate_errors()
     |> Validators.prepend_message("Criteria for family #{family.name}, ")
   end

@@ -8,7 +8,9 @@ defmodule EcstaticWeb.Schema.Types.Command do
     field :schema, non_null(:json)
 
     field :component_type, non_null(:component_type) do
-      resolve(fn %{application_id: application_id, belongs_to_component_type: name}, _args, resolution ->
+      resolve(fn %{application_id: application_id, belongs_to_component_type: name},
+                 _args,
+                 resolution ->
         Resolvers.ComponentTypes.get(%{application_id: application_id}, %{name: name}, resolution)
       end)
     end

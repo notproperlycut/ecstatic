@@ -61,7 +61,12 @@ defmodule Ecstatic.Applications.Aggregates.Event do
     [
       Validators.Names.validate_format(event, :event),
       Validators.Names.validate_share_system(event, :belongs_to_component_type),
-      Validators.Entities.validate_relation(event, :belongs_to_component_type, application, :component_types),
+      Validators.Entities.validate_relation(
+        event,
+        :belongs_to_component_type,
+        application,
+        :component_types
+      ),
       Validators.JsonSchema.validate(event),
       Validators.Handler.validate(event)
     ]

@@ -11,4 +11,3 @@ defmodule EcstaticWeb.Resolvers.Families do
     Ecstatic.Families.get(application_id, name)
   end
 end
-

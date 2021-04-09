@@ -30,7 +30,12 @@ defmodule Ecstatic.Families do
   List families
   """
   def list_by_system(application_id, system_name) do
-    families = from(s in Family, where: s.application_id == ^application_id and s.belongs_to_system == ^system_name) |> Repo.all()
+    families =
+      from(s in Family,
+        where: s.application_id == ^application_id and s.belongs_to_system == ^system_name
+      )
+      |> Repo.all()
+
     {:ok, families}
   end
 end

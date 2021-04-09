@@ -3,6 +3,7 @@ defmodule Ecstatic.Applications.Aggregates.Validators.Handler do
 
   def validate(thing, fieldname \\ :handler) do
     handler = Map.get(thing, fieldname)
+
     if valid_handler?(handler) do
       :ok
     else

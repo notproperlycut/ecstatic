@@ -53,7 +53,10 @@ defmodule Ecstatic.Applications.Aggregates.Command do
   end
 
   def validate(%{commands: commands} = application) do
-    [Validators.Names.validate_all_unique(commands), Enum.map(commands, &validate(&1, application))]
+    [
+      Validators.Names.validate_all_unique(commands),
+      Enum.map(commands, &validate(&1, application))
+    ]
     |> Validators.collate_errors()
   end
 
@@ -61,7 +64,12 @@ defmodule Ecstatic.Applications.Aggregates.Command do
     [
       Validators.Names.validate_format(command, :command),
       Validators.Names.validate_share_system(command, :belongs_to_component_type),
-      Validators.Entities.validate_relation(command, :belongs_to_component_type, application, :component_types),
+      Validators.Entities.validate_relation(
+        command,
+        :belongs_to_component_type,
+        application,
+        :component_types
+      ),
       Validators.JsonSchema.validate(command),
       Validators.Handler.validate(command)
     ]

@@ -147,8 +147,8 @@ defmodule Ecstatic.Applications.Aggregates.Application do
     do: System.apply(application, event)
 
   defp validate(application) do
-      [Command, ComponentType, Event, Family, Subscription, System]
-      |> Enum.map(fn mod -> mod.validate(application) end)
-      |> Validators.collate_errors()
+    [Command, ComponentType, Event, Family, Subscription, System]
+    |> Enum.map(fn mod -> mod.validate(application) end)
+    |> Validators.collate_errors()
   end
 end

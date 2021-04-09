@@ -16,27 +16,27 @@ defmodule EcstaticWeb.Schema.Types.Application do
     field :id, non_null(:id)
 
     field :systems, list_of(:system) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
 
     field :families, list_of(non_null(:family)) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
 
     field :component_types, list_of(non_null(:component_type)) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
 
     field :commands, list_of(non_null(:command)) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
 
     field :events, list_of(non_null(:event)) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
 
     field :subscriptions, list_of(non_null(:subscription_spec)) do
-      resolve dataloader(Applications)
+      resolve(dataloader(Applications))
     end
   end
 

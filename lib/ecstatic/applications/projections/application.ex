@@ -1,5 +1,6 @@
 defmodule Ecstatic.Applications.Projections.Application do
   use Ecstatic.Applications.Projections.Schema
+
   alias Ecstatic.Applications.Projections.{
     Command,
     ComponentType,

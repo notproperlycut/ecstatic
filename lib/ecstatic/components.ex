@@ -33,7 +33,10 @@ defmodule Ecstatic.ComponentTypes do
   """
   def list_by_system(application_id, system_name) do
     component_types =
-      from(s in ComponentType, where: s.application_id == ^application_id and s.belongs_to_system == ^system_name) |> Repo.all()
+      from(s in ComponentType,
+        where: s.application_id == ^application_id and s.belongs_to_system == ^system_name
+      )
+      |> Repo.all()
 
     {:ok, component_types}
   end

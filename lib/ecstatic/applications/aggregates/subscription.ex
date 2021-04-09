@@ -61,9 +61,11 @@ defmodule Ecstatic.Applications.Aggregates.Subscription do
     %Application{application | subscriptions: subscriptions}
   end
 
-
   def validate(%{subscriptions: subscriptions} = application) do
-    [Validators.Names.validate_all_unique(subscriptions), Enum.map(subscriptions, &validate(&1, application))]
+    [
+      Validators.Names.validate_all_unique(subscriptions),
+      Enum.map(subscriptions, &validate(&1, application))
+    ]
     |> Validators.collate_errors()
   end
 
@@ -71,7 +73,12 @@ defmodule Ecstatic.Applications.Aggregates.Subscription do
     [
       Validators.Names.validate_format(subscription, :subscription),
       Validators.Names.validate_share_system(subscription, :belongs_to_component_type),
-      Validators.Entities.validate_relation(subscription, :belongs_to_component_type, application, :component_types),
+      Validators.Entities.validate_relation(
+        subscription,
+        :belongs_to_component_type,
+        application,
+        :component_types
+      ),
       Validators.Handler.validate(subscription),
       validate_trigger(subscription, application),
       validate_payload(subscription, application)
@@ -79,7 +86,11 @@ defmodule Ecstatic.Applications.Aggregates.Subscription do
   end
 
   defp validate_trigger(subscription, application) do
-    Validators.Entities.validate_exists(subscription.trigger, application, [:component_types, :events, :families])
+    Validators.Entities.validate_exists(subscription.trigger, application, [
+      :component_types,
+      :events,
+      :families
+    ])
     |> Validators.prepend_message("Trigger for subscription #{subscription.name}, ")
   end
 

@@ -33,8 +33,7 @@ defmodule Ecstatic.Applications.Projectors.Subscription do
   end)
 
   project(%ApplicationDestroyed{} = application, fn multi ->
-    subscription_query =
-      from(e in Subscription, where: e.application_id == ^application.id)
+    subscription_query = from(e in Subscription, where: e.application_id == ^application.id)
 
     Ecto.Multi.delete_all(multi, :destroy, subscription_query)
   end)

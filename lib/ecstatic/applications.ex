@@ -81,11 +81,11 @@ defmodule Ecstatic.Applications do
   @doc """
   Data source for dataloader
   """
-	def data() do
-		Dataloader.Ecto.new(Repo, query: &query/2)
-	end
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
 
-	def query(queryable, _) do
-		queryable
-	end
+  def query(queryable, _) do
+    queryable
+  end
 end

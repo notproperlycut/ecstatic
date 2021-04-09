@@ -49,9 +49,11 @@ defmodule Ecstatic.Applications.Aggregates.ComponentType do
     %Application{application | component_types: component_types}
   end
 
-
   def validate(%{component_types: component_types} = application) do
-    [Validators.Names.validate_all_unique(component_types), Enum.map(component_types, &validate(&1, application))]
+    [
+      Validators.Names.validate_all_unique(component_types),
+      Enum.map(component_types, &validate(&1, application))
+    ]
     |> Validators.collate_errors()
   end
 
@@ -59,7 +61,12 @@ defmodule Ecstatic.Applications.Aggregates.ComponentType do
     [
       Validators.Names.validate_format(component_type, :component_type),
       Validators.Names.validate_share_system(component_type, :belongs_to_system),
-      Validators.Entities.validate_relation(component_type, :belongs_to_system, application, :systems),
+      Validators.Entities.validate_relation(
+        component_type,
+        :belongs_to_system,
+        application,
+        :systems
+      ),
       Validators.JsonSchema.validate(component_type)
     ]
   end

@@ -9,6 +9,7 @@ defmodule Ecstatic.Commands do
     Command,
     ComponentType
   }
+
   alias Ecstatic.Repo
 
   @doc """
@@ -33,7 +34,14 @@ defmodule Ecstatic.Commands do
   List commands
   """
   def list_by_component_type(application_id, component_type_name) do
-    commands = from(s in Command, where: s.application_id == ^application_id and s.belongs_to_component_type == ^component_type_name) |> Repo.all()
+    commands =
+      from(s in Command,
+        where:
+          s.application_id == ^application_id and
+            s.belongs_to_component_type == ^component_type_name
+      )
+      |> Repo.all()
+
     {:ok, commands}
   end
 
@@ -41,7 +49,14 @@ defmodule Ecstatic.Commands do
   List commands
   """
   def list_by_system(application_id, system_name) do
-    commands = from(c in Command, join: ct in ComponentType, on: ct.name == c.belongs_to_component_type, where: ct.application_id == ^application_id and ct.belongs_to_system == ^system_name) |> Repo.all()
+    commands =
+      from(c in Command,
+        join: ct in ComponentType,
+        on: ct.name == c.belongs_to_component_type,
+        where: ct.application_id == ^application_id and ct.belongs_to_system == ^system_name
+      )
+      |> Repo.all()
+
     {:ok, commands}
   end
 end

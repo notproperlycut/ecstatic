@@ -32,8 +32,7 @@ defmodule Ecstatic.Applications.Projectors.ComponentType do
   end)
 
   project(%ApplicationDestroyed{} = application, fn multi ->
-    component_type_query =
-      from(c in ComponentType, where: c.application_id == ^application.id)
+    component_type_query = from(c in ComponentType, where: c.application_id == ^application.id)
 
     Ecto.Multi.delete_all(multi, :destroy, component_type_query)
   end)

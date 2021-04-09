@@ -12,39 +12,48 @@ defmodule Ecstatic.Applications.Aggregates.Validators.Names do
 
   def validate_all_unique(things, fieldname \\ :name) when is_list(things) do
     names = Enum.map(things, &Map.get(&1, fieldname))
-    duplicates = (names -- Enum.uniq(names))
+    duplicates = names -- Enum.uniq(names)
+
     if Enum.empty?(duplicates) do
       :ok
     else
       {:error, Enum.map(duplicates, &"The name #{&1} cannot be used more than once")}
     end
-
   end
 
   def validate_format(thing, type, fieldname \\ :name)
+
   def validate_format(thing, :system, fieldname) do
     name = Map.get(thing, fieldname)
+
     if valid_fragment?(name) do
       :ok
     else
-      {:error, "#{name} is an invalid system name, alphanumeric characters and \"-\" are allowed only"}
+      {:error,
+       "#{name} is an invalid system name, alphanumeric characters and \"-\" are allowed only"}
     end
   end
 
   def validate_format(thing, type, fieldname) do
     name = Map.get(thing, fieldname)
 
-    format = if valid?(name) do
-      :ok
-    else
-      {:error, "#{name} is an invalid name, alphanumeric characters and \"-\" only, in exactly three fragments, separated by \".\""}
-    end
+    format =
+      if valid?(name) do
+        :ok
+      else
+        {:error,
+         "#{name} is an invalid name, alphanumeric characters and \"-\" only, in exactly three fragments, separated by \".\""}
+      end
 
-    typename = if @typenames[type] == type(name) do
-      :ok
-    else
-      {:error, "#{name} is not a valid name for type #{type}, expected second fragment to be \"#{@typenames[type]}\""}
-    end
+    typename =
+      if @typenames[type] == type(name) do
+        :ok
+      else
+        {:error,
+         "#{name} is not a valid name for type #{type}, expected second fragment to be \"#{
+           @typenames[type]
+         }\""}
+      end
 
     Validators.collate_errors([format, typename])
   end

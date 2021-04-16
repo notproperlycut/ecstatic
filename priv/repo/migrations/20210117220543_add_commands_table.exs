@@ -3,17 +3,18 @@ defmodule Ecstatic.Repo.Migrations.AddCommandsTable do
 
   def change do
     create table(:ecstatic_commands) do
-      add :application_id, references(:ecstatic_applications)
       add :name, :text
       add :schema, :map
-      add :belongs_to_component_type, :text
       add :handler, :map
+      add :application_id, :binary_id
+      add :system_id, :binary_id
+      add :component_type_id, :binary_id
 
       timestamps()
     end
 
     create index(:ecstatic_commands, [:application_id])
-    create index(:ecstatic_commands, [:application_id, :name])
-    create index(:ecstatic_commands, [:application_id, :belongs_to_component_type])
+    create index(:ecstatic_commands, [:system_id])
+    create index(:ecstatic_commands, [:component_type_id])
   end
 end

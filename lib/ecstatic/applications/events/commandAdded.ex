@@ -2,10 +2,12 @@ defmodule Ecstatic.Applications.Events.CommandAdded do
   @derive Jason.Encoder
 
   defstruct [
-    :application_id,
+    :id,
     :name,
-    :belongs_to_component_type,
     :schema,
-    :handler
+    :handler,
+    :application_id,
+    :system_id,
+    :component_type_id
   ]
 end

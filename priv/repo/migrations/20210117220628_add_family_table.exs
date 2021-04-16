@@ -3,16 +3,15 @@ defmodule Ecstatic.Repo.Migrations.AddFamilyTable do
 
   def change do
     create table(:ecstatic_families) do
-      add :application_id, references(:ecstatic_applications)
       add :name, :text
       add :criteria, :text
-      add :belongs_to_system, :text
+      add :application_id, :binary_id
+      add :system_id, :binary_id
 
       timestamps()
     end
 
     create index(:ecstatic_families, [:application_id])
-    create index(:ecstatic_families, [:application_id, :name])
-    create index(:ecstatic_families, [:application_id, :belongs_to_system])
+    create index(:ecstatic_families, [:system_id])
   end
 end

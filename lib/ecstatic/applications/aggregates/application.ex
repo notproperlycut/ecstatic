@@ -1,6 +1,4 @@
 defmodule Ecstatic.Applications.Aggregates.Application do
-  alias Ecstatic.Applications.Aggregates.Validators
-
   defstruct [
     :id,
     :state,
@@ -16,11 +14,6 @@ defmodule Ecstatic.Applications.Aggregates.Application do
 
   alias Ecstatic.Applications.Aggregates.{
     Application,
-    Command,
-    ComponentType,
-    Event,
-    Family,
-    Subscription,
     System
   }
 
@@ -33,19 +26,7 @@ defmodule Ecstatic.Applications.Aggregates.Application do
 
   alias Ecstatic.Applications.Events.{
     ApplicationCreated,
-    ApplicationDestroyed,
-    CommandAdded,
-    CommandRemoved,
-    ComponentTypeAdded,
-    ComponentTypeRemoved,
-    EventAdded,
-    EventRemoved,
-    FamilyAdded,
-    FamilyRemoved,
-    SubscriptionAdded,
-    SubscriptionRemoved,
-    SystemAdded,
-    SystemRemoved
+    ApplicationDestroyed
   }
 
   # Public command API
@@ -74,81 +55,37 @@ defmodule Ecstatic.Applications.Aggregates.Application do
   end
 
   def execute(%Application{} = application, %AddSystem{} = add_system) do
-    # Care with the ordering of these operations, so that names in the definition
-    # can resolve into IDs
-
     application
     |> Multi.new()
-    |> Multi.execute(&System.add_system(&1, add_system))
-    |> Multi.execute(&ComponentType.add_system(&1, add_system))
-    |> Multi.execute(&Command.add_system(&1, add_system))
-    |> Multi.execute(&Event.add_system(&1, add_system))
-    |> Multi.execute(&Subscription.add_system(&1, add_system))
-    |> Multi.execute(&Family.add_system(&1, add_system))
+    |> Multi.execute(&System.add(&1, add_system))
     |> Multi.execute(&validate(&1))
   end
 
   def execute(%Application{} = application, %RemoveSystem{} = remove_system) do
     application
     |> Multi.new()
-    |> Multi.execute(&System.remove_system(&1, remove_system))
-    |> Multi.execute(&ComponentType.remove_system(&1, remove_system))
-    |> Multi.execute(&Command.remove_system(&1, remove_system))
-    |> Multi.execute(&Event.remove_system(&1, remove_system))
-    |> Multi.execute(&Subscription.remove_system(&1, remove_system))
-    |> Multi.execute(&Family.remove_system(&1, remove_system))
+    |> Multi.execute(&System.remove(&1, remove_system))
     |> Multi.execute(&validate(&1))
   end
 
   # State mutators
-
-  def apply(%Application{} = application, %ApplicationCreated{id: id}) do
+  def apply(%Application{} = application, %ApplicationCreated{id: id} = event) do
     %Application{application | id: id, state: :created}
+    |> System.apply(event)
   end
 
-  def apply(%Application{} = application, %ApplicationDestroyed{}) do
+  def apply(%Application{} = application, %ApplicationDestroyed{} = event) do
     %Application{application | state: :destroyed}
+    |> System.apply(event)
   end
 
-  def apply(%Application{} = application, %CommandAdded{} = event),
-    do: Command.apply(application, event)
+  def apply(%Application{} = application, event) do
+    application
+    |> System.apply(event)
+  end
 
-  def apply(%Application{} = application, %CommandRemoved{} = event),
-    do: Command.apply(application, event)
-
-  def apply(%Application{} = application, %ComponentTypeAdded{} = event),
-    do: ComponentType.apply(application, event)
-
-  def apply(%Application{} = application, %ComponentTypeRemoved{} = event),
-    do: ComponentType.apply(application, event)
-
-  def apply(%Application{} = application, %EventAdded{} = event),
-    do: Event.apply(application, event)
-
-  def apply(%Application{} = application, %EventRemoved{} = event),
-    do: Event.apply(application, event)
-
-  def apply(%Application{} = application, %FamilyAdded{} = event),
-    do: Family.apply(application, event)
-
-  def apply(%Application{} = application, %FamilyRemoved{} = event),
-    do: Family.apply(application, event)
-
-  def apply(%Application{} = application, %SubscriptionAdded{} = event),
-    do: Subscription.apply(application, event)
-
-  def apply(%Application{} = application, %SubscriptionRemoved{} = event),
-    do: Subscription.apply(application, event)
-
-  def apply(%Application{} = application, %SystemAdded{} = event),
-    do: System.apply(application, event)
-
-  def apply(%Application{} = application, %SystemRemoved{} = event),
-    do: System.apply(application, event)
-
+  # Validation
   defp validate(application) do
-      [Command, ComponentType, Event, Family, Subscription, System]
-      |> Enum.map(fn mod -> mod.validate(application) end)
-      |> Validators.collate_errors()
+    System.validate(application)
   end
 end

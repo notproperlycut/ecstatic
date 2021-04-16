@@ -3,16 +3,15 @@ defmodule Ecstatic.Repo.Migrations.AddComponentTable do
 
   def change do
     create table(:ecstatic_component_types) do
-      add :application_id, references(:ecstatic_applications)
       add :name, :text
       add :schema, :map
-      add :belongs_to_system, :text
+      add :application_id, :binary_id
+      add :system_id, :binary_id
 
       timestamps()
     end
 
     create index(:ecstatic_component_types, [:application_id])
-    create index(:ecstatic_component_types, [:application_id, :name])
-    create index(:ecstatic_component_types, [:application_id, :belongs_to_system])
+    create index(:ecstatic_component_types, [:system_id])
   end
 end

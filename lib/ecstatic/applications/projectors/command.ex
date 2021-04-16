@@ -14,9 +14,11 @@ defmodule Ecstatic.Applications.Projectors.Command do
 
   project(%CommandAdded{} = command, fn multi ->
     Ecto.Multi.insert(multi, :create, %Command{
+      id: command.id,
       name: command.name,
       application_id: command.application_id,
-      belongs_to_component_type: command.belongs_to_component_type,
+      system_id: command.system_id,
+      component_type_id: command.component_type_id,
       schema: command.schema,
       handler: command.handler
     })
@@ -25,7 +27,7 @@ defmodule Ecstatic.Applications.Projectors.Command do
   project(%CommandRemoved{} = command, fn multi ->
     command_query =
       from(c in Command,
-        where: c.name == ^command.name and c.application_id == ^command.application_id
+        where: c.id == ^command.id
       )
 
     Ecto.Multi.delete_all(multi, :destroy, command_query)

@@ -40,6 +40,7 @@ defmodule Ecstatic.MixProject do
       {:commanded_eventstore_adapter, "~> 1.2"},
       {:cors_plug, "~> 2.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:dataloader, "~> 1.0.0"},
       {:ecto_sql, "~> 3.4"},
       {:elixir_uuid, "~> 1.2"},
       {:exconstructor, "~> 1.1"},

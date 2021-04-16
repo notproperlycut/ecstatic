@@ -3,18 +3,19 @@ defmodule Ecstatic.Repo.Migrations.AddSubscriptionTable do
 
   def change do
     create table(:ecstatic_subscriptions) do
-      add :application_id, references(:ecstatic_applications)
       add :name, :text
       add :trigger, :text
       add :payload, :text
       add :handler, :map
-      add :belongs_to_component_type, :text
+      add :application_id, :binary_id
+      add :system_id, :binary_id
+      add :component_type_id, :binary_id
 
       timestamps()
     end
 
     create index(:ecstatic_subscriptions, [:application_id])
-    create index(:ecstatic_subscriptions, [:application_id, :name])
-    create index(:ecstatic_subscriptions, [:application_id, :belongs_to_component_type])
+    create index(:ecstatic_subscriptions, [:system_id])
+    create index(:ecstatic_subscriptions, [:component_type_id])
   end
 end

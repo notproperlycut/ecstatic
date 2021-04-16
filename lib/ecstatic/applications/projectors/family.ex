@@ -15,8 +15,9 @@ defmodule Ecstatic.Applications.Projectors.Family do
   project(%FamilyAdded{} = family, fn multi ->
     Ecto.Multi.insert(multi, :create, %Family{
       application_id: family.application_id,
+      system_id: family.system_id,
+      id: family.id,
       name: family.name,
-      belongs_to_system: family.belongs_to_system,
       criteria: family.criteria
     })
   end)
@@ -24,7 +25,7 @@ defmodule Ecstatic.Applications.Projectors.Family do
   project(%FamilyRemoved{} = family, fn multi ->
     family_query =
       from(c in Family,
-        where: c.name == ^family.name and c.application_id == ^family.application_id
+        where: c.id == ^family.id
       )
 
     Ecto.Multi.delete_all(multi, :destroy, family_query)

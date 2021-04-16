@@ -1,16 +1,15 @@
 defmodule EcstaticWeb.Schema.Types.Family do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
-  alias EcstaticWeb.Resolvers
+  alias Ecstatic.Applications
 
   object :family do
     field :name, non_null(:string)
     field :criteria, non_null(:string)
 
     field :system, non_null(:system) do
-      resolve(fn %{application_id: application_id, belongs_to_system: name}, _args, resolution ->
-        Resolvers.Systems.get(%{application_id: application_id}, %{name: name}, resolution)
-      end)
+      resolve(dataloader(Applications))
     end
   end
 

@@ -14,6 +14,7 @@ defmodule Ecstatic.Applications.Projectors.System do
 
   project(%SystemAdded{} = system, fn multi ->
     Ecto.Multi.insert(multi, :create, %System{
+      id: system.id,
       application_id: system.application_id,
       name: system.name
     })
@@ -22,7 +23,7 @@ defmodule Ecstatic.Applications.Projectors.System do
   project(%SystemRemoved{} = system, fn multi ->
     system_query =
       from(s in System,
-        where: s.name == ^system.name and s.application_id == ^system.application_id
+        where: s.id == ^system.id
       )
 
     Ecto.Multi.delete_all(multi, :destroy, system_query)

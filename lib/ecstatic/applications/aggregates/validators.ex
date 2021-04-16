@@ -4,7 +4,7 @@ defmodule Ecstatic.Applications.Aggregates.Validators do
   end
 
   def prepend_message({:error, messages}, prepend) when is_list(messages) do
-    {:error, Enum.map(messages, & prepend <> &1)}
+    {:error, Enum.map(messages, &(prepend <> &1))}
   end
 
   def prepend_message({:error, message}, prepend) when is_binary(message) do
@@ -13,7 +13,7 @@ defmodule Ecstatic.Applications.Aggregates.Validators do
   end
 
   def any_ok?(errors) when is_list(errors) do
-    Enum.any?(errors, & &1 == :ok)
+    Enum.any?(errors, &(&1 == :ok))
   end
 
   def collate_errors(:ok) do
@@ -25,11 +25,12 @@ defmodule Ecstatic.Applications.Aggregates.Validators do
   end
 
   def collate_errors(errors) when is_list(errors) do
-    collated = errors
-    |> List.flatten()
-    |> Enum.reject(& &1 == :ok)
-    |> Enum.map(fn {:error, error} -> error end)
-    |> List.flatten()
+    collated =
+      errors
+      |> List.flatten()
+      |> Enum.reject(&(&1 == :ok))
+      |> Enum.map(fn {:error, error} -> error end)
+      |> List.flatten()
 
     if Enum.empty?(collated) do
       :ok

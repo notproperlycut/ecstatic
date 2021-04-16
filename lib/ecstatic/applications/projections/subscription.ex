@@ -3,17 +3,19 @@ defmodule Ecstatic.Applications.Projections.Subscription do
 
   alias Ecstatic.Applications.Projections.{
     Application,
-    Handler
+    ComponentType,
+    Handler,
+    System
   }
 
   schema "ecstatic_subscriptions" do
     field(:name, :string)
-    field(:belongs_to_component_type, :string)
-
     field(:trigger, :string)
     field(:payload, :string)
     embeds_one(:handler, Handler)
     belongs_to :application, Application
+    belongs_to :system, System
+    belongs_to :component_type, ComponentType
 
     timestamps()
   end

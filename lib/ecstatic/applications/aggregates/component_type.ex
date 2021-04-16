@@ -1,9 +1,9 @@
 defmodule Ecstatic.Applications.Aggregates.ComponentType do
-  alias Ecstatic.Applications.Aggregates.Application
-
-  alias Ecstatic.Applications.Commands.{
-    AddSystem,
-    RemoveSystem
+  alias Ecstatic.Applications.Aggregates.{
+    Application,
+    Command,
+    Event,
+    Subscription
   }
 
   alias Ecstatic.Applications.Events.{
@@ -13,60 +13,88 @@ defmodule Ecstatic.Applications.Aggregates.ComponentType do
 
   alias Ecstatic.Applications.Aggregates.Validators
 
-  def add_system(%{id: application_id}, %AddSystem{} = add_system) do
-    add_system.component_types
-    |> Enum.map(fn ct ->
-      %ComponentTypeAdded{
-        application_id: application_id,
-        name: ct.name,
-        schema: ct.schema,
-        belongs_to_system: add_system.name
-      }
-    end)
+  def add(application, system, add_component_types) do
+    add_component_types
+    |> Enum.map(&add_component_type(application, system, &1))
+    |> List.flatten()
   end
 
-  def remove_system(
-        %{id: application_id, component_types: component_types},
-        %RemoveSystem{name: name}
-      ) do
-    component_types
-    |> Enum.filter(fn ct -> ct.belongs_to_system == name end)
-    |> Enum.map(fn ct ->
-      %ComponentTypeRemoved{application_id: application_id, name: ct.name}
-    end)
+  defp add_component_type(application, system, add_component_type) do
+    component_type = %ComponentTypeAdded{
+      id: UUID.uuid4(),
+      name: add_component_type.name,
+      schema: add_component_type.schema,
+      application_id: application.id,
+      system_id: system.id
+    }
+
+    [
+      component_type,
+      Command.add(application, system, component_type, add_component_type.commands),
+      Event.add(application, system, component_type, add_component_type.events),
+      Subscription.add(application, system, component_type, add_component_type.subscriptions)
+    ]
+    |> List.flatten()
   end
 
-  def apply(application, %ComponentTypeAdded{} = component_type) do
-    %Application{application | component_types: [component_type | application.component_types]}
+  def remove(application, system) do
+    application.component_types
+    |> Enum.filter(&(&1.system_id == system.id))
+    |> Enum.map(&remove_component_type(application, &1))
+    |> List.flatten()
   end
 
-  def apply(application, %ComponentTypeRemoved{} = component_type) do
+  defp remove_component_type(application, component_type) do
+    [
+      %ComponentTypeRemoved{id: component_type.id},
+      Command.remove(application, component_type),
+      Event.remove(application, component_type),
+      Subscription.remove(application, component_type)
+    ]
+    |> List.flatten()
+  end
+
+  def apply(application, %ComponentTypeAdded{} = event) do
+    %Application{application | component_types: [event | application.component_types]}
+    |> Command.apply(event)
+    |> Event.apply(event)
+    |> Subscription.apply(event)
+  end
+
+  def apply(application, %ComponentTypeRemoved{} = event) do
     component_types =
       Enum.reject(application.component_types, fn s ->
-        s.name == component_type.name
+        s.id == event.id
       end)
 
     %Application{application | component_types: component_types}
+    |> Command.apply(event)
+    |> Event.apply(event)
+    |> Subscription.apply(event)
   end
 
-  def validate(%{component_types: component_types} = application) do
+  def apply(%Application{} = application, event) do
+    application
+    |> Command.apply(event)
+    |> Event.apply(event)
+    |> Subscription.apply(event)
+  end
+
+  def validate(application) do
     [
-      Validators.Names.validate_all_unique(component_types),
-      Enum.map(component_types, &validate(&1, application))
+      Validators.Names.validate_all_unique(application.component_types),
+      Enum.map(application.component_types, &validate_component_type(&1, application)),
+      Command.validate(application),
+      Event.validate(application),
+      Subscription.validate(application)
     ]
     |> Validators.collate_errors()
   end
 
-  def validate(component_type, application) do
+  def validate_component_type(component_type, application) do
     [
       Validators.Names.validate_format(component_type, :component_type),
-      Validators.Names.validate_share_system(component_type, :belongs_to_system),
-      Validators.Entities.validate_relation(
-        component_type,
-        :belongs_to_system,
-        application,
-        :systems
-      ),
+      Validators.Names.validate_share_system(component_type, :system_id, application, :systems),
       Validators.JsonSchema.validate(component_type)
     ]
   end

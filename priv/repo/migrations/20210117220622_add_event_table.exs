@@ -3,17 +3,18 @@ defmodule Ecstatic.Repo.Migrations.AddEventTable do
 
   def change do
     create table(:ecstatic_events) do
-      add :application_id, :binary_id
       add :name, :text
       add :schema, :map
       add :handler, :map
-      add :belongs_to_component_type, :text
+      add :application_id, :binary_id
+      add :system_id, :binary_id
+      add :component_type_id, :binary_id
 
       timestamps()
     end
 
     create index(:ecstatic_events, [:application_id])
-    create index(:ecstatic_events, [:application_id, :name])
-    create index(:ecstatic_events, [:application_id, :belongs_to_component_type])
+    create index(:ecstatic_events, [:system_id])
+    create index(:ecstatic_events, [:component_type_id])
   end
 end

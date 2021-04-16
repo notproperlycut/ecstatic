@@ -10,8 +10,6 @@ defmodule Ecstatic.Applications.Projections.Application do
     System
   }
 
-  @primary_key {:id, :binary_id, autogenerate: false}
-
   schema "ecstatic_applications" do
     field(:api_secret, :string)
     has_many :commands, Command

@@ -58,14 +58,17 @@ defmodule Ecstatic.Applications.Aggregates.Validators.Names do
     Validators.collate_errors([format, typename])
   end
 
-  def validate_share_system(thing, fieldname) do
+  def validate_share_system(thing, fieldname, application, entity_type) do
     name = Map.get(thing, :name)
-    field = Map.get(thing, fieldname)
+    field_id = Map.get(thing, fieldname)
+    field_entity = Validators.Entities.get_item_by_id(field_id, application, entity_type)
+    field_entity_name = Map.get(field_entity, :name)
 
-    if system(name) == system(field) do
+    if system(name) == system(field_entity_name) do
       :ok
     else
-      {:error, "#{fieldname} of #{name} must belong to the same system, but doesn't (#{field})"}
+      {:error,
+       "#{fieldname} of #{name} must belong to the same system, but doesn't (#{field_entity_name})"}
     end
   end
 

@@ -1,11 +1,13 @@
 defmodule Ecstatic.Applications.Events.SubscriptionAdded do
   @derive Jason.Encoder
   defstruct [
-    :application_id,
+    :id,
     :name,
     :payload,
     :handler,
     :trigger,
-    :belongs_to_component_type
+    :application_id,
+    :system_id,
+    :component_type_id
   ]
 end

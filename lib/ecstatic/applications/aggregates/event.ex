@@ -1,11 +1,6 @@
 defmodule Ecstatic.Applications.Aggregates.Event do
   alias Ecstatic.Applications.Aggregates.Application
 
-  alias Ecstatic.Applications.Commands.{
-    AddSystem,
-    RemoveSystem
-  }
-
   alias Ecstatic.Applications.Events.{
     EventAdded,
     EventRemoved,
@@ -14,33 +9,33 @@ defmodule Ecstatic.Applications.Aggregates.Event do
 
   alias Ecstatic.Applications.Aggregates.Validators
 
-  def add_system(%{id: application_id}, %AddSystem{} = add_system) do
-    add_system.component_types
-    |> Enum.flat_map(fn ct ->
-      Enum.map(ct.events, fn e ->
-        %EventAdded{
-          application_id: application_id,
-          belongs_to_component_type: ct.name,
-          name: e.name,
-          schema: e.schema,
-          handler: Handler.new(e.handler)
-        }
-      end)
-    end)
+  def add(application, system, component_type, add_events) do
+    add_events
+    |> Enum.map(&add_event(application, system, component_type, &1))
+    |> List.flatten()
   end
 
-  def remove_system(
-        %{id: application_id, component_types: component_types, events: events},
-        %RemoveSystem{name: name}
-      ) do
-    component_types
-    |> Enum.filter(fn ct -> ct.belongs_to_system == name end)
-    |> Enum.flat_map(fn ct ->
-      Enum.filter(events, fn e -> e.belongs_to_component_type == ct.name end)
-    end)
-    |> Enum.map(fn e ->
-      %EventRemoved{application_id: application_id, name: e.name}
-    end)
+  defp add_event(application, system, component_type, add_event) do
+    %EventAdded{
+      id: UUID.uuid4(),
+      name: add_event.name,
+      schema: add_event.schema,
+      handler: Handler.new(add_event.handler),
+      application_id: application.id,
+      system_id: system.id,
+      component_type_id: component_type.id
+    }
+  end
+
+  def remove(application, component_type) do
+    application.events
+    |> Enum.filter(&(&1.component_type_id == component_type.id))
+    |> Enum.map(&remove_event(&1))
+    |> List.flatten()
+  end
+
+  defp remove_event(event) do
+    %EventRemoved{id: event.id}
   end
 
   def apply(application, %EventAdded{} = event) do
@@ -48,22 +43,28 @@ defmodule Ecstatic.Applications.Aggregates.Event do
   end
 
   def apply(application, %EventRemoved{} = event) do
-    events = Enum.reject(application.events, fn s -> s.name == event.name end)
+    events = Enum.reject(application.events, fn s -> s.id == event.id end)
     %Application{application | events: events}
   end
 
-  def validate(%{events: events} = application) do
-    [Validators.Names.validate_all_unique(events), Enum.map(events, &validate(&1, application))]
+  def apply(%Application{} = application, _event) do
+    application
+  end
+
+  def validate(application) do
+    [
+      Validators.Names.validate_all_unique(application.events),
+      Enum.map(application.events, &validate_event(&1, application))
+    ]
     |> Validators.collate_errors()
   end
 
-  def validate(event, application) do
+  def validate_event(event, application) do
     [
       Validators.Names.validate_format(event, :event),
-      Validators.Names.validate_share_system(event, :belongs_to_component_type),
-      Validators.Entities.validate_relation(
+      Validators.Names.validate_share_system(
         event,
-        :belongs_to_component_type,
+        :component_type_id,
         application,
         :component_types
       ),

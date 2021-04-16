@@ -3,60 +3,63 @@ defmodule Ecstatic.Applications.Aggregates.Family do
 
   alias Ecstatic.Applications.Aggregates.Application
 
-  alias Ecstatic.Applications.Commands.{
-    AddSystem,
-    RemoveSystem
-  }
-
   alias Ecstatic.Applications.Events.{
     FamilyAdded,
     FamilyRemoved
   }
 
-  def add_system(%{id: application_id}, %AddSystem{} = add_system) do
-    add_system.families
-    |> Enum.map(fn f ->
-      %FamilyAdded{
-        application_id: application_id,
-        belongs_to_system: add_system.name,
-        name: f.name,
-        criteria: f.criteria
-      }
-    end)
+  def add(application, system, add_families) do
+    add_families
+    |> Enum.map(&add_family(application, system, &1))
+    |> List.flatten()
   end
 
-  def remove_system(%{id: application_id, families: families}, %RemoveSystem{
-        name: name
-      }) do
-    families
-    |> Enum.filter(fn f -> f.belongs_to_system == name end)
-    |> Enum.map(fn f ->
-      %FamilyRemoved{application_id: application_id, name: f.name}
-    end)
+  defp add_family(application, system, add_family) do
+    %FamilyAdded{
+      id: UUID.uuid4(),
+      name: add_family.name,
+      criteria: add_family.criteria,
+      application_id: application.id,
+      system_id: system.id
+    }
   end
 
-  def apply(application, %FamilyAdded{} = family) do
-    %Application{application | families: [family | application.families]}
+  def remove(application, system) do
+    application.families
+    |> Enum.filter(&(&1.system_id == system.id))
+    |> Enum.map(&remove_family(&1))
+    |> List.flatten()
   end
 
-  def apply(application, %FamilyRemoved{} = family) do
-    families = Enum.reject(application.families, fn s -> s.name == family.name end)
+  defp remove_family(family) do
+    %FamilyRemoved{id: family.id}
+  end
+
+  def apply(application, %FamilyAdded{} = event) do
+    %Application{application | families: [event | application.families]}
+  end
+
+  def apply(application, %FamilyRemoved{} = event) do
+    families = Enum.reject(application.families, fn s -> s.id == event.id end)
     %Application{application | families: families}
   end
 
-  def validate(%{families: families} = application) do
+  def apply(%Application{} = application, _event) do
+    application
+  end
+
+  def validate(application) do
     [
-      Validators.Names.validate_all_unique(families),
-      Enum.map(families, &validate(&1, application))
+      Validators.Names.validate_all_unique(application.families),
+      Enum.map(application.families, &validate_family(&1, application))
     ]
     |> Validators.collate_errors()
   end
 
-  def validate(family, application) do
+  def validate_family(family, application) do
     [
       Validators.Names.validate_format(family, :family),
-      Validators.Names.validate_share_system(family, :belongs_to_system),
-      Validators.Entities.validate_relation(family, :belongs_to_system, application, :systems),
+      Validators.Names.validate_share_system(family, :system_id, application, :systems),
       validate_criteria(family, application)
     ]
   end
@@ -64,7 +67,7 @@ defmodule Ecstatic.Applications.Aggregates.Family do
   defp validate_criteria(family, application) do
     String.split(family.criteria, " ")
     |> Enum.map(
-      &Validators.Entities.validate_exists(&1, application, [:component_types, :families])
+      &Validators.Entities.validate_exists_by_name(&1, application, [:component_types, :families])
     )
     |> Validators.collate_errors()
     |> Validators.prepend_message("Criteria for family #{family.name}, ")

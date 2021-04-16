@@ -1,15 +1,12 @@
 defmodule EcstaticWeb.Schema.Types.Subscription do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
-  alias EcstaticWeb.Resolvers
+  alias Ecstatic.Applications
 
   object :subscription_spec do
     field :component_type, non_null(:component_type) do
-      resolve(fn %{application_id: application_id, belongs_to_component_type: name},
-                 _args,
-                 resolution ->
-        Resolvers.ComponentTypes.get(%{application_id: application_id}, %{name: name}, resolution)
-      end)
+      resolve(dataloader(Applications))
     end
 
     field :name, non_null(:string)

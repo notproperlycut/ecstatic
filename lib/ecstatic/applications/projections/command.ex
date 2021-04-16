@@ -3,15 +3,18 @@ defmodule Ecstatic.Applications.Projections.Command do
 
   alias Ecstatic.Applications.Projections.{
     Application,
-    Handler
+    ComponentType,
+    Handler,
+    System
   }
 
   schema "ecstatic_commands" do
     field(:name, :string)
     field(:schema, :map)
-    field(:belongs_to_component_type, :string)
     embeds_one(:handler, Handler)
     belongs_to :application, Application
+    belongs_to :system, System
+    belongs_to :component_type, ComponentType
 
     timestamps()
   end

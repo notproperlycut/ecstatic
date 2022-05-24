@@ -7,4 +7,6 @@ defmodule Ecstatic.Commanded do
     ],
     pubsub: :local,
     registry: :local
+
+  router(Ecstatic.Router)
 end

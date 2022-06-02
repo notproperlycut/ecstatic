@@ -29,6 +29,7 @@ defmodule Ecstatic.MixProject do
     [
       {:commanded, "~> 1.3"},
       {:commanded_eventstore_adapter, "~> 1.2"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:domo, "~> 1.5"},
       {:elixir_uuid, "~> 1.2"},
       {:jason, "~> 1.2"}

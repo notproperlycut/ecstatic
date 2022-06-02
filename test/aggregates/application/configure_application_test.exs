@@ -1,16 +1,22 @@
-defmodule Ecstatic.ApplicationTest do
+defmodule Ecstatic.ConfigureApplicationTest do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
 
-  test "Can configure a new application" do
+  test "Can configure a new application idempotently" do
     assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,
       Events.ApplicationConfigured,
       fn event -> assert event.id == 4 end
+    )
+
+    refute_receive_event(
+      Ecstatic.Commanded,
+      Events.ApplicationConfigured,
+      fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4}) end
     )
   end
 
@@ -22,6 +28,12 @@ defmodule Ecstatic.ApplicationTest do
       Ecstatic.Commanded,
       Events.ApplicationRemoved,
       fn event -> assert event.id == 4 end
+    )
+
+    refute_receive_event(
+      Ecstatic.Commanded,
+      Events.ApplicationRemoved,
+      fn -> Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4}) end
     )
   end
 

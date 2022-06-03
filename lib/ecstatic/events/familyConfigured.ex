@@ -2,8 +2,7 @@ defmodule Ecstatic.Events.FamilyConfigured do
   @derive Jason.Encoder
 
   defstruct [
-    :id,
-    :parent_system_id,
+    :application_id,
     :name,
   ]
 end

@@ -1,5 +1,8 @@
 defmodule Ecstatic.Events.FamilyRemoved do
   @derive Jason.Encoder
 
-  defstruct [:id]
+  defstruct [
+    :application_id,
+    :name,
+  ]
 end

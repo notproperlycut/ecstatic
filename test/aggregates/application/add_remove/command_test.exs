@@ -1,15 +1,19 @@
-defmodule Ecstatic.ConfigureApplication.ComponentTest do
+defmodule Ecstatic.ConfigureApplication.CommandTest do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
 
-  test "Can add components idempotently" do
+  test "Can add commands idempotently" do
     systems = %{
       a: %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          b: %Commands.ConfigureApplication.Component{
+              commands: %{
+                c: [],
+                d: [],
+              }
+          }
         }
       }
     }
@@ -17,9 +21,9 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
     assert_receive_event(
       Ecstatic.Commanded,
-      Events.ComponentConfigured,
+      Events.CommandConfigured,
       fn event ->
-        event.name == "a.component.b"
+        event.name == "a.command.c"
       end,
       fn event ->
         assert event.application_id == 4
@@ -28,9 +32,9 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
     assert_receive_event(
       Ecstatic.Commanded,
-      Events.ComponentConfigured,
+      Events.CommandConfigured,
       fn event ->
-        event.name == "a.component.c"
+        event.name == "a.command.d"
       end,
       fn event ->
         assert event.application_id == 4
@@ -39,17 +43,21 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
     refute_receive_event(
       Ecstatic.Commanded,
-      Events.ComponentConfigured,
+      Events.CommandConfigured,
       fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) end
     )
   end
 
-  test "Can remove components" do
+  test "Can remove commands" do
     systems_a = %{
       a: %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          b: %Commands.ConfigureApplication.Component{
+              commands: %{
+                c: [],
+                d: [],
+              }
+          }
         }
       }
     }
@@ -57,7 +65,11 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
     systems_b = %{
       a: %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
+          b: %Commands.ConfigureApplication.Component{
+              commands: %{
+                c: []
+              }
+          }
         }
       }
     }
@@ -66,9 +78,9 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
     assert_receive_event(
       Ecstatic.Commanded,
-      Events.ComponentRemoved,
+      Events.CommandRemoved,
       fn event ->
-        assert event.name == "a.component.c"
+        assert event.name == "a.command.d"
         assert event.application_id == 4
       end
     )
@@ -78,7 +90,11 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
     systems = %{
       a: %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
+          b: %Commands.ConfigureApplication.Component{
+              commands: %{
+                c: []
+              }
+          }
         }
       }
     }
@@ -87,9 +103,9 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
     assert_receive_event(
       Ecstatic.Commanded,
-      Events.ComponentRemoved,
+      Events.CommandRemoved,
       fn event ->
-        assert event.name == "a.component.b"
+        assert event.name == "a.command.c"
         assert event.application_id == 4
       end
     )

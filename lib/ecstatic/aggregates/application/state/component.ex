@@ -3,9 +3,14 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
   alias Ecstatic.Events
 
   def configure(%Events.ApplicationConfigured{} = application, %Events.SystemConfigured{} = system, components) do
-    Enum.reduce(components, %State{}, fn {k, _v}, state ->
+    Enum.reduce(components, %State{}, fn {k, v}, state ->
       component = %Events.ComponentConfigured{application_id: application.id, name: "#{system.name}.component.#{k}"}
-      state |> State.merge(%State{components: [component]})
+
+      commands = State.Command.configure(application, system, component, v.commands)
+      events = State.Event.configure(application, system, component, v.events)
+      subscribers = State.Subscriber.configure(application, system, component, v.subscribers)
+
+      state |> State.merge(%State{components: [component]}) |> State.merge(commands) |> State.merge(events) |> State.merge(subscribers)
     end)
   end
 

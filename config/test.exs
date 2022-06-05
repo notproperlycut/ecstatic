@@ -8,3 +8,8 @@ config :ecstatic, Ecstatic.EventStore,
   hostname: "localhost",
   pool_size: 1
 
+config :logger, level: :warn
+
+config :commanded,
+  assert_receive_event_timeout: 100,
+  refute_receive_event_timeout: 100

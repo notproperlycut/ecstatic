@@ -3,6 +3,6 @@ defmodule Ecstatic.Events.FamilyRemoved do
 
   defstruct [
     :application_id,
-    :name,
+    :name
   ]
 end

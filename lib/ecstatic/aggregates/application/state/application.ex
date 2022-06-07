@@ -10,8 +10,14 @@ defmodule Ecstatic.Aggregates.Application.State.Application do
   end
 
   def add_remove(%State{} = existing, %State{} = new) do
-    add = new.applications |> Enum.reject(fn n -> Enum.any?(existing.applications, fn e -> e.id == n.id end) end)
-    remove = existing.applications |> Enum.reject(fn e -> Enum.any?(new.applications, fn n -> n.id == e.id end) end) |> Enum.map(fn e -> %Events.ApplicationRemoved{id: e.id} end)
+    add =
+      new.applications
+      |> Enum.reject(fn n -> Enum.any?(existing.applications, fn e -> e.id == n.id end) end)
+
+    remove =
+      existing.applications
+      |> Enum.reject(fn e -> Enum.any?(new.applications, fn n -> n.id == e.id end) end)
+      |> Enum.map(fn e -> %Events.ApplicationRemoved{id: e.id} end)
 
     add ++ remove
   end

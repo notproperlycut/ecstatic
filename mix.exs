@@ -9,7 +9,7 @@ defmodule Ecstatic.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env)
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
@@ -42,7 +42,7 @@ defmodule Ecstatic.MixProject do
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.setup"],
       reset: ["event_store.reset"],
-      test: ["reset", "test"],
+      test: ["reset", "test"]
     ]
   end
 end

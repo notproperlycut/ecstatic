@@ -9,15 +9,17 @@ defmodule Ecstatic.ConfigureApplication.CommandTest do
       a: %Commands.ConfigureApplication.System{
         components: %{
           b: %Commands.ConfigureApplication.Component{
-              commands: %{
-                c: [],
-                d: [],
-              }
+            commands: %{
+              c: [],
+              d: []
+            }
           }
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -44,7 +46,9 @@ defmodule Ecstatic.ConfigureApplication.CommandTest do
     refute_receive_event(
       Ecstatic.Commanded,
       Events.CommandConfigured,
-      fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) end
+      fn ->
+        Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+      end
     )
   end
 
@@ -53,10 +57,10 @@ defmodule Ecstatic.ConfigureApplication.CommandTest do
       a: %Commands.ConfigureApplication.System{
         components: %{
           b: %Commands.ConfigureApplication.Component{
-              commands: %{
-                c: [],
-                d: [],
-              }
+            commands: %{
+              c: [],
+              d: []
+            }
           }
         }
       }
@@ -66,15 +70,19 @@ defmodule Ecstatic.ConfigureApplication.CommandTest do
       a: %Commands.ConfigureApplication.System{
         components: %{
           b: %Commands.ConfigureApplication.Component{
-              commands: %{
-                c: []
-              }
+            commands: %{
+              c: []
+            }
           }
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -91,15 +99,18 @@ defmodule Ecstatic.ConfigureApplication.CommandTest do
       a: %Commands.ConfigureApplication.System{
         components: %{
           b: %Commands.ConfigureApplication.Component{
-              commands: %{
-                c: []
-              }
+            commands: %{
+              c: []
+            }
           }
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+
+    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,

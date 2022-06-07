@@ -1,5 +1,5 @@
 defmodule Ecstatic.Commands.ConfigureApplication.Family do
   defstruct [
-    :criteria,
+    :criteria
   ]
 end

@@ -15,4 +15,3 @@ defmodule Mix.Tasks.Ecstatic.Init do
     EventStore.Tasks.Init.exec(config)
   end
 end
-

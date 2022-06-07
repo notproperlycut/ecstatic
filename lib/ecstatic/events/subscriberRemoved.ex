@@ -3,6 +3,6 @@ defmodule Ecstatic.Events.SubscriberRemoved do
 
   defstruct [
     :application_id,
-    :name,
+    :name
   ]
 end

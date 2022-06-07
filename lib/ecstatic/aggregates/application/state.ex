@@ -1,13 +1,11 @@
 defmodule Ecstatic.Aggregates.Application.State do
-  defstruct [
-    applications: [],
-    families: [],
-    systems: [],
-    components: [],
-    commands: [],
-    events: [],
-    subscribers: [],
-  ]
+  defstruct applications: [],
+            families: [],
+            systems: [],
+            components: [],
+            commands: [],
+            events: [],
+            subscribers: []
 
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
@@ -48,7 +46,7 @@ defmodule Ecstatic.Aggregates.Application.State do
       components: state1.components ++ state2.components,
       commands: state1.commands ++ state2.commands,
       events: state1.events ++ state2.events,
-      subscribers: state1.subscribers ++ state2.subscribers,
+      subscribers: state1.subscribers ++ state2.subscribers
     }
   end
 

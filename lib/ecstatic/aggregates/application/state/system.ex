@@ -8,13 +8,24 @@ defmodule Ecstatic.Aggregates.Application.State.System do
       families = State.Family.configure(application, system, v.families)
       components = State.Component.configure(application, system, v.components)
 
-      state |> State.merge(%State{systems: [system]}) |> State.merge(families) |> State.merge(components)
+      state
+      |> State.merge(%State{systems: [system]})
+      |> State.merge(families)
+      |> State.merge(components)
     end)
   end
 
   def add_remove(%State{} = existing, %State{} = new) do
-    add = new.systems |> Enum.reject(fn n -> Enum.any?(existing.systems, fn e -> e.name == n.name end) end)
-    remove = existing.systems |> Enum.reject(fn e -> Enum.any?(new.systems, fn n -> n.name == e.name end) end) |> Enum.map(fn e -> %Events.SystemRemoved{application_id: e.application_id, name: e.name} end)
+    add =
+      new.systems
+      |> Enum.reject(fn n -> Enum.any?(existing.systems, fn e -> e.name == n.name end) end)
+
+    remove =
+      existing.systems
+      |> Enum.reject(fn e -> Enum.any?(new.systems, fn n -> n.name == e.name end) end)
+      |> Enum.map(fn e ->
+        %Events.SystemRemoved{application_id: e.application_id, name: e.name}
+      end)
 
     add ++ remove
   end

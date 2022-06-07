@@ -1,6 +1,4 @@
 defmodule Ecstatic.Commands.ConfigureApplication.System do
-  defstruct [
-    components: %{},
-    families: %{}
-  ]
+  defstruct components: %{},
+            families: %{}
 end

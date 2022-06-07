@@ -9,7 +9,9 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
       a: %Commands.ConfigureApplication.System{},
       b: %Commands.ConfigureApplication.System{}
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -36,7 +38,9 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
     refute_receive_event(
       Ecstatic.Commanded,
       Events.SystemConfigured,
-      fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) end
+      fn ->
+        Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+      end
     )
   end
 
@@ -45,11 +49,16 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
       a: %Commands.ConfigureApplication.System{},
       b: %Commands.ConfigureApplication.System{}
     }
+
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{},
+      a: %Commands.ConfigureApplication.System{}
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -65,8 +74,11 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
     systems = %{
       a: %Commands.ConfigureApplication.System{}
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+
+    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,

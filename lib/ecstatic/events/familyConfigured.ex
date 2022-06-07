@@ -4,5 +4,6 @@ defmodule Ecstatic.Events.FamilyConfigured do
   defstruct [
     :application_id,
     :name,
+    :criteria
   ]
 end

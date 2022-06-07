@@ -4,5 +4,7 @@ defmodule Ecstatic.Events.SubscriberConfigured do
   defstruct [
     :application_id,
     :name,
+    :trigger,
+    :handler
   ]
 end

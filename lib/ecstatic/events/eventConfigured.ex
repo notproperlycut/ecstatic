@@ -3,6 +3,8 @@ defmodule Ecstatic.Events.EventConfigured do
 
   defstruct [
     :application_id,
-    :name
+    :name,
+    :schema,
+    :handler
   ]
 end

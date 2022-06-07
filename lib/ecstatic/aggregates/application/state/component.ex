@@ -1,6 +1,7 @@
 defmodule Ecstatic.Aggregates.Application.State.Component do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
+  alias Ecstatic.Types.Names
 
   def configure(
         %Events.ApplicationConfigured{} = application,
@@ -8,9 +9,10 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
         components
       ) do
     Enum.reduce(components, %State{}, fn {k, v}, state ->
+      {:ok, name} = Names.Component.new(%{system: "#{system.name}", component: "#{k}"})
       component = %Events.ComponentConfigured{
         application_id: application.id,
-        name: "#{system.name}.component.#{k}"
+        name: to_string(name)
       }
 
       commands = State.Command.configure(application, system, component, v.commands)

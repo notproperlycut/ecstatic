@@ -3,13 +3,16 @@ defmodule Ecstatic.MixProject do
 
   def project do
     [
-      app: :ecstatic,
-      version: "0.1.0",
-      elixir: "~> 1.13",
-      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      app: :ecstatic,
+      compilers: [:domo_compiler] ++ Mix.compilers(),
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      dialyzer: [plt_add_apps: [:mix]],
+      elixir: "~> 1.13",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
+      test_coverage: [ignore_modules: [~r/\.TypeEnsurer$/]],
+      version: "0.1.0",
     ]
   end
 

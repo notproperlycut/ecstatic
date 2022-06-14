@@ -1,17 +1,28 @@
 defmodule Ecstatic.Aggregates.Application.State.System do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
+  alias Ecstatic.Types.Names
 
   def configure(%Events.ApplicationConfigured{} = application, systems) do
-    Enum.reduce(systems, %State{}, fn {k, v}, state ->
-      system = %Events.SystemConfigured{application_id: application.id, name: "#{k}"}
-      families = State.Family.configure(application, system, v.families)
-      components = State.Component.configure(application, system, v.components)
+    Enum.reduce_while(systems, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
+      with {:ok, name} <- Names.System.new(%{system: k}),
+           system <- %Events.SystemConfigured{
+             application_id: application.id,
+             name: to_string(name)
+           },
+           {:ok, families} <- State.Family.configure(application, system, v.families),
+           {:ok, components} <- State.Component.configure(application, system, v.components) do
+        state =
+          state
+          |> State.merge(%State{systems: [system]})
+          |> State.merge(families)
+          |> State.merge(components)
 
-      state
-      |> State.merge(%State{systems: [system]})
-      |> State.merge(families)
-      |> State.merge(components)
+        {:cont, {:ok, state}}
+      else
+        error ->
+          {:halt, error}
+      end
     end)
   end
 

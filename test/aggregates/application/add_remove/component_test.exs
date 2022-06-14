@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.ComponentTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,10 +6,10 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
   test "Can add components idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{},
+          "c" => %Commands.ConfigureApplication.Component{}
         }
       }
     }
@@ -50,18 +50,18 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
   test "Can remove components" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{},
+          "c" => %Commands.ConfigureApplication.Component{}
         }
       }
     }
 
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{}
         }
       }
     }
@@ -84,9 +84,9 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{}
         }
       }
     }

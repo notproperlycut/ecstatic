@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.SystemTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,8 +6,8 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
 
   test "Can add systems idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{},
-      b: %Commands.ConfigureApplication.System{}
+      "a" => %Commands.ConfigureApplication.System{},
+      "b" => %Commands.ConfigureApplication.System{}
     }
 
     assert :ok =
@@ -46,12 +46,12 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
 
   test "Can remove systems" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{},
-      b: %Commands.ConfigureApplication.System{}
+      "a" => %Commands.ConfigureApplication.System{},
+      "b" => %Commands.ConfigureApplication.System{}
     }
 
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{}
+      "a" => %Commands.ConfigureApplication.System{}
     }
 
     assert :ok =
@@ -72,7 +72,7 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{}
+      "a" => %Commands.ConfigureApplication.System{}
     }
 
     assert :ok =

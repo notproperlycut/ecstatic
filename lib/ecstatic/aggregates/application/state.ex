@@ -11,31 +11,31 @@ defmodule Ecstatic.Aggregates.Application.State do
   alias Ecstatic.Events
 
   def configure(%State{} = state, command) do
-    new_state = State.Application.configure(command)
-
-    applications = State.Application.add_remove(state, new_state)
-    systems = State.System.add_remove(state, new_state)
-    families = State.Family.add_remove(state, new_state)
-    components = State.Component.add_remove(state, new_state)
-    commands = State.Command.add_remove(state, new_state)
-    events = State.Event.add_remove(state, new_state)
-    subscribers = State.Subscriber.add_remove(state, new_state)
-
-    {:ok, applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+    with {:ok, new_state} <- State.Application.configure(command),
+         applications <- State.Application.add_remove(state, new_state),
+         systems <- State.System.add_remove(state, new_state),
+         families <- State.Family.add_remove(state, new_state),
+         components <- State.Component.add_remove(state, new_state),
+         commands <- State.Command.add_remove(state, new_state),
+         events <- State.Event.add_remove(state, new_state),
+         subscribers <- State.Subscriber.add_remove(state, new_state) do
+      {:ok,
+       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+    end
   end
 
   def remove(%State{} = state) do
-    empty = %State{}
-
-    applications = State.Application.add_remove(state, empty)
-    systems = State.System.add_remove(state, empty)
-    families = State.Family.add_remove(state, empty)
-    components = State.Component.add_remove(state, empty)
-    commands = State.Command.add_remove(state, empty)
-    events = State.Event.add_remove(state, empty)
-    subscribers = State.Subscriber.add_remove(state, empty)
-
-    {:ok, applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+    with empty <- %State{},
+         applications <- State.Application.add_remove(state, empty),
+         systems <- State.System.add_remove(state, empty),
+         families <- State.Family.add_remove(state, empty),
+         components <- State.Component.add_remove(state, empty),
+         commands <- State.Command.add_remove(state, empty),
+         events <- State.Event.add_remove(state, empty),
+         subscribers <- State.Subscriber.add_remove(state, empty) do
+      {:ok,
+       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+    end
   end
 
   def merge(%State{} = state1, %State{} = state2) do

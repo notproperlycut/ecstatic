@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.EventTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,12 +6,12 @@ defmodule Ecstatic.ConfigureApplication.EventTest do
 
   test "Can add events idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{
+          "b" => %Commands.ConfigureApplication.Component{
             events: %{
-              c: [],
-              d: []
+              "c" => [],
+              "d" => []
             }
           }
         }
@@ -54,12 +54,12 @@ defmodule Ecstatic.ConfigureApplication.EventTest do
 
   test "Can remove events" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{
+          "b" => %Commands.ConfigureApplication.Component{
             events: %{
-              c: [],
-              d: []
+              "c" => [],
+              "d" => []
             }
           }
         }
@@ -67,11 +67,11 @@ defmodule Ecstatic.ConfigureApplication.EventTest do
     }
 
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{
+          "b" => %Commands.ConfigureApplication.Component{
             events: %{
-              c: []
+              "c" => []
             }
           }
         }
@@ -96,11 +96,11 @@ defmodule Ecstatic.ConfigureApplication.EventTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{
+          "b" => %Commands.ConfigureApplication.Component{
             events: %{
-              c: []
+              "c" => []
             }
           }
         }

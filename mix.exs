@@ -12,14 +12,14 @@ defmodule Ecstatic.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [ignore_modules: [~r/\.TypeEnsurer$/]],
-      version: "0.1.0",
+      version: "0.1.0"
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :crypto],
       mod: {Ecstatic.Application, []}
     ]
   end

@@ -8,22 +8,28 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
         %Events.SystemConfigured{} = system,
         components
       ) do
-    Enum.reduce(components, %State{}, fn {k, v}, state ->
-      {:ok, name} = Names.Component.new(%{system: "#{system.name}", component: "#{k}"})
-      component = %Events.ComponentConfigured{
-        application_id: application.id,
-        name: to_string(name)
-      }
+    Enum.reduce_while(components, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
+      with {:ok, name} <- Names.Component.new(%{system: system.name, component: k}),
+           component <- %Events.ComponentConfigured{
+             application_id: application.id,
+             name: to_string(name)
+           },
+           {:ok, commands} <- State.Command.configure(application, system, component, v.commands),
+           {:ok, events} <- State.Event.configure(application, system, component, v.events),
+           {:ok, subscribers} <-
+             State.Subscriber.configure(application, system, component, v.subscribers) do
+        state =
+          state
+          |> State.merge(%State{components: [component]})
+          |> State.merge(commands)
+          |> State.merge(events)
+          |> State.merge(subscribers)
 
-      commands = State.Command.configure(application, system, component, v.commands)
-      events = State.Event.configure(application, system, component, v.events)
-      subscribers = State.Subscriber.configure(application, system, component, v.subscribers)
-
-      state
-      |> State.merge(%State{components: [component]})
-      |> State.merge(commands)
-      |> State.merge(events)
-      |> State.merge(subscribers)
+        {:cont, {:ok, state}}
+      else
+        error ->
+          {:halt, error}
+      end
     end)
   end
 

@@ -1,6 +1,7 @@
 defmodule Ecstatic.Aggregates.Application.State.Subscriber do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
+  alias Ecstatic.Types.Names
 
   def configure(
         %Events.ApplicationConfigured{} = application,
@@ -8,13 +9,18 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
         %Events.ComponentConfigured{} = _component,
         subscribers
       ) do
-    Enum.reduce(subscribers, %State{}, fn {k, _v}, state ->
-      subscriber = %Events.SubscriberConfigured{
-        application_id: application.id,
-        name: "#{system.name}.subscriber.#{k}"
-      }
-
-      state |> State.merge(%State{subscribers: [subscriber]})
+    Enum.reduce_while(subscribers, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
+      with {:ok, name} <- Names.Subscriber.new(%{system: system.name, subscriber: k}),
+           subscriber <- %Events.SubscriberConfigured{
+             application_id: application.id,
+             name: to_string(name)
+           } do
+        state = state |> State.merge(%State{subscribers: [subscriber]})
+        {:cont, {:ok, state}}
+      else
+        error ->
+          {:halt, error}
+      end
     end)
   end
 

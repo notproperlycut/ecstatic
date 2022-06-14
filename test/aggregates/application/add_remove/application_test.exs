@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplicationTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Application do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands

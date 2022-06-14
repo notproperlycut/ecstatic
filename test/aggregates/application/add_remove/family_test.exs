@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.FamilyTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,10 +6,10 @@ defmodule Ecstatic.ConfigureApplication.FamilyTest do
 
   test "Can add families idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         families: %{
-          b: [],
-          c: []
+          "b" => [],
+          "c" => []
         }
       }
     }
@@ -50,18 +50,18 @@ defmodule Ecstatic.ConfigureApplication.FamilyTest do
 
   test "Can remove families" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         families: %{
-          b: [],
-          c: []
+          "b" => [],
+          "c" => []
         }
       }
     }
 
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         families: %{
-          b: []
+          "b" => []
         }
       }
     }
@@ -84,9 +84,9 @@ defmodule Ecstatic.ConfigureApplication.FamilyTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         families: %{
-          b: []
+          "b" => []
         }
       }
     }

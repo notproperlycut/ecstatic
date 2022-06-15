@@ -11,10 +11,11 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
       ) do
     Enum.reduce_while(commands, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
       with {:ok, name} <- Names.Command.new(%{system: system.name, command: k}),
-           command <- %Events.CommandConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           } do
+           {:ok, command} <-
+             Events.CommandConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }) do
         state = state |> State.merge(%State{commands: [command]})
         {:cont, {:ok, state}}
       else
@@ -33,7 +34,7 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
       existing.commands
       |> Enum.reject(fn e -> Enum.any?(new.commands, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        %Events.CommandRemoved{application_id: e.application_id, name: e.name}
+        Events.CommandRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
     add ++ remove

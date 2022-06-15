@@ -1,5 +1,6 @@
 defmodule Ecstatic.Commands.ConfigureApplication.Component do
-  defstruct commands: %{},
+  defstruct schema: %{},
+            commands: %{},
             events: %{},
             subscribers: %{}
 end

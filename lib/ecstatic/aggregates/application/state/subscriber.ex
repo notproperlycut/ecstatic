@@ -11,10 +11,11 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
       ) do
     Enum.reduce_while(subscribers, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
       with {:ok, name} <- Names.Subscriber.new(%{system: system.name, subscriber: k}),
-           subscriber <- %Events.SubscriberConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           } do
+           {:ok, subscriber} <-
+             Events.SubscriberConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }) do
         state = state |> State.merge(%State{subscribers: [subscriber]})
         {:cont, {:ok, state}}
       else
@@ -33,7 +34,7 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
       existing.subscribers
       |> Enum.reject(fn e -> Enum.any?(new.subscribers, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        %Events.SubscriberRemoved{application_id: e.application_id, name: e.name}
+        Events.SubscriberRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
     add ++ remove

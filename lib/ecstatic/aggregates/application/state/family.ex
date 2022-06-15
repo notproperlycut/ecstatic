@@ -10,10 +10,11 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
       ) do
     Enum.reduce_while(families, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
       with {:ok, name} <- Names.Family.new(%{system: system.name, family: k}),
-           family <- %Events.FamilyConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           } do
+           {:ok, family} <-
+             Events.FamilyConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }) do
         state = state |> State.merge(%State{families: [family]})
         {:cont, {:ok, state}}
       else
@@ -32,7 +33,7 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
       existing.families
       |> Enum.reject(fn e -> Enum.any?(new.families, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        %Events.FamilyRemoved{application_id: e.application_id, name: e.name}
+        Events.FamilyRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
     add ++ remove

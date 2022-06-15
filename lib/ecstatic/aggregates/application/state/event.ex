@@ -11,10 +11,11 @@ defmodule Ecstatic.Aggregates.Application.State.Event do
       ) do
     Enum.reduce_while(events, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
       with {:ok, name} <- Names.Event.new(%{system: system.name, event: k}),
-           event <- %Events.EventConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           } do
+           {:ok, event} <-
+             Events.EventConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }) do
         state = state |> State.merge(%State{events: [event]})
         {:cont, {:ok, state}}
       else
@@ -32,7 +33,9 @@ defmodule Ecstatic.Aggregates.Application.State.Event do
     remove =
       existing.events
       |> Enum.reject(fn e -> Enum.any?(new.events, fn n -> n.name == e.name end) end)
-      |> Enum.map(fn e -> %Events.EventRemoved{application_id: e.application_id, name: e.name} end)
+      |> Enum.map(fn e ->
+        Events.EventRemoved.new!(%{application_id: e.application_id, name: e.name})
+      end)
 
     add ++ remove
   end

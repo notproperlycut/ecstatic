@@ -4,7 +4,7 @@ defmodule Ecstatic.Aggregates.Application.State.Application do
   alias Ecstatic.Events
 
   def configure(%Commands.ConfigureApplication{id: id, systems: systems}) do
-    with application <- %Events.ApplicationConfigured{id: id},
+    with {:ok, application} <- Events.ApplicationConfigured.new(%{id: id}),
          {:ok, systems} <- State.System.configure(application, systems) do
       {:ok, State.merge(%State{applications: [application]}, systems)}
     end

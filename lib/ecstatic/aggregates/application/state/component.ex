@@ -10,10 +10,11 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
       ) do
     Enum.reduce_while(components, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
       with {:ok, name} <- Names.Component.new(%{system: system.name, component: k}),
-           component <- %Events.ComponentConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           },
+           {:ok, component} <-
+             Events.ComponentConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }),
            {:ok, commands} <- State.Command.configure(application, system, component, v.commands),
            {:ok, events} <- State.Event.configure(application, system, component, v.events),
            {:ok, subscribers} <-
@@ -42,7 +43,7 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
       existing.components
       |> Enum.reject(fn e -> Enum.any?(new.components, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        %Events.ComponentRemoved{application_id: e.application_id, name: e.name}
+        Events.ComponentRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
     add ++ remove

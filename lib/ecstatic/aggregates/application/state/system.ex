@@ -6,10 +6,11 @@ defmodule Ecstatic.Aggregates.Application.State.System do
   def configure(%Events.ApplicationConfigured{} = application, systems) do
     Enum.reduce_while(systems, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
       with {:ok, name} <- Names.System.new(%{system: k}),
-           system <- %Events.SystemConfigured{
-             application_id: application.id,
-             name: to_string(name)
-           },
+           {:ok, system} <-
+             Events.SystemConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name)
+             }),
            {:ok, families} <- State.Family.configure(application, system, v.families),
            {:ok, components} <- State.Component.configure(application, system, v.components) do
         state =
@@ -35,7 +36,7 @@ defmodule Ecstatic.Aggregates.Application.State.System do
       existing.systems
       |> Enum.reject(fn e -> Enum.any?(new.systems, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        %Events.SystemRemoved{application_id: e.application_id, name: e.name}
+        Events.SystemRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
     add ++ remove

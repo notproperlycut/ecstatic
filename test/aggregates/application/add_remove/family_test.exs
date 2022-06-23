@@ -3,13 +3,18 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
   test "Can add families idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => [],
-          "c" => []
+          "b" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          },
+          "c" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }
@@ -52,8 +57,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => [],
-          "c" => []
+          "b" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          },
+          "c" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }
@@ -61,7 +70,9 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems_b = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => []
+          "b" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }
@@ -86,7 +97,9 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => []
+          "b" => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }

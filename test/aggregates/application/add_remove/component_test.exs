@@ -3,13 +3,18 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
   test "Can add components idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{},
-          "c" => %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          },
+          "c" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          }
         }
       }
     }
@@ -52,8 +57,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{},
-          "c" => %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          },
+          "c" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          }
         }
       }
     }
@@ -61,7 +70,9 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems_b = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          }
         }
       }
     }
@@ -86,7 +97,9 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{}
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""}
+          }
         }
       }
     }

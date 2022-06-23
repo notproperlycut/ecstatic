@@ -3,6 +3,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Family do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
   test "Rejects periods in names" do
     good_name = "a-name_with(different*characters&and1numbers,"
@@ -11,7 +12,9 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Family do
     systems_good = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          good_name => []
+          good_name => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }
@@ -19,7 +22,9 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Family do
     systems_bad = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          bad_name => []
+          bad_name => %Commands.ConfigureApplication.Family{
+            criteria: %Types.Criteria{has: ""}
+          }
         }
       }
     }

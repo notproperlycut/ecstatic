@@ -1,6 +1,7 @@
 defmodule Ecstatic.Events.FamilyRemoved do
   use Domo, skip_defaults: true
   @derive Jason.Encoder
+  alias Ecstatic.Types
 
   defstruct [
     :application_id,
@@ -8,7 +9,7 @@ defmodule Ecstatic.Events.FamilyRemoved do
   ]
 
   @type t() :: %__MODULE__{
-          application_id: any(),
+          application_id: Types.ApplicationId.t(),
           name: String.t()
         }
   # TODO: workaround dialyzer warning from domo __precond__ generator

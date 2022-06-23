@@ -1,7 +1,7 @@
 defmodule Ecstatic.Aggregates.Application.State.Command do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
-  alias Ecstatic.Types.Names
+  alias Ecstatic.Types
 
   def configure(
         %Events.ApplicationConfigured{} = application,
@@ -9,12 +9,16 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
         %Events.ComponentConfigured{} = _component,
         commands
       ) do
-    Enum.reduce_while(commands, {:ok, %State{}}, fn {k, _v}, {:ok, state} ->
-      with {:ok, name} <- Names.Command.new(%{system: system.name, command: k}),
+    Enum.reduce_while(commands, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
+      with {:ok, name} <- Types.Names.Command.new(%{system: system.name, command: k}),
+           {:ok, schema} <- Types.Schema.new(Map.from_struct(v.schema)),
+           {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, command} <-
              Events.CommandConfigured.new(%{
                application_id: application.id,
-               name: to_string(name)
+               name: to_string(name),
+               handler: handler,
+               schema: schema
              }) do
         state = state |> State.merge(%State{commands: [command]})
         {:cont, {:ok, state}}

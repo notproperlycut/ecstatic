@@ -1,6 +1,7 @@
 defmodule Ecstatic.Events.SubscriberConfigured do
   use Domo, skip_defaults: true
   @derive Jason.Encoder
+  alias Ecstatic.Types
 
   defstruct [
     :application_id,
@@ -10,10 +11,10 @@ defmodule Ecstatic.Events.SubscriberConfigured do
   ]
 
   @type t() :: %__MODULE__{
-          application_id: any(),
+          application_id: Types.ApplicationId.t(),
           name: String.t(),
-          trigger: any(),
-          handler: any()
+          trigger: Types.Trigger.t(),
+          handler: Types.Handler.t()
         }
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)

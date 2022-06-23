@@ -3,15 +3,23 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
   test "Can add subscribers idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             subscribers: %{
-              "c" => [],
-              "d" => []
+              "c" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              },
+              "d" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -57,9 +65,16 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             subscribers: %{
-              "c" => [],
-              "d" => []
+              "c" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              },
+              "d" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -70,8 +85,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             subscribers: %{
-              "c" => []
+              "c" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -99,8 +118,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             subscribers: %{
-              "c" => []
+              "c" => %Commands.ConfigureApplication.Subscriber{
+                trigger: %Types.Trigger{component: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }

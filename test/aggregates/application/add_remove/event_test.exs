@@ -3,15 +3,23 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
   test "Can add events idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             events: %{
-              "c" => [],
-              "d" => []
+              "c" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              },
+              "d" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -57,9 +65,16 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             events: %{
-              "c" => [],
-              "d" => []
+              "c" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              },
+              "d" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -70,8 +85,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             events: %{
-              "c" => []
+              "c" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }
@@ -99,8 +118,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
+            schema: %Types.Schema{json_schema: ""},
             events: %{
-              "c" => []
+              "c" => %Commands.ConfigureApplication.Event{
+                schema: %Types.Schema{json_schema: ""},
+                handler: %Types.Handler{mfa: ""}
+              }
             }
           }
         }

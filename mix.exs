@@ -35,7 +35,8 @@ defmodule Ecstatic.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:domo, "~> 1.5"},
       {:elixir_uuid, "~> 1.2"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:typed_struct, "~> 0.3.0"}
     ]
   end
 

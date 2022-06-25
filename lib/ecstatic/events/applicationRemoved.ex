@@ -3,11 +3,12 @@ defmodule Ecstatic.Events.ApplicationRemoved do
   @derive Jason.Encoder
   alias Ecstatic.Types
 
-  defstruct [:id]
+  use TypedStruct
 
-  @type t() :: %__MODULE__{
-          id: Types.ApplicationId.t()
-        }
+  typedstruct do
+    field :id, Types.ApplicationId.t(), enforce: true
+  end
+
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end

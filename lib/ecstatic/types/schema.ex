@@ -2,13 +2,12 @@ defmodule Ecstatic.Types.Schema do
   @derive Jason.Encoder
   use Domo, skip_defaults: true
 
-  defstruct [
-    :json_schema
-  ]
+  use TypedStruct
 
-  @type t() :: %__MODULE__{
-          json_schema: String.t()
-        }
+  typedstruct do
+    field :json_schema, String.t(), enforce: true
+  end
+
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end

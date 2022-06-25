@@ -2,15 +2,13 @@ defmodule Ecstatic.Types.Names.Component do
   use Domo, skip_defaults: true
   alias Ecstatic.Types.Names
 
-  defstruct [
-    :system,
-    :component
-  ]
+  use TypedStruct
 
-  @type t() :: %__MODULE__{
-          system: Names.t(),
-          component: Names.t()
-        }
+  typedstruct do
+    field :system, Names.t(), enforce: true
+    field :component, Names.t(), enforce: true
+  end
+
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end

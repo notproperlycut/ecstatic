@@ -3,19 +3,15 @@ defmodule Ecstatic.Events.EventConfigured do
   @derive Jason.Encoder
   alias Ecstatic.Types
 
-  defstruct [
-    :application_id,
-    :name,
-    :schema,
-    :handler
-  ]
+  use TypedStruct
 
-  @type t() :: %__MODULE__{
-          application_id: Types.ApplicationId.t(),
-          name: String.t(),
-          schema: Types.Schema.t(),
-          handler: Types.Handler.t()
-        }
+  typedstruct do
+    field :application_id, Types.ApplicationId.t(), enforce: true
+    field :name, String.t(), enforce: true
+    field :schema, Types.Schema.t(), enforce: true
+    field :handler, Types.Handler.t(), enforce: true
+  end
+
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end

@@ -2,15 +2,13 @@ defmodule Ecstatic.Types.Names.Family do
   use Domo, skip_defaults: true
   alias Ecstatic.Types.Names
 
-  defstruct [
-    :system,
-    :family
-  ]
+  use TypedStruct
 
-  @type t() :: %__MODULE__{
-          system: Names.t(),
-          family: Names.t()
-        }
+  typedstruct do
+    field :system, Names.t(), enforce: true
+    field :family, Names.t(), enforce: true
+  end
+
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end

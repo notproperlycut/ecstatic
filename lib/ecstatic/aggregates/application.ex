@@ -1,5 +1,9 @@
 defmodule Ecstatic.Aggregates.Application do
-  defstruct state: nil
+  use TypedStruct
+
+  typedstruct do
+    field :state, any(), default: nil
+  end
 
   alias Ecstatic.Aggregates.Application
   alias Ecstatic.Commands

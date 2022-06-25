@@ -1,11 +1,15 @@
 defmodule Ecstatic.Aggregates.Application.State do
-  defstruct applications: [],
-            families: [],
-            systems: [],
-            components: [],
-            commands: [],
-            events: [],
-            subscribers: []
+  use TypedStruct
+
+  typedstruct do
+    field :applications, any(), default: []
+    field :families, any(), default: []
+    field :systems, any(), default: []
+    field :components, any(), default: []
+    field :commands, any(), default: []
+    field :events, any(), default: []
+    field :subscribers, any(), default: []
+  end
 
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events

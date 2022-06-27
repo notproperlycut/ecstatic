@@ -10,6 +10,10 @@ defmodule Ecstatic.Aggregates.Application.State.Application do
     end
   end
 
+  def validate(%State{} = _state) do
+    :ok
+  end
+
   def add_remove(%State{} = existing, %State{} = new) do
     add =
       new.applications

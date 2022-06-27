@@ -60,4 +60,80 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
       end
     )
   end
+
+  test "Rejects duplicate names" do
+    systems_good = %{
+      "a" => %Commands.ConfigureApplication.System{
+        components: %{
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: Types.Schema.empty(),
+            subscribers: %{
+              "d" => Commands.ConfigureApplication.Subscriber.empty()
+            }
+          },
+          "c" => %Commands.ConfigureApplication.Component{
+            schema: Types.Schema.empty(),
+            subscribers: %{
+              "e" => Commands.ConfigureApplication.Subscriber.empty()
+            }
+          }
+        }
+      }
+    }
+
+    systems_bad = %{
+      "a" => %Commands.ConfigureApplication.System{
+        components: %{
+          "b" => %Commands.ConfigureApplication.Component{
+            schema: Types.Schema.empty(),
+            subscribers: %{
+              "d" => Commands.ConfigureApplication.Subscriber.empty()
+            }
+          },
+          "c" => %Commands.ConfigureApplication.Component{
+            schema: Types.Schema.empty(),
+            subscribers: %{
+              "d" => Commands.ConfigureApplication.Subscriber.empty()
+            }
+          }
+        }
+      }
+    }
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_good
+             })
+
+    refute match?(
+             :ok,
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_bad
+             })
+           )
+
+    assert_receive_event(
+      Ecstatic.Commanded,
+      Events.SubscriberConfigured,
+      fn event ->
+        event.name == "a.subscriber.d"
+      end,
+      fn event ->
+        assert event.application_id == 4
+      end
+    )
+
+    assert_receive_event(
+      Ecstatic.Commanded,
+      Events.SubscriberConfigured,
+      fn event ->
+        event.name == "a.subscriber.e"
+      end,
+      fn event ->
+        assert event.application_id == 4
+      end
+    )
+  end
 end

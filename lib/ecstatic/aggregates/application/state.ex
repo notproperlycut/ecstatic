@@ -16,6 +16,13 @@ defmodule Ecstatic.Aggregates.Application.State do
 
   def configure(%State{} = state, command) do
     with {:ok, new_state} <- State.Application.configure(command),
+         :ok <- State.Application.validate(new_state),
+         :ok <- State.System.validate(new_state),
+         :ok <- State.Family.validate(new_state),
+         :ok <- State.Component.validate(new_state),
+         :ok <- State.Command.validate(new_state),
+         :ok <- State.Event.validate(new_state),
+         :ok <- State.Subscriber.validate(new_state),
          applications <- State.Application.add_remove(state, new_state),
          systems <- State.System.add_remove(state, new_state),
          families <- State.Family.add_remove(state, new_state),

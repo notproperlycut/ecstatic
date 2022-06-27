@@ -29,6 +29,19 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
     end)
   end
 
+  def validate(%State{} = state) do
+    case state.commands
+         |> Enum.map(fn c -> c.name end)
+         |> (&(&1 -- Enum.uniq(&1))).()
+         |> Enum.uniq() do
+      [] ->
+        :ok
+
+      d ->
+        {:error, "Application definition contains duplicate command names: #{Enum.join(d, ", ")}"}
+    end
+  end
+
   def add_remove(%State{} = existing, %State{} = new) do
     add =
       new.commands

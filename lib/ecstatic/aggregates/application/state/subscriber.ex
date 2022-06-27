@@ -29,6 +29,20 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
     end)
   end
 
+  def validate(%State{} = state) do
+    case state.subscribers
+         |> Enum.map(fn c -> c.name end)
+         |> (&(&1 -- Enum.uniq(&1))).()
+         |> Enum.uniq() do
+      [] ->
+        :ok
+
+      d ->
+        {:error,
+         "Application definition contains duplicate subscriber names: #{Enum.join(d, ", ")}"}
+    end
+  end
+
   def add_remove(%State{} = existing, %State{} = new) do
     add =
       new.subscribers

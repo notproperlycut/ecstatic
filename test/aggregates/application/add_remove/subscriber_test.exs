@@ -10,15 +10,15 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""},
+            schema: Types.Schema.empty(),
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               },
               "d" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               }
             }
           }
@@ -65,15 +65,15 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""},
+            schema: Types.Schema.empty(),
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               },
               "d" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               }
             }
           }
@@ -85,11 +85,11 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""},
+            schema: Types.Schema.empty(),
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               }
             }
           }
@@ -118,11 +118,11 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""},
+            schema: Types.Schema.empty(),
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: %Types.Trigger{component: ""},
-                handler: %Types.Handler{mfa: ""}
+                trigger: Types.Trigger.empty(),
+                handler: Types.Handler.empty()
               }
             }
           }

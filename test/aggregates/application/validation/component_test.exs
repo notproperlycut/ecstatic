@@ -13,7 +13,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           good_name => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }
@@ -23,7 +23,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           bad_name => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }

@@ -10,10 +10,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           },
           "c" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }
@@ -58,10 +58,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           },
           "c" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }
@@ -71,7 +71,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }
@@ -98,7 +98,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
       "a" => %Commands.ConfigureApplication.System{
         components: %{
           "b" => %Commands.ConfigureApplication.Component{
-            schema: %Types.Schema{json_schema: ""}
+            schema: Types.Schema.empty()
           }
         }
       }

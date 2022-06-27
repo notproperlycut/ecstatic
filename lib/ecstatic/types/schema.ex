@@ -8,6 +8,19 @@ defmodule Ecstatic.Types.Schema do
     field :json_schema, String.t(), enforce: true
   end
 
-  # TODO: workaround dialyzer warning from domo __precond__ generator
-  precond(t: fn _ -> :ok end)
+  precond(
+    t: fn s ->
+      try do
+        ExJsonSchema.Schema.resolve(Jason.decode!(s.json_schema))
+        :ok
+      rescue
+        [ExJsonSchema.Schema.InvalidSchemaError, Jason.DecodeError] ->
+          {:error, "invalid json schema '#{String.slice(s.json_schema, 0..20)}'"}
+      end
+    end
+  )
+
+  def empty() do
+    __MODULE__.new!(%{json_schema: Jason.encode!(%{"type" => "null"})})
+  end
 end

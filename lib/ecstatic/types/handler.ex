@@ -4,10 +4,19 @@ defmodule Ecstatic.Types.Handler do
 
   use TypedStruct
 
+  @type handler :: list()
   typedstruct do
-    field :mfa, String.t(), enforce: true
+    field :mfa, handler, enforce: true
   end
 
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
+
+  def empty() do
+    __MODULE__.new!(%{mfa: [__MODULE__, :dummy, []]})
+  end
+
+  def dummy(_) do
+    {:ok, []}
+  end
 end

@@ -13,7 +13,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           good_name => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }
@@ -23,7 +23,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           bad_name => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }

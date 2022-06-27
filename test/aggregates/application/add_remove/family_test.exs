@@ -10,10 +10,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           "b" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           },
           "c" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }
@@ -58,10 +58,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           "b" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           },
           "c" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }
@@ -71,7 +71,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           "b" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }
@@ -98,7 +98,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
       "a" => %Commands.ConfigureApplication.System{
         families: %{
           "b" => %Commands.ConfigureApplication.Family{
-            criteria: %Types.Criteria{has: ""}
+            criteria: Types.Criteria.empty()
           }
         }
       }

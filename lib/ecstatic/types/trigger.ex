@@ -8,6 +8,13 @@ defmodule Ecstatic.Types.Trigger do
     field :component, String.t(), enforce: true
   end
 
-  # TODO: workaround dialyzer warning from domo __precond__ generator
-  precond(t: fn _ -> :ok end)
+  precond(
+    t: fn t ->
+      Ecstatic.Types.Names.Component.valid_name(t.component)
+    end
+  )
+
+  def empty() do
+    __MODULE__.new!(%{component: "d.component.e"})
+  end
 end

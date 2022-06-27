@@ -3,18 +3,13 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
-  alias Ecstatic.Types
 
   test "Can add components idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          },
-          "c" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          }
+          "b" => Commands.ConfigureApplication.Component.empty(),
+          "c" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
@@ -57,12 +52,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          },
-          "c" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          }
+          "b" => Commands.ConfigureApplication.Component.empty(),
+          "c" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
@@ -70,9 +61,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems_b = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          }
+          "b" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
@@ -97,9 +86,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         components: %{
-          "b" => %Commands.ConfigureApplication.Component{
-            schema: Types.Schema.empty()
-          }
+          "b" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }

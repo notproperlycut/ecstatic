@@ -15,10 +15,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              good_name => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              good_name => Commands.ConfigureApplication.Event.empty()
             }
           }
         }
@@ -31,10 +28,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              bad_name => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              bad_name => Commands.ConfigureApplication.Event.empty()
             }
           }
         }

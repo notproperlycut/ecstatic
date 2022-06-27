@@ -12,14 +12,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Subscriber.empty(),
+              "d" => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }
@@ -67,14 +61,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Subscriber.empty(),
+              "d" => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }
@@ -87,10 +75,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }
@@ -120,10 +105,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              "c" => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }

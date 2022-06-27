@@ -9,4 +9,10 @@ defmodule Ecstatic.Commands.ConfigureApplication.Component do
     field :events, map(), default: %{}
     field :subscribers, map(), default: %{}
   end
+
+  def empty() do
+    %__MODULE__{
+      schema: Types.Schema.empty()
+    }
+  end
 end

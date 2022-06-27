@@ -6,8 +6,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
 
   test "Can add systems idempotently" do
     systems = %{
-      "a" => %Commands.ConfigureApplication.System{},
-      "b" => %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty(),
+      "b" => Commands.ConfigureApplication.System.empty()
     }
 
     assert :ok =
@@ -46,12 +46,12 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
 
   test "Can remove systems" do
     systems_a = %{
-      "a" => %Commands.ConfigureApplication.System{},
-      "b" => %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty(),
+      "b" => Commands.ConfigureApplication.System.empty()
     }
 
     systems_b = %{
-      "a" => %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty()
     }
 
     assert :ok =
@@ -72,7 +72,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
 
   test "Can remove an application" do
     systems = %{
-      "a" => %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty()
     }
 
     assert :ok =

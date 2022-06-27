@@ -15,10 +15,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              good_name => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              good_name => Commands.ConfigureApplication.Command.empty()
             }
           }
         }
@@ -31,10 +28,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              bad_name => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              bad_name => Commands.ConfigureApplication.Command.empty()
             }
           }
         }

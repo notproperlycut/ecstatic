@@ -15,10 +15,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              good_name => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              good_name => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }
@@ -31,10 +28,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             subscribers: %{
-              bad_name => %Commands.ConfigureApplication.Subscriber{
-                trigger: Types.Trigger.empty(),
-                handler: Types.Handler.empty()
-              }
+              bad_name => Commands.ConfigureApplication.Subscriber.empty()
             }
           }
         }

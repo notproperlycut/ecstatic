@@ -12,14 +12,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              "c" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Event.empty(),
+              "d" => Commands.ConfigureApplication.Event.empty()
             }
           }
         }
@@ -67,14 +61,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              "c" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Event.empty(),
+              "d" => Commands.ConfigureApplication.Event.empty()
             }
           }
         }
@@ -87,10 +75,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              "c" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Event.empty()
             }
           }
         }
@@ -120,10 +105,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Event do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             events: %{
-              "c" => %Commands.ConfigureApplication.Event{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Event.empty()
             }
           }
         }

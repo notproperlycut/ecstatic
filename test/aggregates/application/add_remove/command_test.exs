@@ -12,14 +12,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Command.empty(),
+              "d" => Commands.ConfigureApplication.Command.empty()
             }
           }
         }
@@ -67,14 +61,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              },
-              "d" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Command.empty(),
+              "d" => Commands.ConfigureApplication.Command.empty()
             }
           }
         }
@@ -87,10 +75,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Command.empty()
             }
           }
         }
@@ -120,10 +105,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
           "b" => %Commands.ConfigureApplication.Component{
             schema: Types.Schema.empty(),
             commands: %{
-              "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.empty(),
-                handler: Types.Handler.empty()
-              }
+              "c" => Commands.ConfigureApplication.Command.empty()
             }
           }
         }

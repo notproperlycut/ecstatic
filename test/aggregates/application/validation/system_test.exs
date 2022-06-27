@@ -9,11 +9,11 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.System do
     bad_name = "a-name-a.period"
 
     systems_good = %{
-      good_name => %Commands.ConfigureApplication.System{}
+      good_name => Commands.ConfigureApplication.System.empty()
     }
 
     systems_bad = %{
-      bad_name => %Commands.ConfigureApplication.System{}
+      bad_name => Commands.ConfigureApplication.System.empty()
     }
 
     assert :ok =

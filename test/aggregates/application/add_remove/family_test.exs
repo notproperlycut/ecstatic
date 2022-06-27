@@ -3,18 +3,13 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
 
   alias Ecstatic.Commands
   alias Ecstatic.Events
-  alias Ecstatic.Types
 
   test "Can add families idempotently" do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          },
-          "c" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          }
+          "b" => Commands.ConfigureApplication.Family.empty(),
+          "c" => Commands.ConfigureApplication.Family.empty()
         }
       }
     }
@@ -57,12 +52,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          },
-          "c" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          }
+          "b" => Commands.ConfigureApplication.Family.empty(),
+          "c" => Commands.ConfigureApplication.Family.empty()
         }
       }
     }
@@ -70,9 +61,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems_b = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          }
+          "b" => Commands.ConfigureApplication.Family.empty()
         }
       }
     }
@@ -97,9 +86,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     systems = %{
       "a" => %Commands.ConfigureApplication.System{
         families: %{
-          "b" => %Commands.ConfigureApplication.Family{
-            criteria: Types.Criteria.empty()
-          }
+          "b" => Commands.ConfigureApplication.Family.empty()
         }
       }
     }

@@ -1,6 +1,12 @@
 defmodule Ecstatic.Commands.ConfigureApplication.System do
-  defstruct [
-    components: %{},
-    families: %{}
-  ]
+  use TypedStruct
+
+  typedstruct do
+    field :components, map(), default: %{}
+    field :families, map(), default: %{}
+  end
+
+  def empty() do
+    %__MODULE__{}
+  end
 end

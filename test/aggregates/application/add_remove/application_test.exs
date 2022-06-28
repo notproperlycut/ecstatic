@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplicationTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Application do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -39,13 +39,19 @@ defmodule Ecstatic.ConfigureApplicationTest do
 
   test "Cannot remove an non-existent application" do
     assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4})
-    assert {:error, :no_such_application} = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 3})
+
+    assert {:error, :no_such_application} =
+             Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 3})
   end
 
   test "Cannot use a removed application" do
     :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4})
     :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
-    assert {:error, :removed_application} = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4})
-    assert {:error, :removed_application} = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
+
+    assert {:error, :removed_application} =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4})
+
+    assert {:error, :removed_application} =
+             Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
   end
 end

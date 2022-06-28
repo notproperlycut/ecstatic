@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.ComponentTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,14 +6,16 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
   test "Can add components idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          "b" => Commands.ConfigureApplication.Component.empty(),
+          "c" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -40,29 +42,35 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
     refute_receive_event(
       Ecstatic.Commanded,
       Events.ComponentConfigured,
-      fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) end
+      fn ->
+        Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+      end
     )
   end
 
   test "Can remove components" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
-          c: %Commands.ConfigureApplication.Component{}
+          "b" => Commands.ConfigureApplication.Component.empty(),
+          "c" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
 
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
+          "b" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -76,14 +84,17 @@ defmodule Ecstatic.ConfigureApplication.ComponentTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{
+      "a" => %Commands.ConfigureApplication.System{
         components: %{
-          b: %Commands.ConfigureApplication.Component{},
+          "b" => Commands.ConfigureApplication.Component.empty()
         }
       }
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+
+    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,

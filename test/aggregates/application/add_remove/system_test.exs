@@ -1,4 +1,4 @@
-defmodule Ecstatic.ConfigureApplication.SystemTest do
+defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
   use Ecstatic.DataCase
 
   alias Ecstatic.Commands
@@ -6,10 +6,12 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
 
   test "Can add systems idempotently" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{},
-      b: %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty(),
+      "b" => Commands.ConfigureApplication.System.empty()
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -36,20 +38,27 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
     refute_receive_event(
       Ecstatic.Commanded,
       Events.SystemConfigured,
-      fn -> Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) end
+      fn ->
+        Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+      end
     )
   end
 
   test "Can remove systems" do
     systems_a = %{
-      a: %Commands.ConfigureApplication.System{},
-      b: %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty(),
+      "b" => Commands.ConfigureApplication.System.empty()
     }
+
     systems_b = %{
-      a: %Commands.ConfigureApplication.System{},
+      "a" => Commands.ConfigureApplication.System.empty()
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -63,10 +72,13 @@ defmodule Ecstatic.ConfigureApplication.SystemTest do
 
   test "Can remove an application" do
     systems = %{
-      a: %Commands.ConfigureApplication.System{}
+      "a" => Commands.ConfigureApplication.System.empty()
     }
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems}) 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4}) 
+
+    assert :ok =
+             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+
+    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,

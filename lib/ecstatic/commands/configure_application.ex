@@ -1,6 +1,10 @@
 defmodule Ecstatic.Commands.ConfigureApplication do
-  defstruct [
-    :id,
-    systems: %{}
-  ]
+  alias Ecstatic.Types
+
+  use TypedStruct
+
+  typedstruct do
+    field :id, Types.ApplicationId.t(), enforce: true
+    field :systems, map(), default: %{}
+  end
 end

@@ -1,19 +1,63 @@
 defmodule Ecstatic.Aggregates.Application.State.Family do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
+  alias Ecstatic.Types
 
-  def configure(%Events.ApplicationConfigured{} = application, %Events.SystemConfigured{} = system, families) do
-    Enum.reduce(families, %State{}, fn {k, _v}, state ->
-      family = %Events.FamilyConfigured{application_id: application.id, name: "#{system.name}.family.#{k}"}
-      state |> State.merge(%State{families: [family]})
+  def configure(
+        %Events.ApplicationConfigured{} = application,
+        %Events.SystemConfigured{} = system,
+        families
+      ) do
+    Enum.reduce_while(families, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
+      with {:ok, name} <- Types.Names.Family.new(%{system: system.name, family: k}),
+           {:ok, criteria} <- Types.Criteria.new(Map.from_struct(v.criteria)),
+           {:ok, family} <-
+             Events.FamilyConfigured.new(%{
+               application_id: application.id,
+               name: to_string(name),
+               criteria: criteria
+             }) do
+        state = state |> State.merge(%State{families: [family]})
+        {:cont, {:ok, state}}
+      else
+        error ->
+          {:halt, error}
+      end
     end)
   end
 
-  def add_remove(%State{} = existing, %State{} = new) do
-    add = new.families |> Enum.reject(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name end) end)
-    remove = existing.families |> Enum.reject(fn e -> Enum.any?(new.families, fn n -> n.name == e.name end) end) |> Enum.map(fn e -> %Events.FamilyRemoved{application_id: e.application_id, name: e.name} end)
+  def validate(%State{} = _state) do
+    :ok
+  end
 
-    add ++ remove
+  def add_remove(%State{} = existing, %State{} = new) do
+    add =
+      new.families
+      |> Enum.reject(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name end) end)
+
+    remove =
+      existing.families
+      |> Enum.reject(fn e -> Enum.any?(new.families, fn n -> n.name == e.name end) end)
+      |> Enum.map(fn e ->
+        Events.FamilyRemoved.new!(%{application_id: e.application_id, name: e.name})
+      end)
+
+    update =
+      new.families
+      |> Enum.filter(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name end) end)
+      |> Enum.reject(fn n -> Enum.any?(existing.families, fn e -> n == e end) end)
+
+    criteria_errors =
+      update
+      |> Enum.filter(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name && e.criteria != n.criteria end) end)
+      |> Enum.map(fn n -> "Cannot change criteria of family #{n.name}" end)
+
+    case criteria_errors do
+      [] ->
+        {:ok, add ++ remove ++ update}
+      _ ->
+        {:error, criteria_errors}
+    end
   end
 
   def update(%State{} = state, %Events.FamilyConfigured{} = event) do
@@ -24,4 +68,3 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
     %{state | families: state.families |> Enum.reject(fn s -> s.name == event.name end)}
   end
 end
-

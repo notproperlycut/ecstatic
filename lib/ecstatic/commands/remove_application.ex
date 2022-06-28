@@ -1,3 +1,9 @@
 defmodule Ecstatic.Commands.RemoveApplication do
-  defstruct [:id]
+  alias Ecstatic.Types
+
+  use TypedStruct
+
+  typedstruct do
+    field :id, Types.ApplicationId.t(), enforce: true
+  end
 end

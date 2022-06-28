@@ -1,7 +1,9 @@
 defmodule Ecstatic.Aggregates.Application do
-  defstruct [
-    state: nil
-  ]
+  use TypedStruct
+
+  typedstruct do
+    field :state, any(), default: nil
+  end
 
   alias Ecstatic.Aggregates.Application
   alias Ecstatic.Commands
@@ -27,7 +29,6 @@ defmodule Ecstatic.Aggregates.Application do
   def execute(%Application{} = app, %Commands.RemoveApplication{}) do
     Ecstatic.Aggregates.Application.State.remove(app.state)
   end
-
 
   #
   def apply(%Application{state: :removed}, _) do

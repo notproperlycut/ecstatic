@@ -3,20 +3,23 @@ defmodule Ecstatic.MixProject do
 
   def project do
     [
-      app: :ecstatic,
-      version: "0.1.0",
-      elixir: "~> 1.13",
-      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      app: :ecstatic,
+      compilers: [:domo_compiler] ++ Mix.compilers(),
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env)
+      dialyzer: [plt_add_apps: [:mix]],
+      elixir: "~> 1.13",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
+      test_coverage: [ignore_modules: [~r/\.TypeEnsurer$/]],
+      version: "0.1.0"
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :crypto],
       mod: {Ecstatic.Application, []}
     ]
   end
@@ -32,7 +35,9 @@ defmodule Ecstatic.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:domo, "~> 1.5"},
       {:elixir_uuid, "~> 1.2"},
-      {:jason, "~> 1.2"}
+      {:ex_json_schema, "~> 0.9.1"},
+      {:jason, "~> 1.2"},
+      {:typed_struct, "~> 0.3.0"}
     ]
   end
 
@@ -42,7 +47,7 @@ defmodule Ecstatic.MixProject do
       "event_store.setup": ["event_store.create", "event_store.init"],
       "event_store.reset": ["event_store.drop", "event_store.setup"],
       reset: ["event_store.reset"],
-      test: ["reset", "test"],
+      test: ["reset", "test"]
     ]
   end
 end

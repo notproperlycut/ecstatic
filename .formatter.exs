@@ -1,4 +1,4 @@
-# Used by "mix format"
 [
-  inputs: ["{mix,.formatter}.exs", "{config,lib,test}/**/*.{ex,exs}"]
+  import_deps: [:domo, :typed_struct],
+  inputs: ["*.{ex,exs}", "{config,lib,test}/**/*.{ex,exs}"]
 ]

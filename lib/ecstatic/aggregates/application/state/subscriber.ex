@@ -55,7 +55,12 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
         Events.SubscriberRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
-    add ++ remove
+    update =
+      new.subscribers
+      |> Enum.filter(fn n -> Enum.any?(existing.subscribers, fn e -> e.name == n.name end) end)
+      |> Enum.reject(fn n -> Enum.any?(existing.subscribers, fn e -> n == e end) end)
+
+    {:ok, add ++ remove ++ update}
   end
 
   def update(%State{} = state, %Events.SubscriberConfigured{} = event) do

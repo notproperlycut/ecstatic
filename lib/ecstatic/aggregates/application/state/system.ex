@@ -43,7 +43,7 @@ defmodule Ecstatic.Aggregates.Application.State.System do
         Events.SystemRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
-    add ++ remove
+    {:ok, add ++ remove}
   end
 
   def update(%State{} = state, %Events.SystemConfigured{} = event) do

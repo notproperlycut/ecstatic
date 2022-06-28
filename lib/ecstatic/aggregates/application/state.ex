@@ -23,29 +23,29 @@ defmodule Ecstatic.Aggregates.Application.State do
          :ok <- State.Command.validate(new_state),
          :ok <- State.Event.validate(new_state),
          :ok <- State.Subscriber.validate(new_state),
-         applications <- State.Application.add_remove(state, new_state),
-         systems <- State.System.add_remove(state, new_state),
-         families <- State.Family.add_remove(state, new_state),
-         components <- State.Component.add_remove(state, new_state),
-         commands <- State.Command.add_remove(state, new_state),
-         events <- State.Event.add_remove(state, new_state),
-         subscribers <- State.Subscriber.add_remove(state, new_state) do
+         {:ok, applications} <- State.Application.add_remove(state, new_state),
+         {:ok, systems} <- State.System.add_remove(state, new_state),
+         {:ok, families} <- State.Family.add_remove(state, new_state),
+         {:ok, components} <- State.Component.add_remove(state, new_state),
+         {:ok, commands} <- State.Command.add_remove(state, new_state),
+         {:ok, events} <- State.Event.add_remove(state, new_state),
+         {:ok, subscribers} <- State.Subscriber.add_remove(state, new_state) do
       {:ok,
-       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+        applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
     end
   end
 
   def remove(%State{} = state) do
     with empty <- %State{},
-         applications <- State.Application.add_remove(state, empty),
-         systems <- State.System.add_remove(state, empty),
-         families <- State.Family.add_remove(state, empty),
-         components <- State.Component.add_remove(state, empty),
-         commands <- State.Command.add_remove(state, empty),
-         events <- State.Event.add_remove(state, empty),
-         subscribers <- State.Subscriber.add_remove(state, empty) do
+         {:ok, applications} <- State.Application.add_remove(state, empty),
+         {:ok, systems} <- State.System.add_remove(state, empty),
+         {:ok, families} <- State.Family.add_remove(state, empty),
+         {:ok, components} <- State.Component.add_remove(state, empty),
+         {:ok, commands} <- State.Command.add_remove(state, empty),
+         {:ok, events} <- State.Event.add_remove(state, empty),
+         {:ok, subscribers} <- State.Subscriber.add_remove(state, empty) do
       {:ok,
-       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+        applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
     end
   end
 

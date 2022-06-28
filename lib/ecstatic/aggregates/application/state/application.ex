@@ -24,7 +24,7 @@ defmodule Ecstatic.Aggregates.Application.State.Application do
       |> Enum.reject(fn e -> Enum.any?(new.applications, fn n -> n.id == e.id end) end)
       |> Enum.map(fn e -> %Events.ApplicationRemoved{id: e.id} end)
 
-    add ++ remove
+    {:ok, add ++ remove}
   end
 
   def update(%State{} = state, %Events.ApplicationConfigured{} = event) do

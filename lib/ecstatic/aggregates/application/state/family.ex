@@ -42,7 +42,22 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
         Events.FamilyRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
-    add ++ remove
+    update =
+      new.families
+      |> Enum.filter(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name end) end)
+      |> Enum.reject(fn n -> Enum.any?(existing.families, fn e -> n == e end) end)
+
+    criteria_errors =
+      update
+      |> Enum.filter(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name && e.criteria != n.criteria end) end)
+      |> Enum.map(fn n -> "Cannot change criteria of family #{n.name}" end)
+
+    case criteria_errors do
+      [] ->
+        {:ok, add ++ remove ++ update}
+      _ ->
+        {:error, criteria_errors}
+    end
   end
 
   def update(%State{} = state, %Events.FamilyConfigured{} = event) do

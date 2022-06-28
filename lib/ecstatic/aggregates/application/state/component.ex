@@ -52,7 +52,22 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
         Events.ComponentRemoved.new!(%{application_id: e.application_id, name: e.name})
       end)
 
-    add ++ remove
+    update =
+      new.components
+      |> Enum.filter(fn n -> Enum.any?(existing.components, fn e -> e.name == n.name end) end)
+      |> Enum.reject(fn n -> Enum.any?(existing.components, fn e -> n == e end) end)
+
+    schema_errors =
+      update
+      |> Enum.filter(fn n -> Enum.any?(existing.components, fn e -> e.name == n.name && e.schema != n.schema end) end)
+      |> Enum.map(fn n -> "Cannot change schema of component #{n.name}" end)
+
+    case schema_errors do
+      [] ->
+        {:ok, add ++ remove ++ update}
+      _ ->
+        {:error, schema_errors}
+    end
   end
 
   def update(%State{} = state, %Events.ComponentConfigured{} = event) do

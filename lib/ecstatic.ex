@@ -1,18 +1,11 @@
 defmodule Ecstatic do
-  @moduledoc """
-  Documentation for `Ecstatic`.
-  """
+  alias Ecstatic.Commands
 
-  @doc """
-  Hello world.
+  def configure_application(%Commands.ConfigureApplication{} = application) do
+    Ecstatic.Commanded.dispatch(application)
+  end
 
-  ## Examples
-
-      iex> Ecstatic.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def remove_application(%Commands.RemoveApplication{} = application) do
+    Ecstatic.Commanded.dispatch(application)
   end
 end

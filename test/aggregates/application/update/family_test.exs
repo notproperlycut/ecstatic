@@ -30,7 +30,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_a
              })
@@ -49,7 +49,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
 
     refute match?(
       :ok,
-      Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+      Ecstatic.configure_application(%Commands.ConfigureApplication{
         id: 4,
         systems: systems_b
       })

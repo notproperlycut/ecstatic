@@ -46,13 +46,13 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_a
              })
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_b
              })
@@ -123,13 +123,13 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_a
              })
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_b
              })

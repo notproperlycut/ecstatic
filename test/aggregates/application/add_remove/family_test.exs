@@ -15,7 +15,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -43,7 +43,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
       Ecstatic.Commanded,
       Events.FamilyConfigured,
       fn ->
-        Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+        Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
       end
     )
   end
@@ -67,10 +67,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems_a})
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems_b})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems_b})
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -92,9 +92,9 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Family do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{id: 4, systems: systems})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
 
-    assert :ok = Ecstatic.Commanded.dispatch(%Commands.RemoveApplication{id: 4})
+    assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{id: 4})
 
     assert_receive_event(
       Ecstatic.Commanded,

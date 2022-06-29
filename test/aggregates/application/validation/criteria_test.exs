@@ -20,7 +20,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Criteria do
     }
 
     assert :ok =
-             Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
                id: 4,
                systems: systems_good
              })
@@ -50,7 +50,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Criteria do
 
       refute match?(
                :ok,
-               Ecstatic.Commanded.dispatch(%Commands.ConfigureApplication{
+               Ecstatic.configure_application(%Commands.ConfigureApplication{
                  id: 4,
                  systems: systems_bad
                })

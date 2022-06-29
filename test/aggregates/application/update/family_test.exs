@@ -40,7 +40,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
       Events.FamilyConfigured,
       fn event ->
         event.name == "a.family.b" &&
-        event.criteria.has == has_a
+          event.criteria.has == has_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -48,11 +48,11 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
     )
 
     refute match?(
-      :ok,
-      Ecstatic.configure_application(%Commands.ConfigureApplication{
-        id: 4,
-        systems: systems_b
-      })
-    )
+             :ok,
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_b
+             })
+           )
   end
 end

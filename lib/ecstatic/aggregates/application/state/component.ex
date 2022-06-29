@@ -59,12 +59,15 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
 
     schema_errors =
       update
-      |> Enum.filter(fn n -> Enum.any?(existing.components, fn e -> e.name == n.name && e.schema != n.schema end) end)
+      |> Enum.filter(fn n ->
+        Enum.any?(existing.components, fn e -> e.name == n.name && e.schema != n.schema end)
+      end)
       |> Enum.map(fn n -> "Cannot change schema of component #{n.name}" end)
 
     case schema_errors do
       [] ->
         {:ok, add ++ remove ++ update}
+
       _ ->
         {:error, schema_errors}
     end

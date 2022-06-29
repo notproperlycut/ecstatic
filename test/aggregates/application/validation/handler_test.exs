@@ -10,7 +10,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
   end
 
   test "Rejects invalid schema" do
-    good_mfa = [to_string(__MODULE__), "handler", 1]
+    good_mfa = [__MODULE__, :handler, 1]
     bad_mfa = []
 
     systems_good = %{

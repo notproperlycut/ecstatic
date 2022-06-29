@@ -14,3 +14,9 @@ defmodule Ecstatic.Events.ComponentConfigured do
   # TODO: workaround dialyzer warning from domo __precond__ generator
   precond(t: fn _ -> :ok end)
 end
+
+defimpl Commanded.Serialization.JsonDecoder, for: Ecstatic.Events.ComponentConfigured do
+  def decode(%Ecstatic.Events.ComponentConfigured{schema: schema} = event) do
+    %Ecstatic.Events.ComponentConfigured{event | schema: struct(Ecstatic.Types.Schema, schema)}
+  end
+end

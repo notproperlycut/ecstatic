@@ -21,7 +21,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
     }
 
     assert :ok =
-             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems
+             })
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -83,10 +86,16 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
     }
 
     assert :ok =
-             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems_a})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_a
+             })
 
     assert :ok =
-             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems_b})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_b
+             })
 
     assert_receive_event(
       Ecstatic.Commanded,
@@ -113,7 +122,10 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
     }
 
     assert :ok =
-             Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems
+             })
 
     assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{id: 4})
 

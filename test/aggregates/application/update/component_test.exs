@@ -40,7 +40,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Component do
       Events.ComponentConfigured,
       fn event ->
         event.name == "a.component.b" &&
-        event.schema.json_schema == schema_a
+          event.schema.json_schema == schema_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -48,11 +48,11 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Component do
     )
 
     refute match?(
-      :ok,
-      Ecstatic.configure_application(%Commands.ConfigureApplication{
-        id: 4,
-        systems: systems_b
-      })
-    )
+             :ok,
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_b
+             })
+           )
   end
 end

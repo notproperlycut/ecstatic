@@ -13,10 +13,22 @@ defmodule Ecstatic.Types.Handler do
   precond(t: fn _ -> :ok end)
 
   def empty() do
-    __MODULE__.new!(%{mfa: [__MODULE__, :dummy, []]})
+    __MODULE__.new!(%{mfa: [__MODULE__, :dummy, 1]})
   end
 
   def dummy(_) do
     {:ok, []}
+  end
+end
+
+defimpl Commanded.Serialization.JsonDecoder, for: Ecstatic.Types.Handler do
+  def decode(%Ecstatic.Types.Handler{mfa: mfa} = event) do
+    new_mfa =
+      Enum.map(mfa, fn
+        s when is_binary(s) -> String.to_atom(s)
+        o -> o
+      end)
+
+    %Ecstatic.Types.Handler{event | mfa: new_mfa}
   end
 end

@@ -6,8 +6,8 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
   alias Ecstatic.Types
 
   test "Allows a change of handler" do
-    mfa_a = [to_string(__MODULE__), "handler_a", 1]
-    mfa_b = [to_string(__MODULE__), "handler_b", 1]
+    mfa_a = [__MODULE__, :handler_a, 1]
+    mfa_b = [__MODULE__, :handler_b, 1]
 
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
@@ -17,9 +17,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
                 trigger: Types.Trigger.empty(),
-                handler: Types.Handler.new!(%{
-                  mfa: mfa_a
-                })
+                handler:
+                  Types.Handler.new!(%{
+                    mfa: mfa_a
+                  })
               }
             }
           }
@@ -35,9 +36,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
                 trigger: Types.Trigger.empty(),
-                handler: Types.Handler.new!(%{
-                  mfa: mfa_b
-                })
+                handler:
+                  Types.Handler.new!(%{
+                    mfa: mfa_b
+                  })
               }
             }
           }
@@ -62,7 +64,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
-        event.handler.mfa == mfa_a
+          event.handler.mfa == mfa_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -74,7 +76,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
-        event.handler.mfa == mfa_b
+          event.handler.mfa == mfa_b
       end,
       fn event ->
         assert event.application_id == 4
@@ -94,9 +96,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
                 handler: Types.Handler.empty(),
-                trigger: Types.Trigger.new!(%{
-                  component: component_a
-                })
+                trigger:
+                  Types.Trigger.new!(%{
+                    component: component_a
+                  })
               }
             }
           }
@@ -112,9 +115,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
             subscribers: %{
               "c" => %Commands.ConfigureApplication.Subscriber{
                 handler: Types.Handler.empty(),
-                trigger: Types.Trigger.new!(%{
-                  component: component_b
-                })
+                trigger:
+                  Types.Trigger.new!(%{
+                    component: component_b
+                  })
               }
             }
           }
@@ -139,7 +143,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
-        event.trigger.component == component_a
+          event.trigger.component == component_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -151,7 +155,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
-        event.trigger.component == component_b
+          event.trigger.component == component_b
       end,
       fn event ->
         assert event.application_id == 4

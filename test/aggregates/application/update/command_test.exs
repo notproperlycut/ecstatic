@@ -16,9 +16,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
             schema: Types.Schema.empty(),
             commands: %{
               "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.new!(%{
-                  json_schema: schema_a
-                }),
+                schema:
+                  Types.Schema.new!(%{
+                    json_schema: schema_a
+                  }),
                 handler: Types.Handler.empty()
               }
             }
@@ -34,9 +35,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
             schema: Types.Schema.empty(),
             commands: %{
               "c" => %Commands.ConfigureApplication.Command{
-                schema: Types.Schema.new!(%{
-                  json_schema: schema_b
-                }),
+                schema:
+                  Types.Schema.new!(%{
+                    json_schema: schema_b
+                  }),
                 handler: Types.Handler.empty()
               }
             }
@@ -56,7 +58,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&
-        event.schema.json_schema == schema_a
+          event.schema.json_schema == schema_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -64,17 +66,17 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
     )
 
     refute match?(
-      :ok,
-      Ecstatic.configure_application(%Commands.ConfigureApplication{
-        id: 4,
-        systems: systems_b
-      })
-    )
+             :ok,
+             Ecstatic.configure_application(%Commands.ConfigureApplication{
+               id: 4,
+               systems: systems_b
+             })
+           )
   end
 
   test "Allows a change of handler" do
-    mfa_a = [to_string(__MODULE__), "handler_a", 1]
-    mfa_b = [to_string(__MODULE__), "handler_b", 1]
+    mfa_a = [__MODULE__, :handler_a, 1]
+    mfa_b = [__MODULE__, :handler_b, 1]
 
     systems_a = %{
       "a" => %Commands.ConfigureApplication.System{
@@ -84,9 +86,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
             commands: %{
               "c" => %Commands.ConfigureApplication.Command{
                 schema: Types.Schema.empty(),
-                handler: Types.Handler.new!(%{
-                  mfa: mfa_a
-                })
+                handler:
+                  Types.Handler.new!(%{
+                    mfa: mfa_a
+                  })
               }
             }
           }
@@ -102,9 +105,10 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
             commands: %{
               "c" => %Commands.ConfigureApplication.Command{
                 schema: Types.Schema.empty(),
-                handler: Types.Handler.new!(%{
-                  mfa: mfa_b
-                })
+                handler:
+                  Types.Handler.new!(%{
+                    mfa: mfa_b
+                  })
               }
             }
           }
@@ -129,7 +133,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&
-        event.handler.mfa == mfa_a
+          event.handler.mfa == mfa_a
       end,
       fn event ->
         assert event.application_id == 4
@@ -141,7 +145,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&
-        event.handler.mfa == mfa_b
+          event.handler.mfa == mfa_b
       end,
       fn event ->
         assert event.application_id == 4

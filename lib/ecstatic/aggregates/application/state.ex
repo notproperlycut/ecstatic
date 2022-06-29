@@ -31,7 +31,7 @@ defmodule Ecstatic.Aggregates.Application.State do
          {:ok, events} <- State.Event.add_remove(state, new_state),
          {:ok, subscribers} <- State.Subscriber.add_remove(state, new_state) do
       {:ok,
-        applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
     end
   end
 
@@ -45,7 +45,7 @@ defmodule Ecstatic.Aggregates.Application.State do
          {:ok, events} <- State.Event.add_remove(state, empty),
          {:ok, subscribers} <- State.Subscriber.add_remove(state, empty) do
       {:ok,
-        applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
+       applications ++ systems ++ families ++ components ++ commands ++ events ++ subscribers}
     end
   end
 

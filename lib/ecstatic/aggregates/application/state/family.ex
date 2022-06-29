@@ -49,12 +49,15 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
 
     criteria_errors =
       update
-      |> Enum.filter(fn n -> Enum.any?(existing.families, fn e -> e.name == n.name && e.criteria != n.criteria end) end)
+      |> Enum.filter(fn n ->
+        Enum.any?(existing.families, fn e -> e.name == n.name && e.criteria != n.criteria end)
+      end)
       |> Enum.map(fn n -> "Cannot change criteria of family #{n.name}" end)
 
     case criteria_errors do
       [] ->
         {:ok, add ++ remove ++ update}
+
       _ ->
         {:error, criteria_errors}
     end

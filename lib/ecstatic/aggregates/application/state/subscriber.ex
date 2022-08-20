@@ -6,7 +6,7 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
   def configure(
         %Events.ApplicationConfigured{} = application,
         %Events.SystemConfigured{} = system,
-        %Events.ComponentConfigured{} = _component,
+        %Events.ComponentConfigured{} = component,
         subscribers
       ) do
     Enum.reduce_while(subscribers, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
@@ -16,6 +16,7 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
            {:ok, subscriber} <-
              Events.SubscriberConfigured.new(%{
                application_id: application.id,
+               component_name: component.name,
                name: to_string(name),
                handler: handler,
                trigger: trigger

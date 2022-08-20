@@ -6,7 +6,7 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
   def configure(
         %Events.ApplicationConfigured{} = application,
         %Events.SystemConfigured{} = system,
-        %Events.ComponentConfigured{} = _component,
+        %Events.ComponentConfigured{} = component,
         commands
       ) do
     Enum.reduce_while(commands, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
@@ -16,6 +16,7 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
            {:ok, command} <-
              Events.CommandConfigured.new(%{
                application_id: application.id,
+               component_name: component.name,
                name: to_string(name),
                handler: handler,
                schema: schema

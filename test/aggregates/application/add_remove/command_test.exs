@@ -34,6 +34,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
       end,
       fn event ->
         assert event.application_id == 4
+        assert event.component_name == "a.component.b"
       end
     )
 
@@ -45,6 +46,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
       end,
       fn event ->
         assert event.application_id == 4
+        assert event.component_name == "a.component.b"
       end
     )
 

@@ -31,7 +31,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_a
              })
 
@@ -43,14 +43,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
           event.criteria.has == has_a
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_b
              })
            )

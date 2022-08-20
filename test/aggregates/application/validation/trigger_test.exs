@@ -27,7 +27,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Trigger do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_good
              })
 
@@ -39,7 +39,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Trigger do
           event.trigger.component == good_trigger
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
 
@@ -63,7 +63,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Trigger do
       refute match?(
                :ok,
                Ecstatic.configure_application(%Commands.ConfigureApplication{
-                 id: 4,
+                 id: "4",
                  systems: systems_bad
                })
              )

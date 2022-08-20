@@ -22,7 +22,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems
              })
 
@@ -33,7 +33,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
         event.name == "a.subscriber.c"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -45,7 +45,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
         event.name == "a.subscriber.d"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -54,7 +54,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       Ecstatic.Commanded,
       Events.SubscriberConfigured,
       fn ->
-        Ecstatic.configure_application(%Commands.ConfigureApplication{id: 4, systems: systems})
+        Ecstatic.configure_application(%Commands.ConfigureApplication{id: "4", systems: systems})
       end
     )
   end
@@ -89,13 +89,13 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_a
              })
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_b
              })
 
@@ -104,7 +104,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
       Events.SubscriberRemoved,
       fn event ->
         assert event.name == "a.subscriber.d"
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
   end
@@ -125,18 +125,18 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems
              })
 
-    assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{id: 4})
+    assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{id: "4"})
 
     assert_receive_event(
       Ecstatic.Commanded,
       Events.SubscriberRemoved,
       fn event ->
         assert event.name == "a.subscriber.c"
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
   end

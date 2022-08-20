@@ -26,14 +26,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_good
              })
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_bad
              })
            )
@@ -45,7 +45,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
         event.name == "a.component.#{good_name}"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
   end

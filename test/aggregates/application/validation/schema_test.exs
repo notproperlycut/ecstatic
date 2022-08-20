@@ -27,7 +27,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Schema do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_good
              })
 
@@ -39,7 +39,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Schema do
           event.schema.json_schema == good_schema
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
       end
     )
 
@@ -63,7 +63,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Schema do
       refute match?(
                :ok,
                Ecstatic.configure_application(%Commands.ConfigureApplication{
-                 id: 4,
+                 id: "4",
                  systems: systems_bad
                })
              )

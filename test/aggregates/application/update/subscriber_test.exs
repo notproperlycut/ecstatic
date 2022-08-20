@@ -49,13 +49,13 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_a
              })
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_b
              })
 
@@ -67,7 +67,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
           event.handler.mfa == mfa_a
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -80,7 +80,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
           event.handler.mfa == mfa_b
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -130,13 +130,13 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_a
              })
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_b
              })
 
@@ -148,7 +148,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
           event.trigger.component == component_a
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -161,7 +161,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
           event.trigger.component == component_b
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )

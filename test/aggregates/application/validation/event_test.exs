@@ -37,14 +37,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_good
              })
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_bad
              })
            )
@@ -56,7 +56,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
         event.name == "a.event.#{good_name}"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -103,14 +103,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_good
              })
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: 4,
+               id: "4",
                systems: systems_bad
              })
            )
@@ -122,7 +122,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
         event.name == "a.event.d"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.b"
       end
     )
@@ -134,7 +134,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Event do
         event.name == "a.event.e"
       end,
       fn event ->
-        assert event.application_id == 4
+        assert event.application_id == "4"
         assert event.component_name == "a.component.c"
       end
     )

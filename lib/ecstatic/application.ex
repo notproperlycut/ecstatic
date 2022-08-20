@@ -8,7 +8,8 @@ defmodule Ecstatic.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      Ecstatic.Commanded
+      Ecstatic.Commanded,
+      Ecstatic.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

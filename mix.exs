@@ -34,20 +34,20 @@ defmodule Ecstatic.MixProject do
       {:commanded_eventstore_adapter, "~> 1.2"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:domo, "~> 1.5"},
+      {:ecto_sql, "~> 3.0"},
       {:elixir_uuid, "~> 1.2"},
       {:ex_json_schema, "~> 0.9.1"},
       {:jason, "~> 1.2"},
+      {:postgrex, ">= 0.0.0"},
       {:typed_struct, "~> 0.3.0"}
     ]
   end
 
   defp aliases do
     [
-      setup: ["deps.get", "event_store.setup"],
-      "event_store.setup": ["event_store.create", "event_store.init"],
-      "event_store.reset": ["event_store.drop", "event_store.setup"],
-      reset: ["event_store.reset"],
-      test: ["reset", "test"]
+      up: ["deps.get", "ecstatic.up"],
+      down: ["ecstatic.down"],
+      test: ["up", "test"]
     ]
   end
 end

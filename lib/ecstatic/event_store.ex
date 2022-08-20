@@ -1,10 +1,13 @@
 defmodule Ecstatic.EventStore do
-  use EventStore, otp_app: :ecstatic
+  use EventStore,
+    otp_app: :ecstatic,
+    serializer: Commanded.Serialization.JsonSerializer,
+    schema: "ecstatic_commanded"
 
-  def init(_) do
+  def init(config) do
     config =
-      Application.fetch_env!(:ecstatic, :database)
-      |> Keyword.put(:serializer, Commanded.Serialization.JsonSerializer)
+      config
+      |> Keyword.merge(Application.fetch_env!(:ecstatic, :database))
 
     {:ok, config}
   end

@@ -1,6 +1,7 @@
 defmodule Ecstatic do
   alias Ecstatic.Commands
   alias Ecstatic.Types
+  alias Ecstatic.Projections
 
   def configure_application(%Commands.ConfigureApplication{} = application) do
     Ecstatic.Commanded.dispatch(application)
@@ -28,5 +29,10 @@ defmodule Ecstatic do
     }
 
     Ecstatic.Commanded.dispatch(command)
+  end
+
+
+  def command(application_id, command) do
+    Ecstatic.Repo.get_by(Projections.Command, [application_id: application_id, name: command])
   end
 end

@@ -9,7 +9,8 @@ defmodule Ecstatic.Application do
   def start(_type, _args) do
     children = [
       Ecstatic.Commanded,
-      Ecstatic.Repo
+      Ecstatic.Repo,
+      Ecstatic.Projectors.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

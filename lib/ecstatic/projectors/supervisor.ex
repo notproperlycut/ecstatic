@@ -8,7 +8,13 @@ defmodule Ecstatic.Projectors.Supervisor do
   @impl true
   def init(_init_arg) do
     children = [
-      Ecstatic.Projectors.Command
+      Ecstatic.Projectors.Application,
+      Ecstatic.Projectors.Command,
+      Ecstatic.Projectors.Component,
+      Ecstatic.Projectors.Event,
+      Ecstatic.Projectors.Family,
+      Ecstatic.Projectors.Subscriber,
+      Ecstatic.Projectors.System
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

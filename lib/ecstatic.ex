@@ -12,23 +12,22 @@ defmodule Ecstatic do
   end
 
   def execute_command(application_id, entity_id, command, payload) do
-    # TODO:
-    # locate component (from app_id and command)
-    # validate payload
-    # send command
-    {:ok, entity_component_id} =
-      Types.EntityComponentId.new(%{
-        application_id: application_id,
-        entity_id: entity_id,
-        component_name: command
-      })
-
-    command = %Commands.ExecuteCommand{
-      entity_component_id: entity_component_id,
-      payload: payload
-    }
-
-    Ecstatic.Commanded.dispatch(command)
+    with %Ecstatic.Projections.Command{component_name: component_name, schema: schema} <-
+           command(application_id, command),
+         schema <- ExJsonSchema.Schema.resolve(Jason.decode!(schema["json_schema"])),
+         :ok <- ExJsonSchema.Validator.validate(schema, payload),
+         {:ok, entity_component_id} <-
+           Types.EntityComponentId.new(%{
+             application_id: application_id,
+             entity_id: entity_id,
+             component_name: component_name
+           }),
+         command <- %Commands.ExecuteCommand{
+           entity_component_id: entity_component_id,
+           payload: payload
+         } do
+      Ecstatic.Commanded.dispatch(command)
+    end
   end
 
   def application(id) do

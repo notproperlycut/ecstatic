@@ -11,7 +11,7 @@ defmodule Ecstatic.Aggregates.EntityComponent do
 
   #
   def execute(%EntityComponent{} = _entity_component, %Commands.ExecuteCommand{} = command) do
-    %Ecstatic.Events.CommandStarted{id: command.entity_component_id}
+    %Ecstatic.Events.CommandStarted{id: "#{command.entity_component_id}"}
   end
 
   #

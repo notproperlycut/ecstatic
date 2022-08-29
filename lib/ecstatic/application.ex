@@ -10,7 +10,8 @@ defmodule Ecstatic.Application do
     children = [
       Ecstatic.Commanded,
       Ecstatic.Repo,
-      Ecstatic.Projectors.Supervisor
+      Ecstatic.Projectors.Supervisor,
+      Ecstatic.Workflows.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

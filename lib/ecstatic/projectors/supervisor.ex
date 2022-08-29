@@ -11,6 +11,7 @@ defmodule Ecstatic.Projectors.Supervisor do
       Ecstatic.Projectors.Application,
       Ecstatic.Projectors.Command,
       Ecstatic.Projectors.Component,
+      Ecstatic.Projectors.EntityComponent,
       Ecstatic.Projectors.Event,
       Ecstatic.Projectors.Family,
       Ecstatic.Projectors.Subscriber,

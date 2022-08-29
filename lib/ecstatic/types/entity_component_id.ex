@@ -1,5 +1,6 @@
 defmodule Ecstatic.Types.EntityComponentId do
   use Domo, skip_defaults: true
+  @derive Jason.Encoder
   use TypedStruct
 
   typedstruct do

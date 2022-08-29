@@ -10,4 +10,3 @@ defmodule Ecstatic.Types.EventInvocation do
     field :payload, Types.Payload.t(), enforce: true
   end
 end
-

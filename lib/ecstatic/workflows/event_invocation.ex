@@ -11,17 +11,29 @@ defmodule Ecstatic.Workflows.EventInvocation do
       payload: invocation.payload
     }
 
-    with entity_component <- Ecstatic.entity_component(invocation.application_id, "#{Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id)}"),
+    with entity_component <-
+           Ecstatic.entity_component(
+             invocation.application_id,
+             "#{Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id)}"
+           ),
          event <- Ecstatic.event(invocation.application_id, invocation.event_name),
-         {:ok, entity_component_state} <- Ecstatic.Workflows.MfaDispatch.dispatch(event.handler["mfa"], entity_component, invocation.payload),
-         {:ok, entity_component_state} <- Ecstatic.Workflows.VerifyEntityComponentState.verify(event, entity_component_state) do
+         {:ok, entity_component_state} <-
+           Ecstatic.Workflows.MfaDispatch.dispatch(
+             event.handler["mfa"],
+             entity_component,
+             invocation.payload
+           ),
+         {:ok, entity_component_state} <-
+           Ecstatic.Workflows.VerifyEntityComponentState.verify(event, entity_component_state) do
       Ecstatic.succeed_event(invocation, entity_component_state)
     else
       {:error, error} ->
         Ecstatic.fail_event(invocation, error)
+
       error ->
         Ecstatic.fail_event(invocation, error)
     end
+
     :ok
   end
 end

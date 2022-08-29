@@ -12,7 +12,9 @@ defmodule Ecstatic.Aggregates.EntityComponent do
   end
 
   #
-  def execute(%EntityComponent{invocation: nil}, %Commands.CommandInvocation.Request{invocation: invocation}) do
+  def execute(%EntityComponent{invocation: nil}, %Commands.CommandInvocation.Request{
+        invocation: invocation
+      }) do
     %Ecstatic.Events.CommandInvocation.Requested{
       invocation: invocation
     }
@@ -28,25 +30,27 @@ defmodule Ecstatic.Aggregates.EntityComponent do
       events: events
     }
 
-    deferred = Enum.map(events, fn event ->
-      %Ecstatic.Events.EventInvocation.Deferred{
-        invocation: %Types.EventInvocation{
-          application_id: invocation.application_id,
-          # TODO: resolve the event name
-          event_name: event.name,
-          entity_component_id: invocation.entity_component_id,
-          payload: event.value
+    deferred =
+      Enum.map(events, fn event ->
+        %Ecstatic.Events.EventInvocation.Deferred{
+          invocation: %Types.EventInvocation{
+            application_id: invocation.application_id,
+            # TODO: resolve the event name
+            event_name: event.name,
+            entity_component_id: invocation.entity_component_id,
+            payload: event.value
+          }
         }
-      }
-    end)
+      end)
 
-    requested = deferred
-                |> Enum.take(1)
-                |> Enum.map(fn d ->
-                  %Ecstatic.Events.EventInvocation.Requested{
-                    invocation: d.invocation
-                  }
-                end)
+    requested =
+      deferred
+      |> Enum.take(1)
+      |> Enum.map(fn d ->
+        %Ecstatic.Events.EventInvocation.Requested{
+          invocation: d.invocation
+        }
+      end)
 
     deferred ++ [succeed] ++ requested
   end
@@ -58,19 +62,23 @@ defmodule Ecstatic.Aggregates.EntityComponent do
     }
   end
 
-  def execute(%EntityComponent{events: [_first | remaining]}, %Commands.EventInvocation.Succeed{invocation: invocation, entity_component_state: entity_component_state}) do
+  def execute(%EntityComponent{events: [_first | remaining]}, %Commands.EventInvocation.Succeed{
+        invocation: invocation,
+        entity_component_state: entity_component_state
+      }) do
     succeed = %Ecstatic.Events.EventInvocation.Succeeded{
       invocation: invocation,
       entity_component_state: entity_component_state
     }
 
-    requested = remaining
-                |> Enum.take(1)
-                |> Enum.map(fn d ->
-                  %Ecstatic.Events.EventInvocation.Requested{
-                    invocation: d.invocation
-                  }
-                end)
+    requested =
+      remaining
+      |> Enum.take(1)
+      |> Enum.map(fn d ->
+        %Ecstatic.Events.EventInvocation.Requested{
+          invocation: d.invocation
+        }
+      end)
 
     [succeed] ++ requested
   end
@@ -81,6 +89,7 @@ defmodule Ecstatic.Aggregates.EntityComponent do
       error: error
     }
   end
+
   #
 
   def apply(aggregate, %Events.CommandInvocation.Requested{} = invocation) do
@@ -111,7 +120,10 @@ defmodule Ecstatic.Aggregates.EntityComponent do
     %EntityComponent{}
   end
 
-  def apply(%EntityComponent{events: [_first | remaining]} = aggregate, %Events.EventInvocation.Succeeded{}) do
+  def apply(
+        %EntityComponent{events: [_first | remaining]} = aggregate,
+        %Events.EventInvocation.Succeeded{}
+      ) do
     %{aggregate | events: remaining}
   end
 

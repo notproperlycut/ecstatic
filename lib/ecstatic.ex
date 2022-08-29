@@ -28,7 +28,10 @@ defmodule Ecstatic do
            entity_component_id: entity_component_id,
            payload: payload
          } do
-      Ecstatic.Commanded.dispatch(%Commands.CommandInvocation.Request{entity_component_id: entity_component_id, invocation: invocation})
+      Ecstatic.Commanded.dispatch(%Commands.CommandInvocation.Request{
+        entity_component_id: entity_component_id,
+        invocation: invocation
+      })
     end
   end
 
@@ -48,13 +51,16 @@ defmodule Ecstatic do
     })
   end
 
-
   def succeed_event(%Ecstatic.Types.EventInvocation{} = invocation, entity_component_state) do
-    Ecstatic.Commanded.dispatch(%Commands.EventInvocation.Succeed{
-      entity_component_id: Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id),
-      invocation: invocation,
-      entity_component_state: entity_component_state
-    }, consistency: :strong)
+    Ecstatic.Commanded.dispatch(
+      %Commands.EventInvocation.Succeed{
+        entity_component_id:
+          Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id),
+        invocation: invocation,
+        entity_component_state: entity_component_state
+      },
+      consistency: :strong
+    )
   end
 
   def fail_event(%Ecstatic.Types.EventInvocation{} = invocation, error) do
@@ -65,11 +71,9 @@ defmodule Ecstatic do
     })
   end
 
-
   def application(id) do
     Ecstatic.Repo.get_by(Projections.Application, id: id)
   end
-
 
   def systems(application_id) do
     Ecstatic.Repo.all(Projections.System, application_id: application_id)
@@ -95,7 +99,6 @@ defmodule Ecstatic do
     Ecstatic.Repo.all(Projections.Subscriber, application_id: application_id)
   end
 
-
   def system(application_id, name) do
     Ecstatic.Repo.get_by(Projections.System, application_id: application_id, name: name)
   end
@@ -120,9 +123,11 @@ defmodule Ecstatic do
     Ecstatic.Repo.get_by(Projections.Subscriber, application_id: application_id, name: name)
   end
 
-
   def entity_component(application_id, id) do
-    Ecstatic.Repo.get_by(Projections.EntityComponent, application_id: application_id, entity_component_id: id)
+    Ecstatic.Repo.get_by(Projections.EntityComponent,
+      application_id: application_id,
+      entity_component_id: id
+    )
   end
 
   def entity_components(application_id) do

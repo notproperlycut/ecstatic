@@ -9,7 +9,7 @@ defmodule Ecstatic.Workflows.Supervisor do
   def init(_init_arg) do
     children = [
       Ecstatic.Workflows.CommandInvocation,
-      Ecstatic.Workflows.EventInvocation,
+      Ecstatic.Workflows.EventInvocation
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

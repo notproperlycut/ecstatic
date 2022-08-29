@@ -11,9 +11,10 @@ defmodule Ecstatic.Projectors.EntityComponent do
   project(%Events.EventInvocation.Succeeded{} = event, _metadata, fn multi ->
     ec = %EntityComponent{
       application_id: event.invocation.application_id,
-      entity_component_id: "#{Ecstatic.Types.EntityComponentId.new!(event.invocation.entity_component_id)}",
-      #value: %{state: event.entity_component_state},
-      value: event.entity_component_state,
+      entity_component_id:
+        "#{Ecstatic.Types.EntityComponentId.new!(event.invocation.entity_component_id)}",
+      # value: %{state: event.entity_component_state},
+      value: event.entity_component_state
     }
 
     Ecto.Multi.insert(multi, :event, ec,

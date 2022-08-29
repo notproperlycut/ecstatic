@@ -8,4 +8,3 @@ defmodule Ecstatic.Commands.CommandInvocation.Request do
     field :invocation, CommandInvocation.t(), enforce: true
   end
 end
-

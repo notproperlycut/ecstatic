@@ -54,7 +54,7 @@ defmodule Ecstatic do
       entity_component_id: Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id),
       invocation: invocation,
       entity_component_state: entity_component_state
-    })
+    }, consistency: :strong)
   end
 
   def fail_event(%Ecstatic.Types.EventInvocation{} = invocation, error) do

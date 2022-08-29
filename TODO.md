@@ -1,5 +1,3 @@
-1. Defer events and call sequentially, validate consistency
-1. execute command locks the entitycomponent
 1. Move validation to commands
 1. "update" events (can remove uniqueness constraints?)
 1. primary keys, names/ids, names are strings

@@ -10,7 +10,7 @@ defmodule Ecstatic.Aggregates.Application.State.Event do
         events
       ) do
     Enum.reduce_while(events, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Types.Names.Event.new(%{system: system.name, event: k}),
+      with {:ok, name} <- Types.Name.long(system.name, :event, k),
            {:ok, schema} <- Types.Schema.new(Map.from_struct(v.schema)),
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, event} <-

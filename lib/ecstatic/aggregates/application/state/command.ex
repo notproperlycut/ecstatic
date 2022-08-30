@@ -10,7 +10,7 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
         commands
       ) do
     Enum.reduce_while(commands, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Types.Names.Command.new(%{system: system.name, command: k}),
+      with {:ok, name} <- Types.Name.long(system.name, :command, k),
            {:ok, schema} <- Types.Schema.new(Map.from_struct(v.schema)),
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, command} <-

@@ -10,7 +10,7 @@ defmodule Ecstatic.Types.Criteria do
 
   precond(
     t: fn t ->
-      Ecstatic.Types.Names.Component.valid_name(t.has)
+      match?(%{class: :component}, Ecstatic.Types.Name.classify(t.has))
     end
   )
 

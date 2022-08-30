@@ -9,7 +9,7 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
         components
       ) do
     Enum.reduce_while(components, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Types.Names.Component.new(%{system: system.name, component: k}),
+      with {:ok, name} <- Types.Name.long(system.name, :component, k),
            {:ok, schema} <- Types.Schema.new(Map.from_struct(v.schema)),
            {:ok, component} <-
              Events.ComponentConfigured.new(%{

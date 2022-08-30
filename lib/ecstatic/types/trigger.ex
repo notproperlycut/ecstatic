@@ -10,7 +10,7 @@ defmodule Ecstatic.Types.Trigger do
 
   precond(
     t: fn t ->
-      Ecstatic.Types.Names.Component.valid_name(t.component)
+      match?(%{class: :component}, Ecstatic.Types.Name.classify(t.component))
     end
   )
 

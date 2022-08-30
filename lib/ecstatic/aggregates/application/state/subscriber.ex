@@ -10,7 +10,7 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
         subscribers
       ) do
     Enum.reduce_while(subscribers, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Types.Names.Subscriber.new(%{system: system.name, subscriber: k}),
+      with {:ok, name} <- Types.Name.long(system.name, :subscriber, k),
            {:ok, trigger} <- Types.Trigger.new(Map.from_struct(v.trigger)),
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, subscriber} <-

@@ -9,7 +9,7 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
         families
       ) do
     Enum.reduce_while(families, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Types.Names.Family.new(%{system: system.name, family: k}),
+      with {:ok, name} <- Types.Name.long(system.name, :family, k),
            {:ok, criteria} <- Types.Criteria.new(Map.from_struct(v.criteria)),
            {:ok, family} <-
              Events.FamilyConfigured.new(%{

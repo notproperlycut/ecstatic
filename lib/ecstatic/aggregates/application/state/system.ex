@@ -1,11 +1,11 @@
 defmodule Ecstatic.Aggregates.Application.State.System do
   alias Ecstatic.Aggregates.Application.State
   alias Ecstatic.Events
-  alias Ecstatic.Types.Names
+  alias Ecstatic.Types.Name
 
   def configure(%Events.ApplicationConfigured{} = application, systems) do
     Enum.reduce_while(systems, {:ok, %State{}}, fn {k, v}, {:ok, state} ->
-      with {:ok, name} <- Names.System.new(%{system: k}),
+      with {:ok, name} <- Name.short(k),
            {:ok, system} <-
              Events.SystemConfigured.new(%{
                application_id: application.id,

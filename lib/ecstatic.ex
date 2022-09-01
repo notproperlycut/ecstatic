@@ -17,11 +17,7 @@ defmodule Ecstatic do
          schema <- ExJsonSchema.Schema.resolve(Jason.decode!(schema["json_schema"])),
          :ok <- ExJsonSchema.Validator.validate(schema, payload),
          {:ok, entity_component} <-
-           Types.EntityComponentId.new(%{
-             application: application,
-             entity: entity,
-             component: component
-           }),
+           Types.Name.entity_component(application, component, entity),
          invocation <- %Types.CommandInvocation{
            application: application,
            command: command,
@@ -37,7 +33,7 @@ defmodule Ecstatic do
 
   def succeed_command(%Ecstatic.Types.CommandInvocation{} = invocation, events) do
     Ecstatic.Commanded.dispatch(%Commands.CommandInvocation.Succeed{
-      entity_component: Ecstatic.Types.EntityComponentId.new!(invocation.entity_component),
+      entity_component: invocation.entity_component,
       invocation: invocation,
       events: events
     })
@@ -45,7 +41,7 @@ defmodule Ecstatic do
 
   def fail_command(%Ecstatic.Types.CommandInvocation{} = invocation, error) do
     Ecstatic.Commanded.dispatch(%Commands.CommandInvocation.Fail{
-      entity_component: Ecstatic.Types.EntityComponentId.new!(invocation.entity_component),
+      entity_component: invocation.entity_component,
       invocation: invocation,
       error: error
     })
@@ -54,8 +50,7 @@ defmodule Ecstatic do
   def succeed_event(%Ecstatic.Types.EventInvocation{} = invocation, entity_component_state) do
     Ecstatic.Commanded.dispatch(
       %Commands.EventInvocation.Succeed{
-        entity_component:
-          Ecstatic.Types.EntityComponentId.new!(invocation.entity_component),
+        entity_component: invocation.entity_component,
         invocation: invocation,
         entity_component_state: entity_component_state
       },
@@ -65,7 +60,7 @@ defmodule Ecstatic do
 
   def fail_event(%Ecstatic.Types.EventInvocation{} = invocation, error) do
     Ecstatic.Commanded.dispatch(%Commands.EventInvocation.Fail{
-      entity_component: Ecstatic.Types.EntityComponentId.new!(invocation.entity_component),
+      entity_component: invocation.entity_component,
       invocation: invocation,
       error: error
     })

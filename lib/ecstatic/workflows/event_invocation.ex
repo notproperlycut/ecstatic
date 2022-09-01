@@ -11,11 +11,7 @@ defmodule Ecstatic.Workflows.EventInvocation do
       payload: invocation.payload
     }
 
-    with entity_component <-
-           Ecstatic.entity_component(
-             invocation.application,
-             "#{Ecstatic.Types.EntityComponentId.new!(invocation.entity_component)}"
-           ),
+    with entity_component <- Ecstatic.entity_component(invocation.application, invocation.entity_component),
          event <- Ecstatic.event(invocation.application, invocation.event),
          {:ok, entity_component_state} <-
            Ecstatic.Workflows.MfaDispatch.dispatch(

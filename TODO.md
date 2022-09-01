@@ -1,4 +1,3 @@
-1. primary keys, names/ids, names are strings
 1. Move validation to commands
 1. "update" events (can remove uniqueness constraints?)
 1. config from maps (therefore yaml or json)

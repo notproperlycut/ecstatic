@@ -37,6 +37,19 @@ defmodule Ecstatic.Types.Name do
 
   end
 
+  def entity_component(application, component, entity) when is_binary(application) and is_binary(entity) do
+    case classify(component) do
+      %{type: :long} ->
+        {:ok, "#{application}.#{component}.#{entity}"}
+      _ ->
+        {:error, :invalid_long_component_name}
+    end
+  end
+
+  def application(name) when is_binary(name)  do
+    name
+  end
+
   defp partition(name) do
     fragments = String.split(name, ".")
 

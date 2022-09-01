@@ -11,8 +11,7 @@ defmodule Ecstatic.Projectors.EntityComponent do
   project(%Events.EventInvocation.Succeeded{} = event, _metadata, fn multi ->
     ec = %EntityComponent{
       application: event.invocation.application,
-      name:
-        "#{Ecstatic.Types.EntityComponentId.new!(event.invocation.entity_component)}",
+      name: event.invocation.entity_component,
       value: event.entity_component_state
     }
 

@@ -6,7 +6,7 @@ defmodule Ecstatic.Events.ComponentConfigured do
   use TypedStruct
 
   typedstruct do
-    field :application, Types.ApplicationId.t(), enforce: true
+    field :application, String.t(), enforce: true
     field :name, String.t(), enforce: true
     field :schema, Types.Schema.t(), enforce: true
   end

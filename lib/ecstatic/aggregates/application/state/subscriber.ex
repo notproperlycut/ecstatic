@@ -15,8 +15,8 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, subscriber} <-
              Events.SubscriberConfigured.new(%{
-               application_id: application.id,
-               component_name: component.name,
+               application: application.name,
+               component: component.name,
                name: to_string(name),
                handler: handler,
                trigger: trigger
@@ -53,7 +53,7 @@ defmodule Ecstatic.Aggregates.Application.State.Subscriber do
       existing.subscribers
       |> Enum.reject(fn e -> Enum.any?(new.subscribers, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.SubscriberRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.SubscriberRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     update =

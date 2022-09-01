@@ -3,11 +3,11 @@ defmodule Ecstatic.Repo.Migrations.CreateComponentProjection do
 
   def change do
     create table(:components) do
-      add :application_id, :string
+      add :application, :string
       add :name, :string
       add :schema, :map
     end
 
-    create unique_index(:components, [:application_id, :name])
+    create unique_index(:components, [:application, :name])
   end
 end

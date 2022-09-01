@@ -37,14 +37,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_good
              })
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_bad
              })
            )
@@ -56,8 +56,8 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
         event.name == "a.subscriber.#{good_name}"
       end,
       fn event ->
-        assert event.application_id == "4"
-        assert event.component_name == "a.component.b"
+        assert event.application == "4"
+        assert event.component == "a.component.b"
       end
     )
   end
@@ -103,14 +103,14 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_good
              })
 
     refute match?(
              :ok,
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_bad
              })
            )
@@ -122,8 +122,8 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
         event.name == "a.subscriber.d"
       end,
       fn event ->
-        assert event.application_id == "4"
-        assert event.component_name == "a.component.b"
+        assert event.application == "4"
+        assert event.component == "a.component.b"
       end
     )
 
@@ -134,8 +134,8 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Subscriber do
         event.name == "a.subscriber.e"
       end,
       fn event ->
-        assert event.application_id == "4"
-        assert event.component_name == "a.component.c"
+        assert event.application == "4"
+        assert event.component == "a.component.c"
       end
     )
   end

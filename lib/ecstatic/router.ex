@@ -3,8 +3,8 @@ defmodule Ecstatic.Router do
 
   alias Ecstatic.{Commands, Aggregates}
 
-  identify(Aggregates.Application, by: :id)
-  identify(Aggregates.EntityComponent, by: :entity_component_id)
+  identify(Aggregates.Application, by: :name)
+  identify(Aggregates.EntityComponent, by: :entity_component)
 
   dispatch([Commands.ConfigureApplication, Commands.RemoveApplication], to: Aggregates.Application)
 

@@ -10,14 +10,14 @@ defmodule Ecstatic.Projectors.Application do
 
   project(%Events.ApplicationConfigured{} = event, _metadata, fn multi ->
     application = %Application{
-      id: event.id
+      name: event.name
     }
 
     Ecto.Multi.insert(multi, :application, application, on_conflict: :nothing)
   end)
 
   project(%Events.ApplicationRemoved{} = event, _metadata, fn multi ->
-    query = from(c in Application, where: c.id == ^event.id)
+    query = from(a in Application, where: a.name == ^event.name)
     Ecto.Multi.delete_all(multi, :application, query)
   end)
 end

@@ -15,8 +15,8 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, command} <-
              Events.CommandConfigured.new(%{
-               application_id: application.id,
-               component_name: component.name,
+               application: application.name,
+               component: component.name,
                name: to_string(name),
                handler: handler,
                schema: schema
@@ -52,7 +52,7 @@ defmodule Ecstatic.Aggregates.Application.State.Command do
       existing.commands
       |> Enum.reject(fn e -> Enum.any?(new.commands, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.CommandRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.CommandRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     update =

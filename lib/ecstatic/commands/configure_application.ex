@@ -4,7 +4,7 @@ defmodule Ecstatic.Commands.ConfigureApplication do
   use TypedStruct
 
   typedstruct do
-    field :id, Types.ApplicationId.t(), enforce: true
+    field :name, Types.ApplicationId.t(), enforce: true
     field :systems, map(), default: %{}
   end
 end

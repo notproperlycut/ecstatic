@@ -6,7 +6,7 @@ defmodule Ecstatic.Events.ApplicationConfigured do
   use TypedStruct
 
   typedstruct do
-    field :id, Types.ApplicationId.t(), enforce: true
+    field :name, Types.ApplicationId.t(), enforce: true
   end
 
   # TODO: workaround dialyzer warning from domo __precond__ generator

@@ -22,7 +22,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems
              })
 
@@ -33,8 +33,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
         event.name == "a.command.c"
       end,
       fn event ->
-        assert event.application_id == "4"
-        assert event.component_name == "a.component.b"
+        assert event.application == "4"
+        assert event.component == "a.component.b"
       end
     )
 
@@ -45,8 +45,8 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
         event.name == "a.command.d"
       end,
       fn event ->
-        assert event.application_id == "4"
-        assert event.component_name == "a.component.b"
+        assert event.application == "4"
+        assert event.component == "a.component.b"
       end
     )
 
@@ -54,7 +54,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
       Ecstatic.Commanded,
       Events.CommandConfigured,
       fn ->
-        Ecstatic.configure_application(%Commands.ConfigureApplication{id: "4", systems: systems})
+        Ecstatic.configure_application(%Commands.ConfigureApplication{name: "4", systems: systems})
       end
     )
   end
@@ -89,13 +89,13 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_a
              })
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_b
              })
 
@@ -104,7 +104,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
       Events.CommandRemoved,
       fn event ->
         assert event.name == "a.command.d"
-        assert event.application_id == "4"
+        assert event.application == "4"
       end
     )
   end
@@ -125,18 +125,18 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Command do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems
              })
 
-    assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{id: "4"})
+    assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{name: "4"})
 
     assert_receive_event(
       Ecstatic.Commanded,
       Events.CommandRemoved,
       fn event ->
         assert event.name == "a.command.c"
-        assert event.application_id == "4"
+        assert event.application == "4"
       end
     )
   end

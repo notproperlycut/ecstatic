@@ -10,8 +10,8 @@ defmodule Ecstatic.Projectors.Command do
 
   project(%Events.CommandConfigured{} = event, _metadata, fn multi ->
     command = %Command{
-      application_id: event.application_id,
-      component_name: event.component_name,
+      application: event.application,
+      component: event.component,
       name: event.name,
       schema: event.schema,
       handler: event.handler
@@ -19,14 +19,14 @@ defmodule Ecstatic.Projectors.Command do
 
     Ecto.Multi.insert(multi, :command, command,
       on_conflict: [set: [handler: event.handler]],
-      conflict_target: [:application_id, :name]
+      conflict_target: [:application, :name]
     )
   end)
 
   project(%Events.CommandRemoved{} = event, _metadata, fn multi ->
     query =
       from(c in Command,
-        where: c.application_id == ^event.application_id and c.name == ^event.name
+        where: c.application == ^event.application and c.name == ^event.name
       )
 
     Ecto.Multi.delete_all(multi, :command, query)

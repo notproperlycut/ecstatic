@@ -10,7 +10,7 @@ defmodule Ecstatic.Projectors.Component do
 
   project(%Events.ComponentConfigured{} = event, _metadata, fn multi ->
     component = %Component{
-      application_id: event.application_id,
+      application: event.application,
       name: event.name
     }
 
@@ -20,7 +20,7 @@ defmodule Ecstatic.Projectors.Component do
   project(%Events.ComponentRemoved{} = event, _metadata, fn multi ->
     query =
       from(c in Component,
-        where: c.application_id == ^event.application_id and c.name == ^event.name
+        where: c.application == ^event.application and c.name == ^event.name
       )
 
     Ecto.Multi.delete_all(multi, :component, query)

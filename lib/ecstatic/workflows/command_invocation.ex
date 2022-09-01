@@ -5,18 +5,18 @@ defmodule Ecstatic.Workflows.CommandInvocation do
 
   def handle(%Ecstatic.Events.CommandInvocation.Requested{invocation: invocation}, _metadata) do
     invocation = %Ecstatic.Types.CommandInvocation{
-      application_id: invocation.application_id,
-      command_name: invocation.command_name,
-      entity_component_id: invocation.entity_component_id,
+      application: invocation.application,
+      command: invocation.command,
+      entity_component: invocation.entity_component,
       payload: invocation.payload
     }
 
     with entity_component <-
            Ecstatic.entity_component(
-             invocation.application_id,
-             "#{Ecstatic.Types.EntityComponentId.new!(invocation.entity_component_id)}"
+             invocation.application,
+             "#{Ecstatic.Types.EntityComponentId.new!(invocation.entity_component)}"
            ),
-         command <- Ecstatic.command(invocation.application_id, invocation.command_name),
+         command <- Ecstatic.command(invocation.application, invocation.command),
          {:ok, events} <-
            Ecstatic.Workflows.MfaDispatch.dispatch(
              command.handler["mfa"],

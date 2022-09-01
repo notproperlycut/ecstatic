@@ -15,8 +15,8 @@ defmodule Ecstatic.Aggregates.Application.State.Event do
            {:ok, handler} <- Types.Handler.new(Map.from_struct(v.handler)),
            {:ok, event} <-
              Events.EventConfigured.new(%{
-               application_id: application.id,
-               component_name: component.name,
+               application: application.name,
+               component: component.name,
                name: to_string(name),
                handler: handler,
                schema: schema
@@ -52,7 +52,7 @@ defmodule Ecstatic.Aggregates.Application.State.Event do
       existing.events
       |> Enum.reject(fn e -> Enum.any?(new.events, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.EventRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.EventRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     update =

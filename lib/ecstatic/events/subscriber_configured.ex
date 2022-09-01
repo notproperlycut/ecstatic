@@ -6,8 +6,8 @@ defmodule Ecstatic.Events.SubscriberConfigured do
   use TypedStruct
 
   typedstruct do
-    field :application_id, Types.ApplicationId.t(), enforce: true
-    field :component_name, String.t(), enforce: true
+    field :application, Types.ApplicationId.t(), enforce: true
+    field :component, String.t(), enforce: true
     field :name, String.t(), enforce: true
     field :trigger, Types.Trigger.t(), enforce: true
     field :handler, Types.Handler.t(), enforce: true

@@ -13,7 +13,7 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
            {:ok, schema} <- Types.Schema.new(Map.from_struct(v.schema)),
            {:ok, component} <-
              Events.ComponentConfigured.new(%{
-               application_id: application.id,
+               application: application.name,
                name: to_string(name),
                schema: schema
              }),
@@ -49,7 +49,7 @@ defmodule Ecstatic.Aggregates.Application.State.Component do
       existing.components
       |> Enum.reject(fn e -> Enum.any?(new.components, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.ComponentRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.ComponentRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     update =

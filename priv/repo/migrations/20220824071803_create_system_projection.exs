@@ -3,10 +3,10 @@ defmodule Ecstatic.Repo.Migrations.CreateSystemProjection do
 
   def change do
     create table(:systems) do
-      add :application_id, :string
+      add :application, :string
       add :name, :string
     end
 
-    create unique_index(:systems, [:application_id, :name])
+    create unique_index(:systems, [:application, :name])
   end
 end

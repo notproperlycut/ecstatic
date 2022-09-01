@@ -3,13 +3,13 @@ defmodule Ecstatic.Repo.Migrations.CreateCommandProjection do
 
   def change do
     create table(:commands) do
-      add :application_id, :string
-      add :component_name, :string
+      add :application, :string
+      add :component, :string
       add :name, :string
       add :schema, :map
       add :handler, :map
     end
 
-    create unique_index(:commands, [:application_id, :name])
+    create unique_index(:commands, [:application, :name])
   end
 end

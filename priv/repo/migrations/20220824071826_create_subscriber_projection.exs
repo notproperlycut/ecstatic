@@ -3,14 +3,14 @@ defmodule Ecstatic.Repo.Migrations.CreateSubscriberProjection do
 
   def change do
     create table(:subscribers) do
-      add :application_id, :string
-      add :component_name, :string
+      add :application, :string
+      add :component, :string
       add :name, :string
       add :trigger, :map
       add :handler, :map
     end
 
-    create unique_index(:subscribers, [:application_id, :name])
+    create unique_index(:subscribers, [:application, :name])
 
   end
 end

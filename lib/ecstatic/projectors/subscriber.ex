@@ -10,8 +10,8 @@ defmodule Ecstatic.Projectors.Subscriber do
 
   project(%Events.SubscriberConfigured{} = event, _metadata, fn multi ->
     subscriber = %Subscriber{
-      application_id: event.application_id,
-      component_name: event.component_name,
+      application: event.application,
+      component: event.component,
       name: event.name,
       trigger: event.trigger,
       handler: event.handler
@@ -19,14 +19,14 @@ defmodule Ecstatic.Projectors.Subscriber do
 
     Ecto.Multi.insert(multi, :subscriber, subscriber,
       on_conflict: [set: [trigger: event.trigger, handler: event.handler]],
-      conflict_target: [:application_id, :name]
+      conflict_target: [:application, :name]
     )
   end)
 
   project(%Events.SubscriberRemoved{} = event, _metadata, fn multi ->
     query =
       from(c in Subscriber,
-        where: c.application_id == ^event.application_id and c.name == ^event.name
+        where: c.application == ^event.application and c.name == ^event.name
       )
 
     Ecto.Multi.delete_all(multi, :subscriber, query)

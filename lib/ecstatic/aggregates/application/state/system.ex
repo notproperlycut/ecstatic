@@ -8,7 +8,7 @@ defmodule Ecstatic.Aggregates.Application.State.System do
       with {:ok, name} <- Name.short(k),
            {:ok, system} <-
              Events.SystemConfigured.new(%{
-               application_id: application.id,
+               application: application.name,
                name: to_string(name)
              }),
            {:ok, families} <- State.Family.configure(application, system, v.families),
@@ -40,7 +40,7 @@ defmodule Ecstatic.Aggregates.Application.State.System do
       existing.systems
       |> Enum.reject(fn e -> Enum.any?(new.systems, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.SystemRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.SystemRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     {:ok, add ++ remove}

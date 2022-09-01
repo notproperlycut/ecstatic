@@ -31,7 +31,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
 
     assert :ok =
              Ecstatic.configure_application(%Commands.ConfigureApplication{
-               id: "4",
+               name: "4",
                systems: systems_good
              })
 
@@ -43,7 +43,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
           event.handler.mfa == good_mfa
       end,
       fn event ->
-        assert event.application_id == "4"
+        assert event.application == "4"
       end
     )
 
@@ -67,7 +67,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
       refute match?(
                :ok,
                Ecstatic.configure_application(%Commands.ConfigureApplication{
-                 id: "4",
+                 name: "4",
                  systems: systems_bad
                })
              )

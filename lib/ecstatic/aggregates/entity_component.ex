@@ -34,9 +34,9 @@ defmodule Ecstatic.Aggregates.EntityComponent do
       Enum.map(events, fn event ->
         %Ecstatic.Events.EventInvocation.Deferred{
           invocation: %Types.EventInvocation{
-            application_id: invocation.application_id,
-            event_name: event.name,
-            entity_component_id: invocation.entity_component_id,
+            application: invocation.application,
+            event: event.name,
+            entity_component: invocation.entity_component,
             payload: event.value
           }
         }

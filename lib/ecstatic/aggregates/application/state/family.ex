@@ -13,7 +13,7 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
            {:ok, criteria} <- Types.Criteria.new(Map.from_struct(v.criteria)),
            {:ok, family} <-
              Events.FamilyConfigured.new(%{
-               application_id: application.id,
+               application: application.name,
                name: to_string(name),
                criteria: criteria
              }) do
@@ -39,7 +39,7 @@ defmodule Ecstatic.Aggregates.Application.State.Family do
       existing.families
       |> Enum.reject(fn e -> Enum.any?(new.families, fn n -> n.name == e.name end) end)
       |> Enum.map(fn e ->
-        Events.FamilyRemoved.new!(%{application_id: e.application_id, name: e.name})
+        Events.FamilyRemoved.new!(%{application: e.application, name: e.name})
       end)
 
     update =

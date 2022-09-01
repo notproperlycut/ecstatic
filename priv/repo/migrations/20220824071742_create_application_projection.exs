@@ -2,8 +2,10 @@ defmodule Ecstatic.Repo.Migrations.CreateApplicationProjection do
   use Ecto.Migration
 
   def change do
-    create table(:applications, primary_key: false) do
-      add :id, :string, primary_key: true
+    create table(:applications) do
+      add :name, :string
     end
+
+    create index(:applications, [:name])
   end
 end

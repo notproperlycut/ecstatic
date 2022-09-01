@@ -35,7 +35,6 @@ defmodule Ecstatic.Aggregates.EntityComponent do
         %Ecstatic.Events.EventInvocation.Deferred{
           invocation: %Types.EventInvocation{
             application_id: invocation.application_id,
-            # TODO: resolve the event name
             event_name: event.name,
             entity_component_id: invocation.entity_component_id,
             payload: event.value

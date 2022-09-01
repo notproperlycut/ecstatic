@@ -23,7 +23,7 @@ defmodule Ecstatic.Workflows.CommandInvocation do
              entity_component,
              invocation.payload
            ),
-         {:ok, events} <- Ecstatic.Workflows.VerifyEvents.verify(command, events) do
+         {:ok, events} <- Ecstatic.Workflows.ResolveAndVerifyEvents.resolve(invocation, events) do
       Ecstatic.succeed_command(invocation, events)
     else
       {:error, error} ->

@@ -1,6 +1,7 @@
+1. primary keys, names/ids, names are strings
 1. Move validation to commands
 1. "update" events (can remove uniqueness constraints?)
-1. primary keys, names/ids, names are strings
+1. config from maps (therefore yaml or json)
 1. handle errors from invocations
 1. read model tests
 1. top-level API `Ecstatic.application("demo").configure(config)`, `Ecstatic.application("demo").commands()`

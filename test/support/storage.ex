@@ -8,7 +8,7 @@ defmodule Ecstatic.Storage do
   end
 
   defp reset_eventstore do
-    config = Ecstatic.EventStore.config()
+    config = Ecstatic.Commanded.EventStore.config()
 
     {:ok, conn} = Postgrex.start_link(config)
 

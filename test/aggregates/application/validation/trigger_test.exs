@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Validation.Trigger do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   test "Rejects invalid triggers" do
     good_trigger = "d.component.e"
@@ -32,7 +32,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Trigger do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&

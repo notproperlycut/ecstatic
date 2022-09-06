@@ -1,8 +1,8 @@
 defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
 
   test "Can add systems idempotently" do
     systems = %{
@@ -17,7 +17,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SystemConfigured,
       fn event ->
         event.name == "a"
@@ -28,7 +28,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
     )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SystemConfigured,
       fn event ->
         event.name == "b"
@@ -39,7 +39,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
     )
 
     refute_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SystemConfigured,
       fn ->
         Ecstatic.configure_application(%Commands.ConfigureApplication{name: "4", systems: systems})
@@ -70,7 +70,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SystemRemoved,
       fn event ->
         assert event.name == "b"
@@ -93,7 +93,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.System do
     assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{name: "4"})
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SystemRemoved,
       fn event ->
         assert event.name == "a"

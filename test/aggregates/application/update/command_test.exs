@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   test "Rejects a change of schema" do
     schema_a = Jason.encode!(%{"type" => "null"})
@@ -54,7 +54,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&
@@ -130,7 +130,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&
@@ -143,7 +143,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Command do
     )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.CommandConfigured,
       fn event ->
         event.name == "a.command.c" &&

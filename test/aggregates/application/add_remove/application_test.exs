@@ -1,20 +1,20 @@
 defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Application do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
 
   test "Can configure a new application idempotently" do
     assert :ok = Ecstatic.configure_application(%Commands.ConfigureApplication{name: "4"})
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ApplicationConfigured,
       fn event -> assert event.name == "4" end
     )
 
     refute_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ApplicationConfigured,
       fn -> Ecstatic.configure_application(%Commands.ConfigureApplication{name: "4"}) end
     )
@@ -25,13 +25,13 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Application do
     assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{name: "4"})
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ApplicationRemoved,
       fn event -> assert event.name == "4" end
     )
 
     refute_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ApplicationRemoved,
       fn -> Ecstatic.remove_application(%Commands.RemoveApplication{name: "4"}) end
     )

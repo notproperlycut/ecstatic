@@ -1,9 +1,9 @@
 defmodule Mix.Ecstatic do
   def event_stores() do
-    ["Ecstatic.EventStore"]
+    ["Ecstatic.Commanded.EventStore"]
   end
 
   def ecto_repos() do
-    ["Ecstatic.Repo"]
+    ["Ecstatic.Commanded.Repo"]
   end
 end

@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Validation.Criteria do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   test "Rejects invalid criteria" do
     good_criteria = "d.component.e"
@@ -26,7 +26,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Criteria do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.FamilyConfigured,
       fn event ->
         event.name == "a.family.b" &&

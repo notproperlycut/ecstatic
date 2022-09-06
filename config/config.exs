@@ -1,7 +1,7 @@
 import Config
 
-config :ecstatic, ecto_repos: [Ecstatic.Repo]
-config :ecstatic, event_stores: [Ecstatic.EventStore]
+config :ecstatic, ecto_repos: [Ecstatic.Commanded.Repo]
+config :ecstatic, event_stores: [Ecstatic.Commanded.EventStore]
 
 if Mix.env() == :test do
   config :ecstatic, :database,

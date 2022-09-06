@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   def handler(_) do
     {:ok, []}
@@ -36,7 +36,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Handler do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.EventConfigured,
       fn event ->
         event.name == "a.event.c" &&

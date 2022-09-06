@@ -1,8 +1,8 @@
 defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
 
   test "Rejects periods in names" do
     good_name = "a-name_with(different*characters&and1numbers,"
@@ -39,7 +39,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Validation.Component do
            )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentConfigured,
       fn event ->
         event.name == "a.component.#{good_name}"

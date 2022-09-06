@@ -1,8 +1,8 @@
 defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
 
   test "Can add components idempotently" do
     systems = %{
@@ -21,7 +21,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentConfigured,
       fn event ->
         event.name == "a.component.b"
@@ -32,7 +32,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentConfigured,
       fn event ->
         event.name == "a.component.c"
@@ -43,7 +43,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     )
 
     refute_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentConfigured,
       fn ->
         Ecstatic.configure_application(%Commands.ConfigureApplication{name: "4", systems: systems})
@@ -82,7 +82,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentRemoved,
       fn event ->
         assert event.name == "a.component.c"
@@ -109,7 +109,7 @@ defmodule Ecstatic.Test.Aggregates.Application.AddRemove.Component do
     assert :ok = Ecstatic.remove_application(%Commands.RemoveApplication{name: "4"})
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.ComponentRemoved,
       fn event ->
         assert event.name == "a.component.b"

@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   test "Allows a change of handler" do
     mfa_a = [__MODULE__, :handler_a, 1]
@@ -60,7 +60,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
@@ -73,7 +73,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
     )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
@@ -141,7 +141,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&
@@ -154,7 +154,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Subscriber do
     )
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.SubscriberConfigured,
       fn event ->
         event.name == "a.subscriber.c" &&

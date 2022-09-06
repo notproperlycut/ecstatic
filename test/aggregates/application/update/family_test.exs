@@ -1,9 +1,9 @@
 defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
   use Ecstatic.DataCase
 
-  alias Ecstatic.Commands
-  alias Ecstatic.Events
-  alias Ecstatic.Types
+  alias Ecstatic.Commanded.Commands
+  alias Ecstatic.Commanded.Events
+  alias Ecstatic.Commanded.Types
 
   test "Rejects a change of criteria" do
     has_a = "a.component.a"
@@ -36,7 +36,7 @@ defmodule Ecstatic.Test.Aggregates.Application.Update.Family do
              })
 
     assert_receive_event(
-      Ecstatic.Commanded,
+      Ecstatic.Commanded.Application,
       Events.FamilyConfigured,
       fn event ->
         event.name == "a.family.b" &&

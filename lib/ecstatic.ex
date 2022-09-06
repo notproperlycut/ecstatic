@@ -3,13 +3,29 @@ defmodule Ecstatic do
   alias Ecstatic.Commanded.Types
   alias Ecstatic.Commanded.Projections
 
-  def configure_application(%Commands.ConfigureApplication{} = application) do
-    Ecstatic.Commanded.Application.dispatch(application, consistency: :strong)
-  end
+  defdelegate application(name), to: Ecstatic.Application, as: :get
+  defdelegate applications(), to: Ecstatic.Application, as: :list
 
-  def remove_application(%Commands.RemoveApplication{} = application) do
-    Ecstatic.Commanded.Application.dispatch(application, consistency: :strong)
-  end
+  defdelegate system(application, name), to: Ecstatic.System, as: :get
+  defdelegate systems(application), to: Ecstatic.System, as: :list
+
+  defdelegate family(application, name), to: Ecstatic.Family, as: :get
+  defdelegate families(application), to: Ecstatic.Family, as: :list
+
+  defdelegate component(application, name), to: Ecstatic.Component, as: :get
+  defdelegate components(application), to: Ecstatic.Component, as: :list
+
+  defdelegate command(application, name), to: Ecstatic.Command, as: :get
+  defdelegate commands(application), to: Ecstatic.Command, as: :list
+
+  defdelegate event(application, name), to: Ecstatic.Event, as: :get
+  defdelegate events(application), to: Ecstatic.Event, as: :list
+
+  defdelegate subscriber(application, name), to: Ecstatic.Subscriber, as: :get
+  defdelegate subscribers(application), to: Ecstatic.Subscriber, as: :list
+
+  defdelegate configure(application, configuration), to: Ecstatic.Application
+  defdelegate remove(application), to: Ecstatic.Application
 
   def execute_command(application, entity, command, payload) do
     with %Ecstatic.Commanded.Projections.Command{component: component, schema: schema} <-
@@ -17,7 +33,7 @@ defmodule Ecstatic do
          schema <- ExJsonSchema.Schema.resolve(Jason.decode!(schema["json_schema"])),
          :ok <- ExJsonSchema.Validator.validate(schema, payload),
          {:ok, entity_component} <-
-           Types.Name.entity_component(application, component, entity),
+           Ecstatic.Types.Name.entity_component(application, component, entity),
          invocation <- %Types.CommandInvocation{
            application: application,
            command: command,
@@ -29,58 +45,6 @@ defmodule Ecstatic do
         invocation: invocation
       })
     end
-  end
-
-  def application(name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Application, name: name)
-  end
-
-  def systems(application) do
-    Ecstatic.Commanded.Repo.all(Projections.System, application: application)
-  end
-
-  def families(application) do
-    Ecstatic.Commanded.Repo.all(Projections.Family, application: application)
-  end
-
-  def components(application) do
-    Ecstatic.Commanded.Repo.all(Projections.Component, application: application)
-  end
-
-  def commands(application) do
-    Ecstatic.Commanded.Repo.all(Projections.Command, application: application)
-  end
-
-  def events(application) do
-    Ecstatic.Commanded.Repo.all(Projections.Event, application: application)
-  end
-
-  def subscribers(application) do
-    Ecstatic.Commanded.Repo.all(Projections.Subscriber, application: application)
-  end
-
-  def system(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.System, application: application, name: name)
-  end
-
-  def family(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Family, application: application, name: name)
-  end
-
-  def component(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Component, application: application, name: name)
-  end
-
-  def command(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Command, application: application, name: name)
-  end
-
-  def event(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Event, application: application, name: name)
-  end
-
-  def subscriber(application, name) do
-    Ecstatic.Commanded.Repo.get_by(Projections.Subscriber, application: application, name: name)
   end
 
   def entity_component(application, name) do

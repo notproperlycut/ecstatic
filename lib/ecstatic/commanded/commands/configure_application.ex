@@ -3,6 +3,7 @@ defmodule Ecstatic.Commanded.Commands.ConfigureApplication do
 
   typedstruct do
     field :name, String.t(), enforce: true
-    field :systems, map(), default: %{}
+    field :configuration, Ecstatic.Application.Configuration.t()
+    field :systems, map(), default: %{} # TODO: remove
   end
 end

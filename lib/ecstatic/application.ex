@@ -1,5 +1,6 @@
 defmodule Ecstatic.Application do
   use TypedStruct
+  defdelegate unpack(configuration), to: Ecstatic.Application.Configuration
 
   typedstruct do
     field :name, String.t(), enforce: true
@@ -34,13 +35,6 @@ defmodule Ecstatic.Application do
     {:ok, applications}
   end
 
-  @spec unpack_configuration(map()) :: {:ok, Ecstatic.Application.Configuration.t()} | {:error, atom()}
-  def unpack_configuration(_nested_configuration) do
-    configuration = %Ecstatic.Application.Configuration{
-    }
-    {:ok, configuration}
-  end
-
   @spec configure(Ecstatic.Application.t(), Ecstatic.Application.Configuration.t()) :: :ok | {:error, atom()}
   def configure(%__MODULE__{name: name}, %Ecstatic.Application.Configuration{} = configuration) do
     command = %Ecstatic.Commanded.Commands.ConfigureApplication{
@@ -57,5 +51,4 @@ defmodule Ecstatic.Application do
     }
     Ecstatic.Commanded.Application.dispatch(command, consistency: :strong)
   end
-
 end

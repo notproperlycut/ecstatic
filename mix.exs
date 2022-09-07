@@ -39,6 +39,7 @@ defmodule Ecstatic.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:ex_json_schema, "~> 0.9.1"},
       {:jason, "~> 1.2"},
+      {:nestru, "~> 0.2.1"},
       {:postgrex, ">= 0.0.0"},
       {:typed_struct, "~> 0.3.0"}
     ]

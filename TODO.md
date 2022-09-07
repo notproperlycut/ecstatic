@@ -1,5 +1,6 @@
 1. Move validation to commands
 1. "update" events (can remove uniqueness constraints?)
+1. config+state API
 1. config from maps (therefore yaml or json)
 1. handle errors from invocations
 1. read model tests

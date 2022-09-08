@@ -1,6 +1,7 @@
 defmodule Ecstatic.Subscriber.Configuration do
   @derive {Nestru.Decoder, %{trigger: Ecstatic.Types.Trigger, handler: Ecstatic.Types.Handler}}
   use TypedStruct
+  use Domo, skip_defaults: true
 
   typedstruct do
     field :component, String.t(), enforce: true
@@ -8,6 +9,14 @@ defmodule Ecstatic.Subscriber.Configuration do
     field :trigger, Ecstatic.Types.Trigger.t(), enforce: true
     field :handler, Ecstatic.Types.Handler.t(), enforce: true
   end
+
+  precond(
+    t: fn t ->
+      %{system: parent_system} = Ecstatic.Types.Name.classify(t.component)
+      %{system: system, class: class} = Ecstatic.Types.Name.classify(t.name)
+      class == :subscriber && system == parent_system
+    end
+  )
 
   @spec unpack(map(), map()) :: map()
   def unpack(%{"name" => component}, subscriber) do

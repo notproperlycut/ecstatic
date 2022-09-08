@@ -1,10 +1,17 @@
 defmodule Ecstatic.System.Configuration do
   @derive Nestru.Decoder
   use TypedStruct
+  use Domo, skip_defaults: true
 
   typedstruct do
     field :name, String.t(), enforce: true
   end
+
+  precond(
+    t: fn t ->
+      match?(%{type: :short}, Ecstatic.Types.Name.classify(t.name))
+    end
+  )
 
   @spec unpack(map()) :: map()
   def unpack(system) do

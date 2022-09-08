@@ -1,12 +1,21 @@
 defmodule Ecstatic.Component.Configuration do
   @derive {Nestru.Decoder, %{schema: Ecstatic.Types.Schema}}
   use TypedStruct
+  use Domo, skip_defaults: true
 
   typedstruct do
     field :name, String.t(), enforce: true
     field :system, String.t(), enforce: true
     field :schema, Ecstatic.Types.Schema.t(), enforce: true
   end
+
+  precond(
+    t: fn t ->
+      %{name: system_name} = Ecstatic.Types.Name.classify(t.system)
+      %{system: system, class: class} = Ecstatic.Types.Name.classify(t.name)
+      class == :component && system == system_name
+    end
+  )
 
   @spec unpack(map()) :: map()
   def unpack(%{}) do

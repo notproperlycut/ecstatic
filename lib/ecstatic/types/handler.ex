@@ -3,6 +3,7 @@ defmodule Ecstatic.Types.Handler do
   @derive Nestru.Decoder
 
   use TypedStruct
+  use Domo, skip_defaults: true
 
   @type handler :: list()
   typedstruct do

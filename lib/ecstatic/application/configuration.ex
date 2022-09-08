@@ -7,7 +7,9 @@ defmodule Ecstatic.Application.Configuration do
     events: [Ecstatic.Event.Configuration],
     subscribers: [Ecstatic.Subscriber.Configuration],
   }}
+
   use TypedStruct
+  use Domo, skip_defaults: true
 
   typedstruct do
     field :systems, list(Ecstatic.System.Configuration.t()), default: []
@@ -18,7 +20,7 @@ defmodule Ecstatic.Application.Configuration do
     field :subscribers, list(Ecstatic.Subscriber.Configuration.t()), default: []
   end
 
-  @spec unpack(map()) :: {:ok, Ecstatic.Application.Configuration.t()} | {:error, atom()}
+  @spec unpack(map()) :: {:ok, Ecstatic.Application.Configuration.t()} | {:error, atom()} | {:error, list()}
   def unpack(%{"systems" => systems}) do
     systems = systems
               |> map_to_named_list()

@@ -1,3 +1,10 @@
+Add domo
+https://github.com/IvanRublev/elixir-decode-validate-json-with-nestru-domo
+
+validate elememts
+validate uniqueness
+validate parents, etc
+
 1. Move validation to commands
 1. "update" events (can remove uniqueness constraints?)
 1. config+state API

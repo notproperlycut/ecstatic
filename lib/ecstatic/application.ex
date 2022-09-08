@@ -37,11 +37,13 @@ defmodule Ecstatic.Application do
 
   @spec configure(Ecstatic.Application.t(), Ecstatic.Application.Configuration.t()) :: :ok | {:error, atom()}
   def configure(%__MODULE__{name: name}, %Ecstatic.Application.Configuration{} = configuration) do
-    command = %Ecstatic.Commanded.Commands.ConfigureApplication{
-      name: name,
-      configuration: configuration
-    }
-    Ecstatic.Commanded.Application.dispatch(command, consistency: :strong)
+    with {:ok, configuration} <- Ecstatic.Application.Configuration.ensure_type(configuration) do
+      command = %Ecstatic.Commanded.Commands.ConfigureApplication{
+        name: name,
+        configuration: configuration
+      }
+      Ecstatic.Commanded.Application.dispatch(command, consistency: :strong)
+    end
   end
 
   @spec remove(Ecstatic.Application.t()) :: :ok | {:error, atom()}

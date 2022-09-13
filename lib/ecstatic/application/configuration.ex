@@ -1,4 +1,5 @@
 defmodule Ecstatic.Application.Configuration do
+  @derive Jason.Encoder
   @derive {Nestru.Decoder, %{
     systems: [Ecstatic.System.Configuration],
     families: [Ecstatic.Family.Configuration],

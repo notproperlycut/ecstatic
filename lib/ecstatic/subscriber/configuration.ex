@@ -1,4 +1,5 @@
 defmodule Ecstatic.Subscriber.Configuration do
+  @derive Jason.Encoder
   @derive {Nestru.Decoder, %{trigger: Ecstatic.Types.Trigger, handler: Ecstatic.Types.Handler}}
   use TypedStruct
   use Domo, skip_defaults: true

@@ -1,5 +1,6 @@
 defmodule Ecstatic.Subscriber do
   use TypedStruct
+  import Ecto.Query, only: [from: 2]
 
   typedstruct do
     field :application, String.t()
@@ -20,26 +21,25 @@ defmodule Ecstatic.Subscriber do
         subscriber = %Ecstatic.Subscriber{
           application: configuration.application,
           name: configuration.name,
-          configuration: struct(Ecstatic.Subscriber.Configuration, configuration),
+          configuration: Nestru.decode_from_map!(configuration, Ecstatic.Subscriber.Configuration),
           state: state
         }
         {:ok, subscriber}
     end
-    Ecstatic.Commanded.Repo.get_by(Ecstatic.Commanded.Projections.Subscriber, application: application, name: name)
   end
   
   @spec list(Ecstatic.Application.t()) :: {:ok, list(Ecstatic.Subscriber.t())} | {:error, atom()}
   def list(%Ecstatic.Application{name: application}) do
-    Ecstatic.Commanded.Repo.all(Ecstatic.Commanded.Projections.Subscriber, application: application)
     state = %Ecstatic.Subscriber.State{
       status: :live
     }
-    subscribers = Ecstatic.Commanded.Repo.all(Ecstatic.Commanded.Projections.Subscriber, application: application)
+    query = from(c in Ecstatic.Commanded.Projections.Subscriber, where: c.application == ^application)
+    subscribers = Ecstatic.Commanded.Repo.all(query)
                |> Enum.map(fn c ->
                  %Ecstatic.Subscriber{
                    application: c.application,
                    name: c.name,
-                   configuration: struct(Ecstatic.Subscriber.Configuration, c),
+                   configuration: Nestru.decode_from_map!(c, Ecstatic.Subscriber.Configuration),
                    state: state
                  }
                end)

@@ -1,5 +1,6 @@
 defmodule Ecstatic.Command do
   use TypedStruct
+  import Ecto.Query, only: [from: 2]
 
   typedstruct do
     field :application, String.t()
@@ -20,7 +21,7 @@ defmodule Ecstatic.Command do
         command = %Ecstatic.Command{
           application: configuration.application,
           name: configuration.name,
-          configuration: struct(Ecstatic.Command.Configuration, configuration),
+          configuration: Nestru.decode_from_map!(configuration, Ecstatic.Command.Configuration),
           state: state
         }
         {:ok, command}
@@ -32,12 +33,13 @@ defmodule Ecstatic.Command do
     state = %Ecstatic.Command.State{
       status: :live
     }
-    commands = Ecstatic.Commanded.Repo.all(Ecstatic.Commanded.Projections.Command, application: application)
+    query = from(c in Ecstatic.Commanded.Projections.Command, where: c.application == ^application)
+    commands = Ecstatic.Commanded.Repo.all(query)
                |> Enum.map(fn c ->
                  %Ecstatic.Command{
                    application: c.application,
                    name: c.name,
-                   configuration: struct(Ecstatic.Command.Configuration, c),
+                   configuration: Nestru.decode_from_map!(c, Ecstatic.Command.Configuration),
                    state: state
                  }
                end)

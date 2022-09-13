@@ -4,6 +4,7 @@ defmodule Ecstatic.Repo.Migrations.CreateComponentProjection do
   def change do
     create table(:components) do
       add :application, :string
+      add :system, :string
       add :name, :string
       add :schema, :map
     end

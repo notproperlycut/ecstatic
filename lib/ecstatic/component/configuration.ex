@@ -1,4 +1,5 @@
 defmodule Ecstatic.Component.Configuration do
+  @derive Jason.Encoder
   @derive {Nestru.Decoder, %{schema: Ecstatic.Types.Schema}}
   use TypedStruct
   use Domo, skip_defaults: true

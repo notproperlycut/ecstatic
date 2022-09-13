@@ -8,24 +8,36 @@ defmodule Ecstatic.Commanded.Projectors.Event do
   alias Ecstatic.Commanded.Events
   alias Ecstatic.Commanded.Projections.Event
 
-  project(%Events.EventConfigured{} = event, _metadata, fn multi ->
+  project(%Events.Event.Added{application: application, configuration: configuration}, _metadata, fn multi ->
     event = %Event{
-      application: event.application,
-      component: event.component,
-      name: event.name,
-      schema: event.schema,
-      handler: event.handler
+      application: application,
+      component: configuration.component,
+      name: configuration.name,
+      schema: configuration.schema,
+      handler: configuration.handler
     }
 
-    Ecto.Multi.insert(multi, :event, event,
-      on_conflict: [set: [handler: event.handler]],
-      conflict_target: [:application, :name]
-    )
+    Ecto.Multi.insert(multi, :event, event)
   end)
 
-  project(%Events.EventRemoved{} = event, _metadata, fn multi ->
+  project(%Events.Event.Updated{application: application, configuration: configuration}, _metadata, fn multi ->
     query =
-      from(c in Event, where: c.application == ^event.application and c.name == ^event.name)
+      from(c in Event, where: c.application == ^application and c.name == ^configuration.name)
+
+    event = %Event{
+      application: application,
+      component: configuration.component,
+      name: configuration.name,
+      schema: configuration.schema,
+      handler: configuration.handler
+    }
+
+    Ecto.Multi.update(multi, :event, query, set: event)
+  end)
+
+  project(%Events.Event.Removed{application: application, configuration: configuration}, _metadata, fn multi ->
+    query =
+      from(c in Event, where: c.application == ^application and c.name == ^configuration.name)
 
     Ecto.Multi.delete_all(multi, :event, query)
   end)

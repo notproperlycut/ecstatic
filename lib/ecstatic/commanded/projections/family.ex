@@ -3,6 +3,7 @@ defmodule Ecstatic.Commanded.Projections.Family do
 
   schema "families" do
     field(:application, :string)
+    field(:system, :string)
     field(:name, :string)
     field(:criteria, :map)
   end

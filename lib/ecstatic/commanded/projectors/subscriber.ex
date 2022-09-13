@@ -8,25 +8,39 @@ defmodule Ecstatic.Commanded.Projectors.Subscriber do
   alias Ecstatic.Commanded.Events
   alias Ecstatic.Commanded.Projections.Subscriber
 
-  project(%Events.SubscriberConfigured{} = event, _metadata, fn multi ->
+  project(%Events.Subscriber.Added{application: application, configuration: configuration}, _metadata, fn multi ->
     subscriber = %Subscriber{
-      application: event.application,
-      component: event.component,
-      name: event.name,
-      trigger: event.trigger,
-      handler: event.handler
+      application: application,
+      component: configuration.component,
+      name: configuration.name,
+      trigger: configuration.trigger,
+      handler: configuration.handler
     }
 
-    Ecto.Multi.insert(multi, :subscriber, subscriber,
-      on_conflict: [set: [trigger: event.trigger, handler: event.handler]],
-      conflict_target: [:application, :name]
-    )
+    Ecto.Multi.insert(multi, :subscriber, subscriber)
   end)
 
-  project(%Events.SubscriberRemoved{} = event, _metadata, fn multi ->
+  project(%Events.Subscriber.Updated{application: application, configuration: configuration}, _metadata, fn multi ->
     query =
       from(c in Subscriber,
-        where: c.application == ^event.application and c.name == ^event.name
+        where: c.application == ^application and c.name == ^configuration.name
+      )
+
+    subscriber = %Subscriber{
+      application: application,
+      component: configuration.component,
+      name: configuration.name,
+      trigger: configuration.trigger,
+      handler: configuration.handler
+    }
+
+    Ecto.Multi.update(multi, :subscriber, query, set: subscriber)
+  end)
+
+  project(%Events.Subscriber.Removed{application: application, configuration: configuration}, _metadata, fn multi ->
+    query =
+      from(c in Subscriber,
+        where: c.application == ^application and c.name == ^configuration.name
       )
 
     Ecto.Multi.delete_all(multi, :subscriber, query)

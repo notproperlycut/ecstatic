@@ -8,18 +8,30 @@ defmodule Ecstatic.Commanded.Projectors.System do
   alias Ecstatic.Commanded.Events
   alias Ecstatic.Commanded.Projections.System
 
-  project(%Events.SystemConfigured{} = event, _metadata, fn multi ->
+  project(%Events.System.Added{application: application, configuration: configuration}, _metadata, fn multi ->
     system = %System{
-      application: event.application,
-      name: event.name
+      application: application,
+      name: configuration.name
     }
 
-    Ecto.Multi.insert(multi, :system, system, on_conflict: :nothing)
+    Ecto.Multi.insert(multi, :system, system)
   end)
 
-  project(%Events.SystemRemoved{} = event, _metadata, fn multi ->
+  project(%Events.System.Updated{application: application, configuration: configuration}, _metadata, fn multi ->
     query =
-      from(c in System, where: c.application == ^event.application and c.name == ^event.name)
+      from(c in System, where: c.application == ^application and c.name == ^configuration.name)
+
+    system = %System{
+      application: application,
+      name: configuration.name
+    }
+
+    Ecto.Multi.update(multi, :system, query, set: system)
+  end)
+
+  project(%Events.System.Removed{application: application, configuration: configuration}, _metadata, fn multi ->
+    query =
+      from(c in System, where: c.application == ^application and c.name == ^configuration.name)
 
     Ecto.Multi.delete_all(multi, :system, query)
   end)

@@ -4,6 +4,7 @@ defmodule Ecstatic.Repo.Migrations.CreateFamilyProjection do
   def change do
     create table(:families) do
       add :application, :string
+      add :system, :string
       add :name, :string
       add :criteria, :map
     end

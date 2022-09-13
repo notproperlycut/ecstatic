@@ -8,22 +8,34 @@ defmodule Ecstatic.Commanded.Projectors.Family do
   alias Ecstatic.Commanded.Events
   alias Ecstatic.Commanded.Projections.Family
 
-  project(%Events.FamilyConfigured{} = event, _metadata, fn multi ->
+  project(%Events.Family.Added{application: application, configuration: configuration}, _metadata, fn multi ->
     family = %Family{
-      application: event.application,
-      name: event.name,
-      criteria: event.criteria
+      application: application,
+      system: configuration.system,
+      name: configuration.name,
+      criteria: configuration.criteria
     }
 
-    Ecto.Multi.insert(multi, :family, family,
-      on_conflict: [set: [criteria: event.criteria]],
-      conflict_target: [:application, :name]
-    )
+    Ecto.Multi.insert(multi, :family, family)
   end)
 
-  project(%Events.FamilyRemoved{} = event, _metadata, fn multi ->
+  project(%Events.Family.Updated{application: application, configuration: configuration}, _metadata, fn multi ->
     query =
-      from(c in Family, where: c.application == ^event.application and c.name == ^event.name)
+      from(c in Family, where: c.application == ^application and c.name == ^configuration.name)
+
+    family = %Family{
+      application: application,
+      system: configuration.system,
+      name: configuration.name,
+      criteria: configuration.criteria
+    }
+
+    Ecto.Multi.update(multi, :family, query, set: family)
+  end)
+
+  project(%Events.Family.Removed{application: application, configuration: configuration}, _metadata, fn multi ->
+    query =
+      from(c in Family, where: c.application == ^application and c.name == ^configuration.name)
 
     Ecto.Multi.delete_all(multi, :family, query)
   end)

@@ -1,5 +1,6 @@
 defmodule Ecstatic.Event do
   use TypedStruct
+  import Ecto.Query, only: [from: 2]
 
   typedstruct do
     field :application, String.t()
@@ -20,26 +21,25 @@ defmodule Ecstatic.Event do
         event = %Ecstatic.Event{
           application: configuration.application,
           name: configuration.name,
-          configuration: struct(Ecstatic.Event.Configuration, configuration),
+          configuration: Nestru.decode_from_map!(configuration, Ecstatic.Event.Configuration),
           state: state
         }
         {:ok, event}
     end
-    Ecstatic.Commanded.Repo.get_by(Ecstatic.Commanded.Projections.Event, application: application, name: name)
   end
   
   @spec list(Ecstatic.Application.t()) :: {:ok, list(Ecstatic.Event.t())} | {:error, atom()}
   def list(%Ecstatic.Application{name: application}) do
-    Ecstatic.Commanded.Repo.all(Ecstatic.Commanded.Projections.Event, application: application)
     state = %Ecstatic.Event.State{
       status: :live
     }
-    events = Ecstatic.Commanded.Repo.all(Ecstatic.Commanded.Projections.Event, application: application)
+    query = from(c in Ecstatic.Commanded.Projections.Event, where: c.application == ^application)
+    events = Ecstatic.Commanded.Repo.all(query)
                |> Enum.map(fn c ->
                  %Ecstatic.Event{
                    application: c.application,
                    name: c.name,
-                   configuration: struct(Ecstatic.Event.Configuration, c),
+                   configuration: Nestru.decode_from_map!(c, Ecstatic.Event.Configuration),
                    state: state
                  }
                end)

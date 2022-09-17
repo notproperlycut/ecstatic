@@ -1,5 +1,6 @@
 defmodule Ecstatic.Application do
   use TypedStruct
+
   defdelegate unpack(configuration), to: Ecstatic.Application.Configuration
 
   typedstruct do
@@ -7,7 +8,7 @@ defmodule Ecstatic.Application do
     field :state, atom(), enforce: true
   end
 
-  @spec get(String.t()) :: {:ok, Ecstatic.Application.t()} | {:error, atom()}
+  @spec get(String.t()) :: {:ok, Ecstatic.Application.t()}
   def get(name) do
     application = case Ecstatic.Commanded.Repo.get_by(Ecstatic.Commanded.Projections.Application, name: name) do
       nil ->

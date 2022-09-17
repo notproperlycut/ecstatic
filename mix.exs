@@ -8,7 +8,7 @@ defmodule Ecstatic.MixProject do
       compilers: [:domo_compiler] ++ Mix.compilers(),
       deps: deps(),
       dialyzer: [plt_add_apps: [:mix]],
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       test_coverage: [ignore_modules: [~r/\.TypeEnsurer$/]],
@@ -30,9 +30,9 @@ defmodule Ecstatic.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:commanded, "~> 1.3"},
-      {:commanded_ecto_projections, "~> 1.2"},
-      {:commanded_eventstore_adapter, "~> 1.2"},
+      {:commanded, "~> 1.4.1"},
+      {:commanded_ecto_projections, "~> 1.3.0"},
+      {:commanded_eventstore_adapter, "~> 1.4.0"},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:domo, "~> 1.5"},
       {:ecto_sql, "~> 3.0"},

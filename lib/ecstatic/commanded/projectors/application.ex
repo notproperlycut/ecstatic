@@ -19,11 +19,13 @@ defmodule Ecstatic.Commanded.Projectors.Application do
   project(%Events.Application.Updated{name: name}, _metadata, fn multi ->
     query = from(a in Application, where: a.name == ^name)
 
-    application = %Application{
+    # Nothing better to update, we'll use name (TODO: remove the handler if it's never needed)
+    application = %{
       name: name
     }
+    |> Keyword.new()
 
-    Ecto.Multi.update(multi, :application, query, set: application)
+    Ecto.Multi.update_all(multi, :application, query, set: application)
   end)
 
   project(%Events.Application.Removed{name: name}, _metadata, fn multi ->

@@ -26,15 +26,13 @@ defmodule Ecstatic.Commanded.Projectors.Command do
         where: c.application == ^application and c.name == ^configuration.name
       )
 
-    command = %Command{
-      application: application,
-      component: configuration.component,
-      name: configuration.name,
+    command = %{
       schema: configuration.schema,
       handler: configuration.handler
     }
+    |> Keyword.new
 
-    Ecto.Multi.update(multi, :command, query, set: command)
+    Ecto.Multi.update_all(multi, :command, query, set: command)
   end)
 
   project(%Events.Command.Removed{application: application, configuration: configuration}, _metadata, fn multi ->

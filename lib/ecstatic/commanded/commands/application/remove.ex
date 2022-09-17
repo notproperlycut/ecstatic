@@ -1,4 +1,4 @@
-defmodule Ecstatic.Commanded.Commands.RemoveApplication do
+defmodule Ecstatic.Commanded.Commands.Application.Remove do
   use TypedStruct
 
   typedstruct do

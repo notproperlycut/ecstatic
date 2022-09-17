@@ -26,15 +26,13 @@ defmodule Ecstatic.Commanded.Projectors.Subscriber do
         where: c.application == ^application and c.name == ^configuration.name
       )
 
-    subscriber = %Subscriber{
-      application: application,
-      component: configuration.component,
-      name: configuration.name,
+    subscriber = %{
       trigger: configuration.trigger,
       handler: configuration.handler
     }
+    |> Keyword.new
 
-    Ecto.Multi.update(multi, :subscriber, query, set: subscriber)
+    Ecto.Multi.update_all(multi, :subscriber, query, set: subscriber)
   end)
 
   project(%Events.Subscriber.Removed{application: application, configuration: configuration}, _metadata, fn multi ->

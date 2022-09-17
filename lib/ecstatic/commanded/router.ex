@@ -6,7 +6,7 @@ defmodule Ecstatic.Commanded.Router do
   identify(Aggregates.Application, by: :name)
   identify(Aggregates.EntityComponent, by: :entity_component)
 
-  dispatch([Commands.ConfigureApplication, Commands.RemoveApplication], to: Aggregates.Application)
+  dispatch([Commands.Application.Configure, Commands.Application.Remove], to: Aggregates.Application)
 
   dispatch(
     [

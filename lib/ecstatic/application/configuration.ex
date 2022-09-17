@@ -56,7 +56,7 @@ defmodule Ecstatic.Application.Configuration do
     end
   end
 
-  @spec unpack(map()) :: {:ok, Ecstatic.Application.Configuration.t()} | {:error, atom()} | {:error, list()}
+  @spec unpack(map()) :: {:ok, Ecstatic.Application.Configuration.t()} | {:error, String.t()}
   def unpack(%{"systems" => systems}) do
     systems = systems
               |> map_to_named_list()

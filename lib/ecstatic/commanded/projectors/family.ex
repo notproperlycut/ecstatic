@@ -23,14 +23,12 @@ defmodule Ecstatic.Commanded.Projectors.Family do
     query =
       from(c in Family, where: c.application == ^application and c.name == ^configuration.name)
 
-    family = %Family{
-      application: application,
-      system: configuration.system,
-      name: configuration.name,
+    family = %{
       criteria: configuration.criteria
     }
+    |> Keyword.new
 
-    Ecto.Multi.update(multi, :family, query, set: family)
+    Ecto.Multi.update_all(multi, :family, query, set: family)
   end)
 
   project(%Events.Family.Removed{application: application, configuration: configuration}, _metadata, fn multi ->

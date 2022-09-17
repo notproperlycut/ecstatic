@@ -25,14 +25,12 @@ defmodule Ecstatic.Commanded.Projectors.Component do
         where: c.application == ^application and c.name == ^configuration.name
       )
 
-    component = %Component{
-      application: application,
-      system: configuration.system,
-      name: configuration.name,
+    component = %{
       schema: configuration.schema
     }
+    |> Keyword.new
 
-    Ecto.Multi.update(multi, :component, query, set: component)
+    Ecto.Multi.update_all(multi, :component, query, set: component)
   end)
 
   project(%Events.Component.Removed{application: application, configuration: configuration}, _metadata, fn multi ->

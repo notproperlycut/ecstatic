@@ -24,15 +24,13 @@ defmodule Ecstatic.Commanded.Projectors.Event do
     query =
       from(c in Event, where: c.application == ^application and c.name == ^configuration.name)
 
-    event = %Event{
-      application: application,
-      component: configuration.component,
-      name: configuration.name,
+    event = %{
       schema: configuration.schema,
       handler: configuration.handler
     }
+    |> Keyword.new
 
-    Ecto.Multi.update(multi, :event, query, set: event)
+    Ecto.Multi.update_all(multi, :event, query, set: event)
   end)
 
   project(%Events.Event.Removed{application: application, configuration: configuration}, _metadata, fn multi ->

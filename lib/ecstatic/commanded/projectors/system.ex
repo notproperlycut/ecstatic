@@ -21,12 +21,13 @@ defmodule Ecstatic.Commanded.Projectors.System do
     query =
       from(c in System, where: c.application == ^application and c.name == ^configuration.name)
 
-    system = %System{
-      application: application,
+    # Nothing better to update, we'll use name (TODO: remove the handler if it's never needed)
+    system = %{
       name: configuration.name
     }
+    |> Keyword.new()
 
-    Ecto.Multi.update(multi, :system, query, set: system)
+    Ecto.Multi.update_all(multi, :system, query, set: system)
   end)
 
   project(%Events.System.Removed{application: application, configuration: configuration}, _metadata, fn multi ->
